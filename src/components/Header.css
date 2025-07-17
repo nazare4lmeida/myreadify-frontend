@@ -1,3 +1,5 @@
+/* src/components/Header.css */
+
 .app-header {
   width: 100%;
   padding: 1rem 0;
@@ -17,54 +19,212 @@
 .logo-link {
   text-decoration: none;
 }
-
 .logo h1 {
   font-family: var(--fonte-titulo);
   font-size: 2.2rem;
   color: var(--cor-destaque);
   margin: 0;
 }
-
 .logo p {
   font-size: 0.9rem;
   color: var(--cor-texto-secundario);
   margin: -5px 0 0 2px;
 }
 
+/* --- CONTAINER DE NAVEGAÇÃO --- */
 .main-nav {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
-.main-nav a {
+/* LINKS ESQUERDA */
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+/* PERFIL DIREITA */
+.nav-profile {
+  display: flex;
+  align-items: center;
+}
+
+/* BASE DOS LINKS */
+.nav-item {
+  position: relative;
+}
+
+.nav-item a {
   text-decoration: none;
   color: var(--cor-texto-principal);
   font-weight: 500;
   font-size: 1rem;
+  transition: color 0.2s ease;
   padding-bottom: 5px;
-  border-bottom: 2px solid transparent;
-  transition: color 0.3s, border-color 0.3s;
+  display: inline-block;
 }
 
-.main-nav a:hover {
+.nav-item a:hover {
   color: var(--cor-destaque);
 }
 
-.main-nav a.login-button {
+.nav-item > a.active {
+  color: var(--cor-destaque);
+}
+
+.nav-item > a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--cor-destaque);
+}
+
+/* BOTÕES LOGIN E PERFIL */
+.login-button
+{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
   background-color: var(--cor-destaque);
   color: #fff;
-  padding: 0.6rem 1.2rem;
+  border: none;
   border-radius: 6px;
-  border-bottom: none;
-}
 
-.main-nav a.login-button:hover {
-  background-color: #8a5a4b; /* Tom mais escuro do destaque */
+  padding: 0.1rem 1.2rem;
+  font-family: var(--fonte-corpo);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  line-height: 0.9rem;
+  height: 35px;
+}
+.login-button:hover {
+  background-color: #8a5a4b;
+}
+.profile-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  background-color: var(--cor-destaque);
   color: #fff;
+  border: none;
+  border-radius: 6px;
+
+  padding: 0.4rem 1rem;
+  font-family: var(--fonte-corpo);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  line-height: 1;
+  height: 38px;
 }
 
-.main-nav a.active {
-  color: var(--cor-destaque); /* A nossa cor marrom! */
-  border-bottom-color: var(--cor-destaque);
+.profile-button:hover {
+  background-color: #8a5a4b;
+}
+
+.profile-name {
+  font-size: 0.92rem;
+}
+
+/* DROPDOWN */
+.profile-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.arrow-down {
+  font-size: 0.6rem;
+  transition: transform 0.2s ease;
+  margin-top: 1px;
+}
+
+.arrow-down.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-content {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background-color: #fff;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 100;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  padding: 6px 0;
+  animation: fadeInDropdown 0.2s ease-out;
+}
+
+.dropdown-content a {
+  color: var(--cor-texto-principal);
+  padding: 10px 20px;
+  text-decoration: none;
+  display: block;
+  position: relative;
+  font-weight: 500;
+  text-align: left;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.dropdown-content a:hover,
+.dropdown-content a.active {
+  background-color: transparent;
+  color: var(--cor-destaque);
+  font-weight: 500;
+}
+
+.dropdown-content a:hover::after,
+.dropdown-content a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 20px;
+  width: calc(100% - 40px);
+  height: 2px;
+  background-color: var(--cor-destaque);
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  font-family: var(--fonte-corpo);
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--cor-texto-principal);
+  padding: 12px 20px;
+  text-align: left;
+  width: 100%;
+}
+.logout-button:hover {
+  background-color: #f1f1f1;
+  color: var(--cor-destaque);
+}
+
+@keyframes fadeInDropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

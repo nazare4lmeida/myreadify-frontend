@@ -14,6 +14,7 @@ import UploadPage from './pages/UploadPage';
 import MySummariesPage from './pages/MySummariesPage';
 import AboutPage from './pages/AboutPage'; // 2. Importe a página Sobre
 import { AuthProvider } from './contexts/AuthContext';
+import MyReviewsPage from './pages/MyReviewsPage';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/enviar-resumo" element={<UploadPage />} />
           <Route path="/meus-resumos" element={<MySummariesPage />} />
+          <Route path="/minhas-avaliacoes" element={<MyReviewsPage />} />
         </Routes>
       </div>
       <Footer /> {/* 4. Adicione o Footer aqui */}

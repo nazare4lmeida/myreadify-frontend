@@ -1,0 +1,77 @@
+/* src/pages/MyReviewsPage.css */
+
+.my-reviews-page {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.my-reviews-page h2 {
+  font-family: var(--fonte-titulo);
+  text-align: center;
+  margin-bottom: 3rem;
+  font-size: 2.2rem;
+}
+
+.my-reviews-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.my-review-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  transition: box-shadow 0.3s ease;
+}
+
+.my-review-card:hover {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.my-review-cover {
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0; /* Impede que a imagem encolha */
+}
+
+.my-review-details {
+  flex-grow: 1;
+}
+
+.my-review-details a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.my-review-details h3 {
+  margin: 0 0 0.5rem 0;
+  font-family: var(--fonte-titulo);
+  font-size: 1.4rem;
+}
+
+.my-review-rating {
+  font-size: 1.1rem;
+  color: #ffc107;
+  margin: 0 0 1rem 0;
+}
+
+.my-review-comment {
+  font-style: italic;
+  color: var(--cor-texto-secundario);
+  margin: 0;
+  padding-left: 1rem;
+  border-left: 3px solid #eee;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
