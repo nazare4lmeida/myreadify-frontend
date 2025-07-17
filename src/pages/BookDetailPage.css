@@ -43,24 +43,65 @@
 .book-detail-info h3 {
   border-bottom: 1px solid #eee;
   padding-bottom: 0.5rem;
+  margin: 2rem 0 1rem 0; /* Mais espaço acima do título "Resumo" */
+}
+
+/* NOVO estilo para o texto do resumo */
+.book-summary-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  }
+
+  /* Adicione este código ao final de src/pages/BookDetailPage.css */
+
+.reviews-section {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.reviews-section h3 {
+  font-family: var(--fonte-titulo);
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.review-card {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1rem;
 }
 
-.btn-download-detail {
-    background-color: var(--cor-destaque);
-    color: white;
-    border: none;
-    padding: 0.8rem 1.8rem;
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 2rem;
-    transition: background-color 0.3s;
+.review-author {
+  font-weight: 600;
+  color: var(--cor-texto-principal);
 }
 
-.btn-download-detail:hover {
-    background-color: #8a5a4b;
+.review-rating {
+  font-size: 1.2rem;
+  color: #ffc107; /* Cor de estrela (amarelo) */
+}
+
+.review-comment {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--cor-texto-secundario);
 }
 
 @keyframes fadeIn {

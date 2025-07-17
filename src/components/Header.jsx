@@ -1,5 +1,5 @@
+// Em src/components/Header.jsx
 import React from 'react';
-// Importa o Link para navegação interna sem recarregar a página
 import { NavLink } from 'react-router-dom';
 import './Header.css';
 
@@ -15,8 +15,9 @@ const Header = () => {
         </NavLink>
         <nav className="main-nav">
           <NavLink to="/categorias">Categorias</NavLink>
-          <NavLink to="/enviar-livro">Enviar Livro</NavLink>
-          <NavLink to="/meus-downloads">Meus Downloads</NavLink>
+          <NavLink to="/enviar-resumo">Enviar Resumo</NavLink>
+          <NavLink to="/meus-resumos">Resumos</NavLink>
+          <NavLink to="/sobre">Sobre</NavLink> {/* Adicione este link */}
           <NavLink to="/login" className="login-button">Login</NavLink>
         </nav>
       </div>
