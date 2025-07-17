@@ -1,0 +1,70 @@
+.app-header {
+  width: 100%;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: var(--cor-fundo);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-link {
+  text-decoration: none;
+}
+
+.logo h1 {
+  font-family: var(--fonte-titulo);
+  font-size: 2.2rem;
+  color: var(--cor-destaque);
+  margin: 0;
+}
+
+.logo p {
+  font-size: 0.9rem;
+  color: var(--cor-texto-secundario);
+  margin: -5px 0 0 2px;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: var(--cor-texto-principal);
+  font-weight: 500;
+  font-size: 1rem;
+  padding-bottom: 5px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.main-nav a:hover {
+  color: var(--cor-destaque);
+}
+
+.main-nav a.login-button {
+  background-color: var(--cor-destaque);
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  border-bottom: none;
+}
+
+.main-nav a.login-button:hover {
+  background-color: #8a5a4b; /* Tom mais escuro do destaque */
+  color: #fff;
+}
+
+.main-nav a.active {
+  color: var(--cor-destaque); /* A nossa cor marrom! */
+  border-bottom-color: var(--cor-destaque);
+}

@@ -1,0 +1,69 @@
+/* Em src/pages/BookDetailPage.css */
+.book-detail-page {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.book-detail-content {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+.book-detail-cover {
+  width: 300px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.book-detail-info h1 {
+  font-family: var(--fonte-titulo);
+  font-size: 2.8rem;
+  margin: 0;
+}
+
+.book-detail-info h2 {
+  font-family: var(--fonte-corpo);
+  font-weight: 400;
+  font-size: 1.5rem;
+  color: var(--cor-texto-secundario);
+  margin: 0.5rem 0 1.5rem 0;
+}
+
+.category-tag {
+  display: inline-block;
+  background-color: #f0f0f0;
+  padding: 0.4rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+
+.book-detail-info h3 {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.btn-download-detail {
+    background-color: var(--cor-destaque);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 2rem;
+    transition: background-color 0.3s;
+}
+
+.btn-download-detail:hover {
+    background-color: #8a5a4b;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

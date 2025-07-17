@@ -1,0 +1,39 @@
+/* Em src/pages/CategoriesPage.css */
+.category-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.category-header h2 {
+  margin-bottom: 1.5rem;
+}
+
+.category-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.category-filters button {
+  border: 1px solid #ddd;
+  background-color: #fff;
+  color: var(--cor-texto-secundario);
+  padding: 0.6rem 1.5rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.category-filters button:hover {
+  background-color: #f5f5f5;
+  border-color: #ccc;
+}
+
+/* Estilo do botão ativo */
+.category-filters button.active {
+  background-color: var(--cor-destaque);
+  color: #fff;
+  border-color: var(--cor-destaque);
+}

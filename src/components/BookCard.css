@@ -1,0 +1,74 @@
+.book-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--cor-sombra);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  display: flex; /* Para alinhar imagem e info */
+  flex-direction: column;
+}
+
+.book-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.book-cover {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3; /* Proporção de capa de livro */
+  object-fit: cover;
+}
+
+.book-info {
+  padding: 1.2rem;
+  flex-grow: 1;
+}
+
+.book-info h3 {
+  font-family: var(--fonte-titulo);
+  font-size: 1.25rem;
+  margin: 0 0 0.25rem 0;
+}
+
+.book-info p {
+  font-size: 0.95rem;
+  color: var(--cor-texto-secundario);
+  margin: 0;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0 1.2rem 1.2rem;
+  margin-top: auto; /* Empurra os botões para a parte inferior */
+}
+
+.card-actions button {
+  flex-grow: 1; /* Faz os botões ocuparem o espaço disponível */
+  border: none;
+  padding: 0.7rem;
+  border-radius: 6px;
+  font-family: var(--fonte-corpo);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-download {
+  background-color: var(--cor-destaque);
+  color: white;
+}
+.btn-download:hover {
+  background-color: #8a5a4b;
+}
+
+.btn-see-more {
+  background-color: #f0f0f0;
+  color: var(--cor-texto-principal);
+}
+.btn-see-more:hover {
+  background-color: #e0e0e0;
+}
