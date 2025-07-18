@@ -190,12 +190,12 @@ h2, h3 {
 
 .status-pending {
   background-color: #fff8e1;
-  color: #f57c00;
+  color: #DB7093;
 }
 
 .status-approved {
   background-color: #e8f5e9;
-  color: #2e7d32;
+  color: #f3f7f3;
 }
 
 .status-rejected {
