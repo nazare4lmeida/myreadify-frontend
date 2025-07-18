@@ -1,36 +1,33 @@
+// src/pages/SubmitSummaryPage.jsx
+
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import api from '../services/api';
+import { useAuth } from '../contexts/AuthContext';
 import './SubmitSummaryPage.css';
 
 const SubmitSummaryPage = () => {
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [category, setCategory] = useState('');
+  // --- A CORREÇÃO ESTÁ AQUI ---
+  // 1. Usamos o hook 'useLocation' para ler os dados passados na navegação.
+  const { state } = useLocation();
+  const { signed } = useAuth();
+
+  // 2. Inicializamos os estados com os dados recebidos, se existirem.
+  //    O 'state?.title' é uma forma segura de dizer "se o state existir, pegue o title".
+  const [title, setTitle] = useState(state?.title || '');
+  const [author, setAuthor] = useState(state?.author || '');
+  const [category, setCategory] = useState(state?.category || ''); // Adicionado para a categoria
+  
+  // O resto do código continua exatamente como estava.
   const [content, setContent] = useState('');
   const [coverImage, setCoverImage] = useState(null);
-
   const [mySummaries, setMySummaries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // Verifica se o usuário está logado
-  useEffect(() => {
-    const checkLogin = async () => {
-      try {
-        const response = await api.get('/check-auth'); // Você pode adaptar essa rota
-        setIsAuthenticated(response.data?.loggedIn || false);
-      } catch {
-        setIsAuthenticated(false);
-      }
-    };
-    checkLogin();
-  }, []);
-
   const fetchMySummaries = useCallback(async () => {
+    setLoading(true); 
     try {
       const response = await api.get('/my-books');
       setMySummaries(response.data);
@@ -42,10 +39,12 @@ const SubmitSummaryPage = () => {
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (signed) {
       fetchMySummaries();
+    } else {
+      setLoading(false);
     }
-  }, [isAuthenticated, fetchMySummaries]);
+  }, [signed, fetchMySummaries]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,14 +71,15 @@ const SubmitSummaryPage = () => {
       });
       setMessage('Resumo enviado para avaliação! Ele aparecerá na lista abaixo em breve.');
       
-      // Limpa o formulário
       setTitle('');
       setAuthor('');
       setCategory('');
       setContent('');
       setCoverImage(null);
-      document.getElementById('coverImage').value = '';
-
+      if (document.getElementById('coverImage')) {
+        document.getElementById('coverImage').value = '';
+      }
+      
       fetchMySummaries();
 
     } catch (err) {
@@ -94,9 +94,9 @@ const SubmitSummaryPage = () => {
     }
   };
 
-  if (!isAuthenticated) {
+  if (!signed) {
     return (
-      <div className="submit-summary-page not-logged-in">
+      <div className="submit-summary-page not-logged-in container">
         <h2>Envie seu Resumo</h2>
         <p>Para enviar resumos e acompanhar seus envios, é necessário estar logado.</p>
         <div className="auth-links">
@@ -113,6 +113,7 @@ const SubmitSummaryPage = () => {
         <h2>Envie seu Resumo</h2>
         <p>Após o envio, seu resumo será avaliado por nossa equipe. Se aprovado, será publicado com seu nome.</p>
         <form onSubmit={handleSubmit} noValidate>
+          {/* Os 'value' destes inputs agora usarão os estados pré-preenchidos */}
           <input type="text" placeholder="Nome do Livro" value={title} onChange={e => setTitle(e.target.value)} required />
           <input type="text" placeholder="Autor do Livro" value={author} onChange={e => setAuthor(e.target.value)} required />
           <input type="text" placeholder="Categoria (Ex: Ficção, Negócios)" value={category} onChange={e => setCategory(e.target.value)} required />
@@ -146,7 +147,6 @@ const SubmitSummaryPage = () => {
                 <div className="summary-info">
                   <strong>{summary.title}</strong>
                   <span>por {summary.author}</span>
-                  <Link to={`/resumo/${summary.id}`} className="summary-link">Ver Resumo</Link>
                 </div>
                 <span className={`status status-${summary.status.toLowerCase()}`}>
                   {summary.status}

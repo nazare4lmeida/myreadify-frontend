@@ -1,0 +1,68 @@
+/* src/pages/SubmitPromptPage.css */
+
+.submit-prompt-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+.prompt-card {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  max-width: 900px;
+  background: #fff;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 4px D20px rgba(0,0,0,0.1);
+}
+.prompt-cover {
+  width: 200px;
+  height: auto;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.prompt-info {
+  text-align: center;
+}
+.prompt-info h1 {
+  font-family: var(--fonte-titulo);
+  margin-top: 0;
+}
+.prompt-message {
+  font-size: 1.1rem;
+  color: var(--cor-texto-secundario);
+}
+.prompt-info h2 {
+  font-family: var(--fonte-titulo);
+  font-weight: 500;
+  margin-top: 2rem;
+}
+.btn-prompt {
+  background-color: var(--cor-destaque);
+  color: white;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+}
+.btn-prompt:hover {
+  background-color: #8a5a4b;
+}
+.back-link {
+  display: block;
+  margin-top: 1.5rem;
+  color: var(--cor-texto-secundario);
+  font-size: 0.9rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

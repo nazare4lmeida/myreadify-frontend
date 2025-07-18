@@ -1,50 +1,56 @@
+// src/pages/BookDetailPage.jsx
+
 import { useState, useEffect } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import api from '../services/api';
-import './BookDetailPage.css'; // Seu CSS original
+import './BookDetailPage.css';
 
 const BookDetailPage = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const location = useLocation();
 
-  // --- Estados do Componente (sem alterações) ---
-  const [livro, setLivro] = useState(null);
+  const [bookData, setBookData] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+
+  // Estados para o formulário de CRIAÇÃO de avaliação
   const [newRating, setNewRating] = useState(5);
   const [newComment, setNewComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+
+  // Estados para o modo de EDIÇÃO de avaliação
   const [editingReviewId, setEditingReviewId] = useState(null);
   const [editRating, setEditRating] = useState(0);
   const [editComment, setEditComment] = useState('');
 
-  // --- Funções de Busca e Manipulação de Dados (sem alterações) ---
-  const fetchData = async () => {
-    try {
-      setIsLoading(true);
-      const [bookRes, reviewsRes, authRes] = await Promise.all([
-        api.get(`/books/${id}`),
-        api.get(`/books/${id}/reviews`),
-        api.get('/check-auth').catch(() => ({ data: { loggedIn: false } })),
-      ]);
-      setLivro(bookRes.data);
-      setReviews(reviewsRes.data);
-      if (authRes.data.loggedIn) {
-        setCurrentUser(authRes.data.user);
-      }
-    } catch (err) {
-      setError('Livro não encontrado ou não disponível.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const bookRes = await api.get(`/books/${slug}`);
+        const fetchedBook = bookRes.data;
+        setBookData(fetchedBook);
+
+        const [reviewsRes, authRes] = await Promise.all([
+          api.get(`/books/${fetchedBook.id}/reviews`),
+          api.get('/check-auth').catch(() => ({ data: { loggedIn: false } })),
+        ]);
+        
+        setReviews(reviewsRes.data);
+        if (authRes.data.loggedIn) {
+          setCurrentUser(authRes.data.user);
+        }
+      } catch (err) {
+        setError('Livro não encontrado ou não disponível.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
     fetchData();
-  }, [id]);
+  }, [slug]);
 
   useEffect(() => {
     if (!isLoading && location.hash) {
@@ -67,7 +73,7 @@ const BookDetailPage = () => {
     setIsSubmitting(true);
     setSubmitError('');
     try {
-      const response = await api.post(`/books/${id}/reviews`, { rating: newRating, comment: newComment });
+      const response = await api.post(`/books/${bookData.id}/reviews`, { rating: newRating, comment: newComment });
       setReviews([response.data, ...reviews]);
       setNewComment('');
       setNewRating(5);
@@ -113,43 +119,30 @@ const BookDetailPage = () => {
     }
   };
 
-
-  // --- Renderização do Componente ---
-
   if (isLoading) return <div className="container"><p>Carregando...</p></div>;
   if (error) return <div className="container"><p>{error} <Link to="/categorias">Voltar</Link></p></div>;
-  if (!livro) return null;
+  if (!bookData) return null;
 
   return (
     <div className="book-detail-page">
       <div className="book-detail-content">
-        {/*
-          ALTERAÇÃO 1: Exibição da Imagem
-          Usamos a nova propriedade 'full_cover_url' que o backend agora envia.
-          Adicionamos uma imagem placeholder para o caso de não haver capa.
-        */}
         <img
-          src={livro.full_cover_url || 'https://via.placeholder.com/300x450.png?text=Sem+Capa'}
-          alt={`Capa de ${livro.title}`}
+          src={bookData.full_cover_url || 'https://via.placeholder.com/300x450.png?text=Sem+Capa'}
+          alt={`Capa de ${bookData.title}`}
           className="book-detail-cover"
         />
         <div className="book-detail-info">
-          <h1>{livro.title}</h1>
-          <p className="book-summary-text">{livro.summary}</p>
-          
-          {/*
-            ALTERAÇÃO 2: Exibição de Quem Enviou o Resumo
-            Verificamos se o objeto 'livro.submitter' existe antes de tentar mostrar o nome.
-          */}
-          {livro.submitter && (
+          <h1>{bookData.title}</h1>
+          <p className="book-summary-text">{bookData.summary}</p>
+          {bookData.submitter && (
             <p className="summary-submitter" style={{ marginTop: '1.5rem', fontStyle: 'italic', color: '#555' }}>
-              Resumo enviado por: <strong>{livro.submitter.name}</strong>
+              Resumo enviado por: <strong>{bookData.submitter.name}</strong>
             </p>
           )}
         </div>
       </div>
 
-      {/* A seção de avaliações permanece exatamente a mesma */}
+      {/* --- SEÇÃO DE AVALIAÇÕES RESTAURADA --- */}
       <div className="reviews-section">
         <h3>Avaliações dos Leitores</h3>
         {reviews.length > 0 ? (
@@ -198,6 +191,7 @@ const BookDetailPage = () => {
         )}
       </div>
 
+      {/* --- SEÇÃO DE ADICIONAR AVALIAÇÃO RESTAURADA --- */}
       <div className="add-review-section">
         {!currentUser && (
           <div className="login-prompt">

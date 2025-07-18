@@ -1,4 +1,4 @@
-/* src/pages/AdminApprovalPage.css (Versão Completa e Corrigida) */
+/* src/pages/AdminApprovalPage.css (Versão Final com Alinhamento Corrigido) */
 
 .admin-approval-page {
   animation: fadeIn 0.5s ease-in-out;
@@ -7,18 +7,26 @@
   text-align: center;
   margin-bottom: 2rem;
   font-family: var(--fonte-titulo);
+  color: var(--cor-texto-principal);
+}
+.empty-message {
+  text-align: center;
+  color: var(--cor-texto-secundario);
+  padding: 1rem 0;
 }
 
 /* --- Seção de Pendentes --- */
-.pending-list {
+.pending-list, .approval-actions {
   display: flex;
+}
+.pending-list {
   flex-direction: column;
   gap: 1.5rem;
 }
 .pending-card {
   background: #fff;
   border: 1px solid #e0e0e0;
-  border-left: 5px solid #ffc107;
+  border-left: 5px solid #EAB308;
   padding: 1.5rem;
   border-radius: 8px;
 }
@@ -35,7 +43,6 @@
 }
 .approval-actions {
   margin-top: 1rem;
-  display: flex;
   gap: 1rem;
 }
 .approval-actions button {
@@ -45,67 +52,109 @@
   color: white;
   cursor: pointer;
   font-weight: 600;
+  transition: opacity 0.2s;
+}
+.approval-actions button:hover {
+  opacity: 0.9;
 }
 .btn-approve {
-  background-color: #28a745;
+  background-color: #0d9488;
 }
 .btn-reject {
-  background-color: #dc3545;
+  background-color: #94a3b8;
+}
+
+/* --- Linha Divisória --- */
+.section-divider {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
+  width: 80%;
+  margin: 5rem auto;
 }
 
 /* --- Seção de Gerenciamento --- */
-
-/* --- A CORREÇÃO ESTÁ AQUI --- */
-.management-section {
-  margin-top: 5rem;    /* Aumentamos o espaço acima da linha */
-  padding-top: 3rem;   /* Aumentamos o espaço abaixo da linha */
-  border-top: 2px solid #ddd; /* Deixamos a linha mais espessa e um pouco mais escura */
-}
-
 .management-list {
   list-style-type: none;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 }
+
+/* Container de cada item */
 .management-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  background-color: #fff;
+  border: 1px solid #e7e7e7;
+  border-radius: 8px;
+  transition: box-shadow 0.2s, border-color 0.2s;
 }
+.management-item:hover {
+  border-color: #ccc;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Container da esquerda (título, id) */
 .item-info {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-grow: 1;
+  min-width: 0;
 }
+
 .item-title {
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 .item-id {
-  font-size: 0.9rem;
-  color: #777;
+  font-size: 0.85rem;
+  color: var(--cor-texto-secundario);
+  flex-shrink: 0;
 }
+
+
+/* --- A CORREÇÃO ESTÁ AQUI --- */
+
+/* Novo container da direita (status, botão) */
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Espaço entre a tag de status e o botão */
+  flex-shrink: 0; /* Impede que o container encolha */
+}
+
+/* Estilos individuais (tag e botão) continuam os mesmos */
 .item-status {
-  font-size: 0.8rem;
-  font-weight: bold;
-  padding: 0.2rem 0.5rem;
-  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 9999px;
   color: white;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
-.status-pending { background-color: #ffc107; color: #333; }
-.status-approved { background-color: #28a745; }
-.status-rejected { background-color: #6c757d; }
+.status-pending { background-color: #EAB308; color: #422006; }
+.status-approved { background-color: #0d9488; }
+.status-rejected { background-color: #94a3b8; }
+
 .btn-delete-permanent {
-  background-color: #dc3545;
+  background-color: #be123c;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+.btn-delete-permanent:hover {
+  background-color: #9f1239;
 }
