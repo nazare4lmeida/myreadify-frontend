@@ -85,7 +85,10 @@ const LoginPage = () => {
           <button type="submit" className="login-button-submit">Entrar</button>
         </form>
         <p className="signup-link">
-          Não tem uma conta? <a>Cadastre-se</a>
+          Não tem uma conta?{' '}
+          <a onClick={() => navigate('/register')} style={{cursor: 'pointer'}}>
+            Cadastre-se
+          </a>
         </p>
       </div>
     </div>

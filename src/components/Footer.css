@@ -1,40 +1,40 @@
-/* Em src/components/Footer.css */
-
 .app-footer {
-  background-color: #1a1a1a; /* Fundo escuro, quase preto */
-  color: #a0a0a0; /* Cor de texto padrão para o rodapé (cinza claro) */
-  padding: 0 1rem;
-  margin-top: 0 1rem;
+  background-color: #1a1a1a;
+  color: #a0a0a0;
+  /* Reduzimos o padding vertical drasticamente */
+  padding: 0.5rem 0.6rem 0; /* Espaço em cima, mas nenhum embaixo */
+  margin-top: auto; /* ESSENCIAL para o "sticky footer" funcionar */
+  flex-shrink: 0; /* Garante que o footer não encolha */
 }
 
-/* O .container aqui garante que o conteúdo do footer tenha a mesma largura do resto do site */
 .footer-content {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  flex-wrap: wrap; /* Permite que as seções quebrem em telas menores */
-  gap: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-/* --- Lado Esquerdo: Marca e Sociais --- */
 .footer-brand {
-  flex: 1; /* Ocupa o espaço disponível */
-  min-width: 250px; /* Largura mínima antes de quebrar a linha */
+  flex: 1;
+  min-width: 250px;
 }
 
 .footer-logo {
   font-family: var(--fonte-titulo);
-  font-size: 2rem;
+  font-size: 1.8rem; /* Um pouco menor */
   font-weight: 700;
-  color: #ffffff; /* Logo em branco para destaque */
+  color: #ffffff;
   text-decoration: none;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   display: inline-block;
 }
 
 .footer-tagline {
-  font-size: 1rem;
-  margin: 0 0 1.5rem 0;
+  font-size: 0.95rem; /* Um pouco menor */
+  margin: 0 0 1rem 0;
 }
 
 .footer-socials {
@@ -43,45 +43,49 @@
 }
 
 .footer-socials a {
-  color: #a0a0a0; /* Cor inicial dos ícones */
+  color: #a0a0a0;
   transition: color 0.3s ease;
 }
 
 .footer-socials a:hover {
-  color: #ffffff; /* Ícones ficam brancos ao passar o mouse */
+  color: #ffffff;
 }
 
-
-/* --- Lado Direito: Colunas de Links --- */
 .footer-links-container {
   display: flex;
-  gap: 5rem; /* Espaço entre as colunas de links */
+  gap: 3rem; /* Espaço menor entre as colunas */
   flex-wrap: wrap;
 }
 
 .footer-column {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem; /* Espaço entre os links dentro de uma coluna */
+  gap: 0.7rem; /* Espaço menor entre os links */
 }
 
 .footer-column h4 {
-  font-family: var(--fonte-corpo);
-  font-size: 1rem;
+  font-size: 0.8rem; /* Um pouco menor */
   font-weight: 600;
-  color: #ffffff; /* Títulos das colunas em branco */
+  color: #ffffff;
   margin: 0 0 0.5rem 0;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .footer-column a {
-  color: #1f6861; /* SUA COR: VERDE DEEP TEAL! */
+  color: #1f6861;
   text-decoration: none;
-  font-size: 0.95rem;
-  transition: color 0.3s ease;
+  font-size: 0.9rem;
 }
 
 .footer-column a:hover {
-    color: #2b8b82; /* SUA COR: VERDE DEEP TEAL! */
+  color: #2b8b82;
+}
+
+.footer-copyright {
+  text-align: center;
+  padding: 0.6rem;
+  margin-top: 1rem;
+  border-top: 1px solid #333333;
+  font-size: 0.9rem;
+  color: #808080;
 }

@@ -49,8 +49,20 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const signUp = async ({ name, email, password }) => {
+    try {
+      // A chamada CORRETA, alinhada com o backend e com o prefixo /api
+      await api.post('/users', { name, email, password });
+
+    } catch (error) {
+      // Este tratamento de erro está correto, ele pega a resposta do backend
+      const errorMessage = error.response?.data?.error || 'Não foi possível realizar o cadastro.';
+      throw new Error(errorMessage);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ signed: !!user, user, loading, signIn, signOut }}>
+    <AuthContext.Provider value={{ signed: !!user, user, loading, signIn, signOut, signUp }}>
       {children}
     </AuthContext.Provider>
   );

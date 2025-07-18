@@ -1,0 +1,106 @@
+/* src/pages/RegisterPage.css */
+
+/* Estilo principal da página, idêntico ao da página de login */
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh; /* Mesmo alinhamento vertical */
+  padding: 2rem;
+}
+
+/* Contêiner do formulário de cadastro, espelhando o de login */
+.register-container {
+  background-color: #fff;
+  padding: 2.5rem 3rem;
+  border-radius: 8px; /* Mesma borda arredondada */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Mesma sombra */
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+}
+
+/* Título da página de cadastro */
+.register-container h2 {
+  font-family: var(--fonte-titulo); /* Usa a variável global de fonte */
+  color: var(--cor-destaque); /* Usa a variável global de cor */
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+/* As classes abaixo são genéricas e podem ser compartilhadas,
+   mas as manteremos aqui para garantir a consistência. */
+
+.input-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 5px;
+}
+
+.error-message {
+  color: #d93025;
+  margin-bottom: 1rem;
+}
+
+/* Botão de envio do formulário de cadastro */
+.register-button-submit {
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  background-color: var(--cor-destaque);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 1rem; /* Adicionado para consistência */
+}
+
+.register-button-submit:hover {
+  background-color: #8a5a4b; /* Mesmo efeito hover do botão de login */
+}
+
+/* Link para voltar à página de login */
+.login-link {
+  margin-top: 2rem;
+  color: var(--cor-texto-secundario);
+}
+
+.login-link a {
+  color: var(--cor-destaque);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}

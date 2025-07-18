@@ -89,3 +89,13 @@ body {
   color: var(--cor-texto-secundario);
   margin: 0;
 }
+
+#root, .app-wrapper {
+  min-height: 100vh; /* Garante que o app tenha no mínimo a altura da tela */
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1; /* Faz com que esta seção cresça e empurre o footer para baixo */
+}
