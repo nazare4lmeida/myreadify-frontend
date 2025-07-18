@@ -71,6 +71,34 @@
   border-left: 3px solid #eee;
 }
 
+.my-reviews-container {
+  max-height: 70vh; /* A lista ocupará no máximo 70% da altura da tela */
+  overflow-y: auto; /* Mostra a barra de rolagem vertical APENAS se necessário */
+  padding-right: 15px; /* Espaço para a barra não ficar colada no conteúdo */
+}
+
+/* Estilizando a barra de rolagem (funciona em navegadores baseados em WebKit/Blink como Chrome, Edge, Safari) */
+.my-reviews-container::-webkit-scrollbar {
+  width: 10px; /* Largura da barra */
+}
+
+/* Fundo da barra (o caminho por onde ela corre) */
+.my-reviews-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* A parte que se move da barra */
+.my-reviews-container::-webkit-scrollbar-thumb {
+  background: #c5b5ad; /* Um tom de marrom claro/bege que combina com seu site */
+  border-radius: 10px;
+}
+
+/* Efeito ao passar o mouse sobre a barra */
+.my-reviews-container::-webkit-scrollbar-thumb:hover {
+  background: #7b5b4c; /* O marrom mais escuro dos botões */
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }

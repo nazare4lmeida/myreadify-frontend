@@ -1,16 +1,12 @@
-// src/contexts/AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import api from '../services/api';
 
-// 1. Cria o Contexto
 const AuthContext = createContext({});
 
-// 2. Cria o Provedor do Contexto
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Efeito para carregar dados do localStorage ao iniciar
   useEffect(() => {
     const loadStoragedData = async () => {
       const storagedUser = localStorage.getItem('@MyReadify:user');
@@ -25,7 +21,6 @@ export const AuthProvider = ({ children }) => {
     loadStoragedData();
   }, []);
 
-  // Função de Login
   const signIn = async ({ email, password }) => {
     try {
       const response = await api.post('/login', { email, password });
@@ -37,12 +32,10 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('@MyReadify:user', JSON.stringify(apiUser));
       localStorage.setItem('@MyReadify:token', token);
     } catch (error) {
-      // Lançamos o erro para ser tratado na página de login
       throw new Error(error.response?.data?.error || 'Falha no login');
     }
   };
 
-  // Função de Logout
   const signOut = () => {
     localStorage.removeItem('@MyReadify:user');
     localStorage.removeItem('@MyReadify:token');
@@ -51,11 +44,9 @@ export const AuthProvider = ({ children }) => {
 
   const signUp = async ({ name, email, password }) => {
     try {
-      // A chamada CORRETA, alinhada com o backend e com o prefixo /api
       await api.post('/users', { name, email, password });
 
     } catch (error) {
-      // Este tratamento de erro está correto, ele pega a resposta do backend
       const errorMessage = error.response?.data?.error || 'Não foi possível realizar o cadastro.';
       throw new Error(errorMessage);
     }
@@ -68,7 +59,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// 3. Cria um Hook customizado para facilitar o uso do contexto
 export function useAuth() {
   const context = useContext(AuthContext);
   return context;

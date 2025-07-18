@@ -1,0 +1,111 @@
+/* src/pages/AdminApprovalPage.css (Versão Completa e Corrigida) */
+
+.admin-approval-page {
+  animation: fadeIn 0.5s ease-in-out;
+}
+.admin-approval-page h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-family: var(--fonte-titulo);
+}
+
+/* --- Seção de Pendentes --- */
+.pending-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.pending-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-left: 5px solid #ffc107;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+.pending-card h3 {
+  margin-top: 0;
+}
+.summary-content {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.approval-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+.approval-actions button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-approve {
+  background-color: #28a745;
+}
+.btn-reject {
+  background-color: #dc3545;
+}
+
+/* --- Seção de Gerenciamento --- */
+
+/* --- A CORREÇÃO ESTÁ AQUI --- */
+.management-section {
+  margin-top: 5rem;    /* Aumentamos o espaço acima da linha */
+  padding-top: 3rem;   /* Aumentamos o espaço abaixo da linha */
+  border-top: 2px solid #ddd; /* Deixamos a linha mais espessa e um pouco mais escura */
+}
+
+.management-list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.management-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+.item-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.item-title {
+  font-weight: 600;
+}
+.item-id {
+  font-size: 0.9rem;
+  color: #777;
+}
+.item-status {
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+  color: white;
+  text-transform: uppercase;
+}
+.status-pending { background-color: #ffc107; color: #333; }
+.status-approved { background-color: #28a745; }
+.status-rejected { background-color: #6c757d; }
+.btn-delete-permanent {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}

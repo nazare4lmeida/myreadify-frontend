@@ -1,9 +1,8 @@
-/* 1. Definição de Variáveis de Cores e Fontes (Paleta) */
 :root {
-  --cor-fundo: #fdfaf6; /* Um branco-creme bem suave */
-  --cor-texto-principal: #3a3a3a; /* Cinza escuro, não preto puro */
+  --cor-fundo: #fdfaf6; 
+  --cor-texto-principal: #3a3a3a; 
   --cor-texto-secundario: #6b6b6b;
-  --cor-destaque: #a46a55; /* Um marrom-rosado, quente */
+  --cor-destaque: #975238;
   --cor-sombra: rgba(0, 0, 0, 0.08);
 
   --fonte-titulo: 'Lora', serif;

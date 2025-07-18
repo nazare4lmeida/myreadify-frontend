@@ -61,8 +61,12 @@ const Header = () => {
                   <span className="profile-name">Olá, {user.name.split(' ')[0]}</span>
                   <span className={`arrow-down ${dropdownOpen ? 'open' : ''}`}>▼</span>
                 </button>
-                {dropdownOpen && (
+{dropdownOpen && (
                   <div className="dropdown-content">
+                    {/* SÓ MOSTRA SE O USUÁRIO FOR ADMIN */}
+                    {user?.role === 'ADMIN' && (
+                      <NavLink to="/admin/aprovacoes" onClick={() => setDropdownOpen(false)}>Aprovações</NavLink>
+                    )}
                     <NavLink to="/meus-resumos" onClick={() => setDropdownOpen(false)}>Meus Resumos</NavLink>
                     <NavLink to="/minhas-avaliacoes" onClick={() => setDropdownOpen(false)}>Minhas Avaliações</NavLink>
                     <button onClick={handleLogout} className="logout-button">Sair</button>

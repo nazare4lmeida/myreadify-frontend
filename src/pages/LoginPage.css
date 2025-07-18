@@ -1,15 +1,14 @@
-/* src/pages/LoginPage.css */
 .login-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 70vh; /* Faz o formulário ficar mais ou menos no centro da tela */
+  min-height: 70vh;
   padding: 2rem;
 }
 
 .login-container {
   background-color: #fff;
-  padding: 2.5rem 3rem;
+  padding: 3.5rem 6rem;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -21,7 +20,7 @@
   font-family: var(--fonte-titulo);
   color: var(--cor-destaque);
   margin-bottom: 2rem;
-  font-size: 2rem;
+  font-size: 2.2rem;
 }
 
 .input-group {
@@ -42,7 +41,7 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1rem;
-  box-sizing: border-box; /* Garante que padding não afete a largura total */
+  box-sizing: border-box;
 }
 
 .login-button-submit {

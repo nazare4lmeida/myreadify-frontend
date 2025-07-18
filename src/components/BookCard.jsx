@@ -1,4 +1,4 @@
-// Em src/components/BookCard.jsx
+// src/components/BookCard.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BookCard.css';
@@ -10,16 +10,18 @@ const BookCard = ({ livro }) => {
     navigate(`/livro/${livro.id}`);
   };
 
+  // Se o livro vier da API, ele terá 'full_cover_url'.
+  // Se vier do mock, usamos o 'coverUrl' que já existia.
+  const imageUrl = livro.full_cover_url || livro.coverUrl || 'https://via.placeholder.com/150x220.png?text=Sem+Capa';
+
   return (
-    // O card inteiro continua clicável
     <div className="book-card" onClick={handleNavigateToSummary}>
-      <img src={livro.coverUrl} alt={`Capa do livro ${livro.title}`} className="book-cover" />
+      <img src={imageUrl} alt={`Capa do livro ${livro.title}`} className="book-cover" />
       <div className="book-info">
         <h3>{livro.title}</h3>
         <p>{livro.author}</p>
       </div>
       <div className="card-actions">
-        {/* O botão principal agora é para ler o resumo */}
         <button className="btn-summary" onClick={handleNavigateToSummary}>Ler Resumo</button>
       </div>
     </div>
