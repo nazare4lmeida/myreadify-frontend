@@ -9,7 +9,6 @@
   --fonte-corpo: 'Inter', sans-serif;
 }
 
-/* 2. Estilos Globais e Reset Básico */
 body {
   margin: 0;
   font-family: var(--fonte-corpo);
@@ -18,7 +17,6 @@ body {
   line-height: 1.6;
 }
 
-/* 3. Layout Principal e Cabeçalho */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -44,26 +42,23 @@ body {
   margin-top: 0.5rem;
 }
 
-/* 4. Grid da Lista de Livros */
 .book-list {
   display: grid;
-  /* Cria colunas flexíveis, cada uma com no mínimo 250px */
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2.5rem; /* Espaçamento entre os cards */
+  gap: 2.5rem; 
 }
 
-/* 5. Estilo do Card de Livro Individual */
 .book-card {
   background-color: #fff;
-  border-radius: 8px; /* Cantos arredondados */
-  box-shadow: 0 4px 12px var(--cor-sombra); /* Sombra suave para dar profundidade */
-  overflow: hidden; /* Garante que a imagem não "vaze" dos cantos arredondados */
+  border-radius: 8px; 
+  box-shadow: 0 4px 12px var(--cor-sombra); 
+  overflow: hidden; 
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 }
 
 .book-card:hover {
-  transform: translateY(-8px); /* Efeito de flutuar ao passar o mouse */
+  transform: translateY(-8px); 
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
@@ -90,11 +85,11 @@ body {
 }
 
 #root, .app-wrapper {
-  min-height: 100vh; /* Garante que o app tenha no mínimo a altura da tela */
+  min-height: 100vh; 
   display: flex;
   flex-direction: column;
 }
 
 .main-content {
-  flex: 1; /* Faz com que esta seção cresça e empurre o footer para baixo */
+  flex: 1; 
 }

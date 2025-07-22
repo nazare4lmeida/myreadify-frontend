@@ -1,4 +1,3 @@
-// Em src/pages/AboutPage.jsx
 import React from 'react';
 import './AboutPage.css';
 

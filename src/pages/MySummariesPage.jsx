@@ -1,9 +1,7 @@
-// src/pages/MySummariesPage.jsx
-
 import React, { useState, useEffect } from 'react';
-import api from '../services/api'; // Seu serviço de API
-import { useAuth } from '../contexts/AuthContext'; // Seu contexto de autenticação
-import './MySummariesPage.css'; // O arquivo CSS que vamos criar a seguir
+import api from '../services/api'; 
+import { useAuth } from '../contexts/AuthContext'; 
+import './MySummariesPage.css'; 
 
 const MySummariesPage = () => {
   const [summaries, setSummaries] = useState([]);
@@ -12,11 +10,9 @@ const MySummariesPage = () => {
   const { signed } = useAuth();
 
   useEffect(() => {
-    // A função só executa se o usuário estiver logado
     if (signed) {
       const fetchMySummaries = async () => {
         try {
-          // Usamos o endpoint que já existe no seu BookController para buscar os livros do usuário
           const response = await api.get('/my-books');
           setSummaries(response.data);
         } catch (err) {
@@ -29,12 +25,10 @@ const MySummariesPage = () => {
 
       fetchMySummaries();
     } else {
-      // Se não estiver logado, não precisa carregar
       setLoading(false);
     }
-  }, [signed]); // O efeito depende do status de login do usuário
+  }, [signed]); 
 
-  // Renderização enquanto os dados estão sendo buscados
   if (loading) {
     return (
       <div className="my-summaries-page container">
@@ -43,8 +37,7 @@ const MySummariesPage = () => {
       </div>
     );
   }
-  
-  // Renderização caso ocorra um erro na busca
+
   if (error) {
     return (
       <div className="my-summaries-page container">
@@ -54,7 +47,6 @@ const MySummariesPage = () => {
     );
   }
 
-  // Renderização principal
   return (
     <div className="my-summaries-page container">
       <h2>Meus Resumos Enviados</h2>
@@ -67,7 +59,6 @@ const MySummariesPage = () => {
                 <strong>{summary.title}</strong>
                 <span>por {summary.author}</span>
               </div>
-              {/* O status terá uma classe dinâmica para aplicarmos cores diferentes com CSS */}
               <span className={`status status-${summary.status.toLowerCase()}`}>
                 {summary.status === 'PENDING' && 'Pendente'}
                 {summary.status === 'APPROVED' && 'Aprovado'}

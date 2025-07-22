@@ -1,6 +1,4 @@
-// src/pages/AdminMessagesPage.jsx
-
-import React, { useState, useEffect, useCallback } from 'react'; // 1. Importe o useCallback
+import React, { useState, useEffect, useCallback } from 'react'; 
 import api from '../services/api';
 import './AdminMessagesPage.css';
 
@@ -13,25 +11,23 @@ const AdminMessagesPage = () => {
   const [replyText, setReplyText] = useState('');
   const [isSending, setIsSending] = useState(false);
 
-  // 2. Criamos uma função memorizada para buscar as mensagens
   const fetchMessages = useCallback(async () => {
     try {
-      setIsLoading(true); // Mostra o "carregando" sempre que busca
+      setIsLoading(true);
       const response = await api.get('/admin/messages');
       setMessages(response.data);
-      setError(null); // Limpa erros antigos
+      setError(null);
     } catch (err) {
       setError('Não foi possível carregar as mensagens. Tente novamente mais tarde.');
       console.error(err);
     } finally {
       setIsLoading(false);
     }
-  }, []); // A função em si nunca muda
+  }, []);
 
-  // 3. O useEffect agora só chama a função quando o componente carrega
   useEffect(() => {
     fetchMessages();
-  }, [fetchMessages]); // Depende da função que criamos
+  }, [fetchMessages]);
 
   const handleDelete = async (messageId) => {
     if (!window.confirm('Tem certeza que deseja deletar esta mensagem permanentemente?')) {
@@ -39,7 +35,6 @@ const AdminMessagesPage = () => {
     }
     try {
       await api.delete(`/admin/messages/${messageId}`);
-      // 4. EM VEZ DE SÓ REMOVER LOCALMENTE, BUSCAMOS A LISTA ATUALIZADA DO SERVIDOR
       fetchMessages(); 
     } catch (err) {
       alert('Falha ao deletar a mensagem.');
@@ -58,8 +53,6 @@ const AdminMessagesPage = () => {
       await api.post(`/admin/messages/${replyingMessage.id}/reply`, { replyText });
       alert('Resposta enviada com sucesso!');
       
-      // 5. APÓS ENVIAR, TAMBÉM BUSCAMOS A LISTA ATUALIZADA
-      // (Isso vai mostrar a mensagem como "lida" automaticamente)
       fetchMessages();
 
       setReplyingMessage(null);
@@ -72,8 +65,6 @@ const AdminMessagesPage = () => {
       setIsSending(false);
     }
   };
-
-  // ... (o resto do seu componente com os 'if' e o JSX continua igual) ...
 
   if (isLoading) {
     return <div className="admin-container"><p>Carregando mensagens...</p></div>;

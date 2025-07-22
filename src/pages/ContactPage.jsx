@@ -1,14 +1,11 @@
-// src/pages/ContactPage.jsx
-
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
-import './ContactPage.css'; // Criaremos este arquivo a seguir
+import './ContactPage.css'; 
 
 const ContactPage = () => {
   const { user, signed } = useAuth();
 
-  // Se o usuário está logado, usamos os dados dele. Senão, campos vazios.
   const [formData, setFormData] = useState({
     name: signed ? user.name : '',
     email: signed ? user.email : '',
@@ -37,8 +34,6 @@ const ContactPage = () => {
         type: 'success' 
       });
       
-      // --- AQUI ESTÁ A CORREÇÃO FINAL E MAIS SIMPLES ---
-      // Resetamos o formulário para um estado completamente em branco.
       setFormData({
         name: '',
         email: '',
@@ -72,7 +67,7 @@ const ContactPage = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                disabled={signed} // Desabilita o campo se o usuário estiver logado
+                disabled={signed}
               />
             </div>
             <div className="form-group">

@@ -1,5 +1,3 @@
-// src/data/mockData.js
-
 import lordOfTheRingsCover from '../assets/lordoftherings.jpg';
 import orwell1984Cover from '../assets/1984.jpg';
 import toKillAMockingbirdCover from '../assets/tosol.jpg';
@@ -18,7 +16,7 @@ import diarioDeAnneFrankCover from '../assets/diariodeannefrank.jpg';
 
 
 export const mockLivros = [
-  // --- MUDANÇA: Adicionamos a propriedade 'slug' em todos os livros ---
+
   { id: 1000000, title: 'O Senhor dos Anéis', author: 'J.R.R. Tolkien', category: 'Fantasia', coverUrl: lordOfTheRingsCover, isPlaceholder: true, slug: 'o-senhor-dos-aneis' },
   { id: 2000000, title: '1984', author: 'George Orwell', category: 'Ficção Científica', coverUrl: orwell1984Cover, isPlaceholder: true, slug: '1984' },
   { id: 3000000, title: 'O Sol é para Todos', author: 'Harper Lee', category: 'Clássicos', coverUrl: toKillAMockingbirdCover, isPlaceholder: true, slug: 'o-sol-e-para-todos' },

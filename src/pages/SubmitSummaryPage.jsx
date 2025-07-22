@@ -1,18 +1,13 @@
-// src/pages/SubmitSummaryPage.jsx
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import api from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
-import './SubmitSummaryPage.css'; // Importa o CSS que também será atualizado
+import './SubmitSummaryPage.css'; 
 
 const SubmitSummaryPage = () => {
   const { state } = useLocation();
   const { signed } = useAuth();
 
-  // --- ESTADOS ATUALIZADOS ---
-  // Guardamos o 'slug' e a 'cover_url' que vêm dos livros existentes.
-  // O 'slug' é a chave para sabermos se é uma criação ou uma atualização.
   const [slug, setSlug] = useState(state?.slug || null);
   const [existingCoverUrl, setExistingCoverUrl] = useState(state?.cover_url || null);
 
@@ -20,13 +15,12 @@ const SubmitSummaryPage = () => {
   const [author, setAuthor] = useState(state?.author || '');
   const [category, setCategory] = useState(state?.category || '');
   const [content, setContent] = useState('');
-  const [coverImage, setCoverImage] = useState(null); // Usado apenas para novos livros
+  const [coverImage, setCoverImage] = useState(null);
   const [mySummaries, setMySummaries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  // A variável 'isUpdating' nos ajuda a deixar o código mais legível e a controlar o formulário
   const isUpdating = !!slug;
 
   const fetchMySummaries = useCallback(async () => {
@@ -54,9 +48,7 @@ const SubmitSummaryPage = () => {
     setMessage('');
     setError('');
 
-    // --- LÓGICA DE ENVIO ATUALIZADA ---
     if (isUpdating) {
-      // --- LÓGICA PARA ATUALIZAR UM LIVRO EXISTENTE ---
       if (!content) {
         setError('Por favor, escreva o resumo.');
         return;
@@ -71,7 +63,6 @@ const SubmitSummaryPage = () => {
         setError(errorMessage);
       }
     } else {
-      // --- LÓGICA ORIGINAL PARA CRIAR UM NOVO LIVRO ---
       if (!title || !author || !category || !content || !coverImage) {
         setError('Por favor, preencha todos os campos e selecione uma imagem de capa.');
         return;
@@ -136,7 +127,6 @@ const SubmitSummaryPage = () => {
           <input type="text" placeholder="Categoria" value={category} onChange={e => setCategory(e.target.value)} required readOnly={isUpdating} />
           <textarea placeholder="Escreva seu resumo aqui..." value={content} onChange={e => setContent(e.target.value)} rows="8" required />
 
-          {/* --- RENDERIZAÇÃO CONDICIONAL DA CAPA --- */}
           {isUpdating ? (
             <div className="existing-cover-wrapper">
               <p>Capa do Livro:</p>

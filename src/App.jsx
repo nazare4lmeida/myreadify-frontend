@@ -1,12 +1,8 @@
-// Em src/App.jsx
-
 import { Routes, Route } from 'react-router-dom';
 
-// Componentes
 import Header from './components/Header';
 import Footer from './components/Footer';
 
-// Páginas
 import HomePage from './pages/HomePage';
 import CategoriesPage from './pages/CategoriesPage';
 import BookDetailPage from './pages/BookDetailPage';
@@ -21,7 +17,6 @@ import SubmitPromptPage from './pages/SubmitPromptPage';
 import ContactPage from './pages/ContactPage';
 import AdminMessagesPage from './pages/AdminMessagesPage';
 
-// Contexto e Rotas Protegidas
 import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
@@ -42,7 +37,6 @@ function App() {
             <Route path="/enviar-resumo" element={<SubmitSummaryPage />} />
             <Route path="/fale-conosco" element={<ContactPage />} />
             
-            {/* --- MUDANÇA: A rota agora espera um ':slug' em vez de ':id' --- */}
             <Route path="/proposta-resumo/:slug" element={<SubmitPromptPage />} />
 
             <Route 

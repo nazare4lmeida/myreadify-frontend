@@ -1,5 +1,3 @@
-// src/components/Header.jsx
-
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -67,19 +65,16 @@ const Header = () => {
                 </button>
                 {dropdownOpen && (
                   <div className="dropdown-content">
-                    {/* --- SEÇÃO DO ADMIN --- */}
                     {user?.role === 'ADMIN' && (
                       <>
                         <NavLink to="/admin/aprovacoes" onClick={() => setDropdownOpen(false)}>
                           <span className="dropdown-icon">✓</span> Aprovações
                         </NavLink>
-                        {/* --- NOVA LINHA ADICIONADA AQUI --- */}
                         <NavLink to="/admin/mensagens" onClick={() => setDropdownOpen(false)}>
                           <span className="dropdown-icon">✉️</span> Caixa de Entrada
                         </NavLink>
                       </>
                     )}
-                    {/* --- SEÇÃO DO USUÁRIO COMUM --- */}
                     <NavLink to="/meus-resumos" onClick={() => setDropdownOpen(false)}>
                       <span className="dropdown-icon">📖</span> Meus Resumos
                     </NavLink>

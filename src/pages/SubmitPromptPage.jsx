@@ -1,5 +1,3 @@
-// src/pages/SubmitPromptPage.jsx
-
 import React from 'react';
 import { useLocation, useNavigate, Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';

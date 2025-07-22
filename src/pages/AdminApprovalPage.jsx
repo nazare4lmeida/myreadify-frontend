@@ -1,5 +1,3 @@
-// src/pages/AdminApprovalPage.jsx
-
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import './AdminApprovalPage.css';
@@ -89,7 +87,6 @@ const AdminApprovalPage = () => {
                   <span className="item-id">(ID: {book.id})</span>
                 </div>
 
-                {/* --- MUDANÇA: Criamos um novo container para as ações --- */}
                 <div className="item-actions">
                   <span className={`item-status status-${book.status.toLowerCase()}`}>{book.status}</span>
                   <button 

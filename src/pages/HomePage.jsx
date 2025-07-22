@@ -51,7 +51,6 @@ const HomePage = () => {
     fetchLatestBooks();
   }, []);
 
-  // O useEffect do carrossel automático não precisa de mudanças.
   useEffect(() => {
     if (latestBooks.length > 0) {
       const timer = setInterval(() => {
@@ -84,8 +83,6 @@ const HomePage = () => {
                 {latestBooks.map((book, index) => (
                   <img
                     key={book.slug}
-                    // --- 3. CORREÇÃO DA FONTE DA IMAGEM ---
-                    // Usamos a propriedade 'coverUrl', que agora sempre estará presente.
                     src={book.coverUrl} 
                     alt={`Capa do livro ${book.title}`}
                     className={getSlideClass(index)}
@@ -97,7 +94,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Seção "Adicionados Recentemente" */}
       {loading ? (
         <p style={{ textAlign: 'center', padding: '2rem 0' }}>Carregando destaques...</p>
       ) : latestBooks.length > 0 && (
@@ -107,7 +103,6 @@ const HomePage = () => {
             <div className="book-carousel">
               {latestBooks.map(livro => (
                 <div className="carousel-item" key={livro.slug}>
-                  {/* O BookCard agora receberá o objeto correto e funcionará */}
                   <BookCard livro={livro} />
                 </div>
               ))}
@@ -116,7 +111,6 @@ const HomePage = () => {
         </section>
       )}
 
-      {/* O resto da página permanece igual */}
       <section className="how-it-works-section">
         <h2>Uma comunidade de leitores</h2>
         <div className="features-grid">

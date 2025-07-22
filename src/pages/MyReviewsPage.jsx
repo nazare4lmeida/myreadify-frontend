@@ -1,5 +1,3 @@
-// src/pages/MyReviewsPage.jsx
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
@@ -39,16 +37,14 @@ const MyReviewsPage = () => {
         <div className="my-reviews-container">
           {reviews.map(review => (
             <div key={review.id} className="my-review-card">
-              {/* Link atualizado para usar review.book.slug */}
               <Link to={`/livro/${review.book.slug}#review-${review.id}`}>
                 <img
-                  src={review.book.full_cover_url} // Assumindo que a API retorna a URL completa
+                  src={review.book.full_cover_url} 
                   alt={`Capa de ${review.book.title}`}
                   className="my-review-cover"
                 />
               </Link>
               <div className="my-review-details">
-                {/* Link atualizado para usar review.book.slug */}
                 <Link to={`/livro/${review.book.slug}#review-${review.id}`}>
                   <h3>{review.book.title}</h3>
                 </Link>
