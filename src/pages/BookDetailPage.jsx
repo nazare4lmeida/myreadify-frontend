@@ -29,11 +29,23 @@ const BookDetailPage = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
+        // Limpamos erros antigos ao buscar novamente
+        setError(null); 
+
+        // 1. Busca os dados principais do livro. Se isso falhar, a página inteira deve mostrar erro.
         const bookRes = await api.get(`/books/${slug}`);
         setBookData(bookRes.data);
 
+        // 2. Busca dados secundários (avaliações e status do usuário) em paralelo.
+        //    Essas chamadas não devem quebrar a página se falharem (ex: usuário não logado).
         const [reviewsRes, authRes] = await Promise.all([
-          api.get(`/books/${bookRes.data.id}/reviews`),
+          // <-- MUDANÇA PRINCIPAL AQUI -->
+          // Adicionamos um .catch() para a chamada de reviews.
+          // Se falhar (erro 401), ele retorna um objeto com 'data' sendo um array vazio.
+          // Isso evita que o Promise.all falhe e a página quebre.
+          api.get(`/books/${bookRes.data.id}/reviews`).catch(() => ({ data: [] })),
+          
+          // Esta parte já estava correta, tratando a falha de autenticação.
           api.get('/check-auth').catch(() => ({ data: { loggedIn: false } })),
         ]);
         
@@ -41,7 +53,9 @@ const BookDetailPage = () => {
         if (authRes.data.loggedIn) {
           setCurrentUser(authRes.data.user);
         }
+
       } catch (err) {
+        // Agora, este catch só será acionado se a busca principal do livro (`/books/${slug}`) falhar.
         setError('Livro não encontrado ou não disponível.');
       } finally {
         setIsLoading(false);
@@ -50,6 +64,8 @@ const BookDetailPage = () => {
     fetchData();
   }, [slug]);
 
+  // O restante do seu componente permanece EXATAMENTE o mesmo...
+  // ... (cole o restante do seu código original aqui, não há mais alterações)
   useEffect(() => {
     if (!isLoading && location.hash) {
       const elementId = location.hash.substring(1);
@@ -127,7 +143,6 @@ const BookDetailPage = () => {
         </div>
       </div>
 
-      {/* --- RESTAURADO: Seção de Avaliações --- */}
       <div className="reviews-section">
         <h3>Avaliações dos Leitores</h3>
         {reviews.length > 0 ? (
@@ -160,7 +175,6 @@ const BookDetailPage = () => {
         )}
       </div>
 
-      {/* --- RESTAURADO: Seção de Adicionar Avaliação --- */}
       <div className="add-review-section">
         {!currentUser && (
           <div className="login-prompt">
