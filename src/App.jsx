@@ -18,6 +18,8 @@ import RegisterPage from './pages/RegisterPage';
 import SubmitSummaryPage from './pages/SubmitSummaryPage';
 import AdminApprovalPage from './pages/AdminApprovalPage';
 import SubmitPromptPage from './pages/SubmitPromptPage';
+import ContactPage from './pages/ContactPage';
+import AdminMessagesPage from './pages/AdminMessagesPage';
 
 // Contexto e Rotas Protegidas
 import { AuthProvider } from './contexts/AuthContext';
@@ -38,6 +40,7 @@ function App() {
             <Route path="/minhas-avaliacoes" element={<MyReviewsPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/enviar-resumo" element={<SubmitSummaryPage />} />
+            <Route path="/fale-conosco" element={<ContactPage />} />
             
             {/* --- MUDANÇA: A rota agora espera um ':slug' em vez de ':id' --- */}
             <Route path="/proposta-resumo/:slug" element={<SubmitPromptPage />} />
@@ -47,6 +50,12 @@ function App() {
               element={
                   <AdminApprovalPage />
               } 
+            />
+            <Route
+              path="/admin/mensagens"
+              element={
+                <AdminMessagesPage />
+              }
             />
           </Routes>
         </div>

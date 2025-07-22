@@ -1,0 +1,173 @@
+/* src/pages/AdminMessagesPage.css */
+
+.admin-messages-page {
+  padding: 2rem;
+  background-color: var(--cor-fundo-secundario);
+  min-height: 90vh;
+}
+
+.admin-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.admin-title {
+  font-family: var(--fonte-titulo);
+  margin-bottom: 2rem;
+  color: var(--cor-texto-principal);
+}
+
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.message-card {
+  background-color: var(--cor-fundo);
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.message-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.message-card.unread {
+  background-color: #fcf8e3; /* Um fundo amarelo claro para mensagens não lidas */
+  border-left: 5px solid var(--cor-destaque);
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.message-info {
+  line-height: 1.6;
+}
+
+.message-date {
+  font-size: 0.9rem;
+  color: var(--cor-texto-secundario);
+  flex-shrink: 0;
+}
+
+.message-body p {
+  line-height: 1.7;
+  color: var(--cor-texto-principal);
+  white-space: pre-wrap; /* Preserva quebras de linha e espaços */
+}
+
+/* Estilos para os novos botões e modal */
+.message-actions {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.action-button {
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-button.reply {
+  background-color: var(--cor-destaque);
+  color: white;
+}
+.action-button.reply:hover {
+  background-color: #8a5a4b;
+}
+
+.action-button.delete {
+  background-color: #fceeee;
+  color: #d9534f;
+}
+.action-button.delete:hover {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Estilos do Modal de Resposta */
+.reply-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.reply-modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.reply-modal h3 {
+  margin-top: 0;
+  font-family: var(--fonte-titulo);
+}
+
+.reply-modal .original-subject {
+  font-style: italic;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.reply-modal textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.8rem;
+  font-family: var(--fonte-corpo);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.modal-actions button {
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-actions .btn-cancel {
+  background-color: #f0f0f0;
+  color: #333;
+}
+.modal-actions .btn-send {
+  background-color: var(--cor-destaque);
+  color: white;
+}

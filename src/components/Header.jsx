@@ -18,7 +18,6 @@ const Header = () => {
     navigate('/');
   };
 
-  // Efeito simplificado para fechar apenas o dropdown de perfil
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -42,19 +41,15 @@ const Header = () => {
 
         <nav className="main-nav">
           <div className="nav-links">
-            {/* Mantemos o link "Início" */}
             <div className="nav-item">
               <NavLink to="/">Início</NavLink>
             </div>
             <div className="nav-item">
               <NavLink to="/categorias">Categorias</NavLink>
             </div>
-            
-            {/* ALTERADO: Voltamos ao link simples de Enviar Resumo */}
             <div className="nav-item">
               <NavLink to="/enviar-resumo">Enviar Resumo</NavLink>
             </div>
-
             <div className="nav-item">
               <NavLink to="/sobre">Sobre</NavLink>
             </div>
@@ -72,11 +67,19 @@ const Header = () => {
                 </button>
                 {dropdownOpen && (
                   <div className="dropdown-content">
+                    {/* --- SEÇÃO DO ADMIN --- */}
                     {user?.role === 'ADMIN' && (
-                      <NavLink to="/admin/aprovacoes" onClick={() => setDropdownOpen(false)}>
-                        <span className="dropdown-icon">✓</span> Aprovações
-                      </NavLink>
+                      <>
+                        <NavLink to="/admin/aprovacoes" onClick={() => setDropdownOpen(false)}>
+                          <span className="dropdown-icon">✓</span> Aprovações
+                        </NavLink>
+                        {/* --- NOVA LINHA ADICIONADA AQUI --- */}
+                        <NavLink to="/admin/mensagens" onClick={() => setDropdownOpen(false)}>
+                          <span className="dropdown-icon">✉️</span> Caixa de Entrada
+                        </NavLink>
+                      </>
                     )}
+                    {/* --- SEÇÃO DO USUÁRIO COMUM --- */}
                     <NavLink to="/meus-resumos" onClick={() => setDropdownOpen(false)}>
                       <span className="dropdown-icon">📖</span> Meus Resumos
                     </NavLink>

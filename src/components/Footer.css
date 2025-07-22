@@ -1,10 +1,11 @@
+/* src/components/Footer.css */
+
 .app-footer {
   background-color: #1a1a1a;
   color: #a0a0a0;
-  /* Reduzimos o padding vertical drasticamente */
-  padding: 0.5rem 0.6rem 0; /* Espaço em cima, mas nenhum embaixo */
-  margin-top: auto; /* ESSENCIAL para o "sticky footer" funcionar */
-  flex-shrink: 0; /* Garante que o footer não encolha */
+  margin-top: auto;
+  flex-shrink: 0;
+  padding: 0rem 0rem 0; 
 }
 
 .footer-content {
@@ -12,8 +13,8 @@
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  gap: 1rem;
-  max-width: 1000px;
+  gap: 1.5rem; /* Espaço entre as colunas do footer */
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -24,68 +25,79 @@
 
 .footer-logo {
   font-family: var(--fonte-titulo);
-  font-size: 1.8rem; /* Um pouco menor */
+  font-size: 1.8rem;
   font-weight: 700;
   color: #ffffff;
   text-decoration: none;
-  margin-bottom: 0.25rem;
   display: inline-block;
 }
 
 .footer-tagline {
-  font-size: 0.95rem; /* Um pouco menor */
-  margin: 0 0 1rem 0;
+  font-size: 0.95rem;
+  color: #a0a0a0;
+  margin: 0.25rem 0 1rem 0; 
 }
 
 .footer-socials {
   display: flex;
   gap: 1rem;
+  align-items: center;
 }
 
 .footer-socials a {
   color: #a0a0a0;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+  line-height: 0;
 }
 
 .footer-socials a:hover {
   color: #ffffff;
+  transform: scale(1.1);
+}
+
+.footer-socials svg {
+  width: 24px; /* Tamanho padronizado */
+  height: 24px;
 }
 
 .footer-links-container {
   display: flex;
-  gap: 3rem; /* Espaço menor entre as colunas */
+  gap: 5rem; /* Espaço entre as colunas "Navegação" e "Sobre" */
   flex-wrap: wrap;
 }
 
 .footer-column {
   display: flex;
   flex-direction: column;
-  gap: 0.7rem; /* Espaço menor entre os links */
+  gap: 0.6rem; 
 }
 
 .footer-column h4 {
-  font-size: 0.8rem; /* Um pouco menor */
+  font-size: 0.9rem;
   font-weight: 600;
   color: #ffffff;
-  margin: 0 0 0.5rem 0;
+  margin-bottom: 0.5rem;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .footer-column a {
-  color: #808080;
+  color: #a0a0a0;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
 }
 
 .footer-column a:hover {
-  color: #2b8b82;
+  color: #ffffff;
 }
 
 .footer-copyright {
   text-align: center;
-  padding: 0.6rem;
-  margin-top: 1rem;
   border-top: 1px solid #333333;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #808080;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0;
 }
