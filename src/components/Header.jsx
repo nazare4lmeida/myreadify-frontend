@@ -18,6 +18,7 @@ const Header = () => {
     navigate('/');
   };
 
+  // Efeito simplificado para fechar apenas o dropdown de perfil
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -27,6 +28,7 @@ const Header = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownRef]);
+
 
   return (
     <header className="app-header">
@@ -40,20 +42,27 @@ const Header = () => {
 
         <nav className="main-nav">
           <div className="nav-links">
+            {/* Mantemos o link "Início" */}
+            <div className="nav-item">
+              <NavLink to="/">Início</NavLink>
+            </div>
             <div className="nav-item">
               <NavLink to="/categorias">Categorias</NavLink>
             </div>
+            
+            {/* ALTERADO: Voltamos ao link simples de Enviar Resumo */}
             <div className="nav-item">
               <NavLink to="/enviar-resumo">Enviar Resumo</NavLink>
             </div>
+
             <div className="nav-item">
               <NavLink to="/sobre">Sobre</NavLink>
             </div>
           </div>
 
-          {signed ? (
-            <div className="nav-profile" ref={dropdownRef}>
-              <div className="profile-menu">
+          <div className="nav-profile">
+            {signed ? (
+              <div className="profile-menu" ref={dropdownRef}>
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="profile-button"
@@ -61,24 +70,27 @@ const Header = () => {
                   <span className="profile-name">Olá, {user.name.split(' ')[0]}</span>
                   <span className={`arrow-down ${dropdownOpen ? 'open' : ''}`}>▼</span>
                 </button>
-{dropdownOpen && (
+                {dropdownOpen && (
                   <div className="dropdown-content">
-                    {/* SÓ MOSTRA SE O USUÁRIO FOR ADMIN */}
                     {user?.role === 'ADMIN' && (
-                      <NavLink to="/admin/aprovacoes" onClick={() => setDropdownOpen(false)}>Aprovações</NavLink>
+                      <NavLink to="/admin/aprovacoes" onClick={() => setDropdownOpen(false)}>
+                        <span className="dropdown-icon">✓</span> Aprovações
+                      </NavLink>
                     )}
-                    <NavLink to="/meus-resumos" onClick={() => setDropdownOpen(false)}>Meus Resumos</NavLink>
-                    <NavLink to="/minhas-avaliacoes" onClick={() => setDropdownOpen(false)}>Minhas Avaliações</NavLink>
+                    <NavLink to="/meus-resumos" onClick={() => setDropdownOpen(false)}>
+                      <span className="dropdown-icon">📖</span> Meus Resumos
+                    </NavLink>
+                    <NavLink to="/minhas-avaliacoes" onClick={() => setDropdownOpen(false)}>
+                      <span className="dropdown-icon">★</span> Minhas Avaliações
+                    </NavLink>
                     <button onClick={handleLogout} className="logout-button">Sair</button>
                   </div>
                 )}
               </div>
-            </div>
-          ) : (
-            <div className="nav-profile">
-              <NavLink to="/login" className="login-button">Login</NavLink>
-            </div>
-          )}
+            ) : (
+              <NavLink to="/login" className="login-button-outline">Login</NavLink>
+            )}
+          </div>
         </nav>
       </div>
     </header>
