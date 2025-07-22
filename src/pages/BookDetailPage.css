@@ -43,17 +43,14 @@
 .book-detail-info h3 {
   border-bottom: 1px solid #eee;
   padding-bottom: 0.5rem;
-  margin: 2rem 0 1rem 0; /* Mais espaço acima do título "Resumo" */
+  margin: 2rem 0 1rem 0;
 }
 
-/* NOVO estilo para o texto do resumo */
 .book-summary-text {
   font-size: 1.1rem;
   line-height: 1.8;
   white-space: pre-wrap;
-  }
-
-  /* Adicione este código ao final de src/pages/BookDetailPage.css */
+}
 
 .reviews-section {
   margin-top: 4rem;
@@ -94,7 +91,7 @@
 
 .review-rating {
   font-size: 1.7rem;
-  color: #ffc107; /* Cor de estrela (amarelo) */
+  color: #ffc107;
 }
 
 .review-comment {
@@ -104,22 +101,18 @@
   color: var(--cor-texto-secundario);
 }
 
-/* Container principal para a nova seção */
 .add-review-section {
-  margin-top: 4rem; /* Espaço acima da seção */
+  margin-top: 4rem;
   padding-top: 2rem;
-  border-top: 1px solid #eee; /* Linha separadora, igual à da seção de reviews */
+  border-top: 1px solid #eee;
 }
 
-/* Título da nova seção (Deixe sua avaliação) */
 .add-review-section h4 {
   font-family: var(--fonte-titulo);
   font-size: 1.8rem;
   margin-top: 0;
   margin-bottom: 2rem;
 }
-
-/* -- Estilos para o formulário quando o usuário está logado -- */
 
 .review-form .form-group {
   margin-bottom: 1.5rem;
@@ -137,23 +130,22 @@
   gap: 1rem; 
 }
 
-/* Estilo dos botões de estrela */
 .review-form .stars button {
   background: none;
   border: none;
   font-size: 2rem;
-  color: #ccc; /* Cor da estrela inativa */
+  color: #ccc;
   cursor: pointer;
   padding: 1;
   transition: color 0.2s, transform 0.2s;
 }
 
 .review-form .stars button:hover {
-  transform: scale(1.15); /* Efeito ao passar o mouse */
+  transform: scale(1.15);
 }
 
 .review-form .stars button.active {
-  color: #fabd05; /* Cor da estrela ativa (amarelo) */
+  color: #fabd05;
 }
 
 .review-form textarea {
@@ -167,9 +159,8 @@
   line-height: 1.6;
 }
 
-/* Botão de envio do formulário */
 .review-form button[type="submit"] {
-  background-color: var(--cor-destaque, #8a2be2); /* Adapte para a cor do seu site */
+  background-color: var(--cor-destaque, #8a2be2);
   color: white;
   padding: 0.8rem 1.5rem;
   border: none;
@@ -183,8 +174,6 @@
   background-color: #ccc;
   cursor: not-allowed;
 }
-
-/* -- Estilos para o aviso quando o usuário não está logado -- */
 
 .login-prompt {
   background-color: #fdfdfd;
@@ -205,7 +194,6 @@
   gap: 1rem;
 }
 
-/* Estilos para os botões de Login e Cadastro (adapte se já tiver um padrão) */
 .login-prompt .btn-login,
 .login-prompt .btn-register {
   padding: 0.8rem 1.5rem;
@@ -225,29 +213,26 @@
   border: 1px solid #ccc;
 }
 
-/* Mensagem de erro do formulário */
 .feedback-message.error {
-  color: #d9534f; /* Vermelho para erro */
+  color: #d9534f;
   margin-top: 1rem;
   font-weight: 500;
 }
 
 .login-prompt {
   display: flex;
-  flex-direction: column; /* Mantém os itens empilhados verticalmente */
-  justify-content: center; /* Centraliza verticalmente */
-  align-items: center;     /* Centraliza horizontalmente */
-  min-height: 150px;       /* Dá um pouco de altura para o centrado vertical ser visível */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
 }
 
-/* O novo container para os botões de ação do usuário */
 .user-review-actions {
   display: flex;
-  gap: 1rem; /* Espaço entre os botões */
-  margin-top: 1rem; /* Espaço entre o card da avaliação e os botões */
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
-/* Estilo base para os novos botões (Editar, Deletar, Cancelar) */
 .btn-user-action {
   padding: 0.6rem 1.2rem;
   border: none;
@@ -262,28 +247,67 @@
   opacity: 0.9;
 }
 
-/* Cor marrom para o botão de Editar */
 .btn-edit {
-  background-color: #7b5b4c; /* Um tom de marrom elegante */
+  background-color: #7b5b4c;
 }
 
-/* Cor vermelha para o botão de Deletar */
 .btn-delete {
-  background-color: #c94c4c; /* Um tom de vermelho suave */
+  background-color: #c94c4c;
 }
 
-/* Cor cinza para o botão de Cancelar (no modo de edição) */
 .btn-cancel {
   background-color: #a0a0a0;
 }
 
 .review-wrapper.highlighted .review-card {
   transition: box-shadow 0.5s ease-in-out;
-  /* Cria uma sombra marrom suave para destacar a avaliação */
   box-shadow: 0 0 0 3px rgba(123, 91, 76, 0.4); 
 }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- ADIÇÕES NECESSÁRIAS AQUI --- */
+
+/* 1. Estilo para o container que aparece quando não há resumo */
+.summary-prompt {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background-color: #fdfcfa;
+  border: 1px solid #f0e9e6;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.summary-prompt p {
+  margin: 0 0 1rem 0;
+  color: var(--cor-texto-secundario);
+}
+
+/* 2. Estilo para o botão "Seja o primeiro a enviar", para que ele use seu design */
+.btn-submit-summary {
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: var(--cor-destaque);
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn-submit-summary:hover {
+  background-color: #6b3e2d; /* Use uma cor de hover consistente com seu design */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 3. Estilo para os links de login/cadastro no prompt de resumo */
+.summary-prompt a {
+  color: var(--cor-destaque);
+  font-weight: 600;
+  text-decoration: underline;
 }

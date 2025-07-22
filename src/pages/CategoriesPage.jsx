@@ -1,42 +1,67 @@
+// src/pages/CategoriesPage.jsx
+
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import { mockLivros } from '../data/mockData'; //placeholder
+import { mockLivros } from '../data/mockData';
 import BookCard from '../components/BookCard';
 import './CategoriesPage.css';
 
 const CategoriesPage = () => {
-  const [allBooks, setAllBooks] = useState(mockLivros); // Começa com os placeholders
+  const [allBooks, setAllBooks] = useState(mockLivros);
   const [selectedCategory, setSelectedCategory] = useState('Todos');
 
-  useEffect(() => {
-    // Busca os livros "reais" que já foram enviados e aprovados
+   useEffect(() => {
     api.get('/books')
       .then(response => {
-        const apiBooks = response.data.books;
+        if (!response.data || !Array.isArray(response.data.books)) {
+          console.error("Resposta da API inválida.");
+          return;
+        }
         
-        // --- LÓGICA DE COMBINAÇÃO INTELIGENTE ---
+        const apiBooks = response.data.books;
 
-        // 1. Cria um "Set" (conjunto) com os slugs de todos os livros que vieram da API.
-        const apiBookSlugs = new Set(apiBooks.map(book => book.slug));
+        // --- LÓGICA DE COMBINAÇÃO CORRIGIDA E FINAL ---
 
-        // 2. Filtra a sua lista de mockLivros.
-        // Mantém apenas os livros do mock cujo slug NÃO EXISTE na lista da API.
-        const filteredMockBooks = mockLivros.filter(
-          mockBook => !apiBookSlugs.has(mockBook.slug)
-        );
+        // 1. Cria um mapa dos livros da API para busca rápida.
+        const apiBooksMap = new Map(apiBooks.map(book => [book.slug, book]));
+        // 2. Cria um mapa dos livros do MOCK para busca rápida.
+        const mockBooksMap = new Map(mockLivros.map(book => [book.slug, book]));
 
-        // 3. Combina a lista de mocks filtrada com a lista completa de livros da API.
-        const finalBookList = [...filteredMockBooks, ...apiBooks];
+        // 3. Pega todos os slugs únicos de ambas as fontes.
+        const allSlugs = new Set([...apiBooksMap.keys(), ...mockBooksMap.keys()]);
 
-        // Atualiza o estado da página com a lista final e correta.
+        // 4. Constrói a lista final a partir dos slugs únicos.
+        const finalBookList = Array.from(allSlugs).map(slug => {
+          const apiVersion = apiBooksMap.get(slug);
+          const mockVersion = mockBooksMap.get(slug);
+
+          if (apiVersion && mockVersion) {
+            // Se o livro existe nos dois lugares: funde os dados.
+            // A 'coverUrl' do mock tem prioridade.
+            return {
+              ...mockVersion,
+              ...apiVersion,
+              isPlaceholder: !apiVersion.summary,
+            };
+          }
+          if (apiVersion) {
+            // Se o livro só existe na API (criado do zero): retorna a versão da API.
+            // O BookCard saberá como construir a URL da capa a partir do 'cover_url'.
+            return apiVersion;
+          }
+          // Se o livro só existe no mock: retorna a versão do mock.
+          return mockVersion;
+        });
+
         setAllBooks(finalBookList);
       })
       .catch(err => {
         console.error("Erro ao buscar livros da API:", err);
-        // Se a API falhar, a página continua funcionando apenas com os mocks.
+        setAllBooks(mockLivros);
       });
-  }, []); // O array vazio [] garante que isso só rode uma vez, quando a página carrega.
+  }, []);
 
+  // O resto do seu componente permanece exatamente igual.
   const allCategories = ['Todos', ...new Set(allBooks.map(book => book.category))];
   
   const filteredBooks = selectedCategory === 'Todos'
@@ -60,8 +85,9 @@ const CategoriesPage = () => {
         </div>
       </div>
       <div className="book-list">
+        {/* Agora, o BookCard receberá o objeto correto, com a capa sempre presente. */}
         {filteredBooks.map(livro => (
-          <BookCard key={livro.id} livro={livro} />
+          <BookCard key={livro.slug} livro={livro} />
         ))}
       </div>
     </div>

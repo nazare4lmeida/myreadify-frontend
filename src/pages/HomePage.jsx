@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
+import { mockLivros } from '../data/mockData'; // --- 1. Importamos os mocks ---
 import BookCard from '../components/BookCard';
 import './HomePage.css';
 
@@ -15,8 +16,31 @@ const HomePage = () => {
     const fetchLatestBooks = async () => {
       try {
         const response = await api.get('/books?page=1&limit=8');
+        
         if (response.data && Array.isArray(response.data.books)) {
-          setLatestBooks(response.data.books);
+          const apiBooks = response.data.books;
+
+          // --- LÓGICA DE COMBINAÇÃO CORRIGIDA E FINAL ---
+          const mockBooksMap = new Map(mockLivros.map(book => [book.slug, book]));
+
+          const finalBookList = apiBooks
+            .map(apiBook => {
+              const mockVersion = mockBooksMap.get(apiBook.slug);
+              
+              if (mockVersion) {
+                // Se o livro da API também está no mock, funde os dados.
+                return {
+                  ...mockVersion,
+                  ...apiBook,
+                  isPlaceholder: !apiBook.summary,
+                };
+              }
+              // Se o livro da API foi criado do zero e não está no mock, retorna ele como está.
+              return apiBook;
+            })
+            .filter(book => book !== null);
+
+          setLatestBooks(finalBookList);
         }
       } catch (error) {
         console.error("Erro ao buscar os destaques:", error);
@@ -27,6 +51,7 @@ const HomePage = () => {
     fetchLatestBooks();
   }, []);
 
+  // O useEffect do carrossel automático não precisa de mudanças.
   useEffect(() => {
     if (latestBooks.length > 0) {
       const timer = setInterval(() => {
@@ -36,15 +61,12 @@ const HomePage = () => {
     }
   }, [latestBooks]);
 
-  // --- NOVA FUNÇÃO: Determina a classe de cada slide (ativo, anterior, próximo) ---
   const getSlideClass = (index) => {
     const total = latestBooks.length;
     if (index === currentSlide) return 'active';
-    // Lógica para pegar o slide anterior, fazendo a volta no array
     if (index === (currentSlide - 1 + total) % total) return 'prev';
-    // Lógica para pegar o próximo slide, fazendo a volta no array
     if (index === (currentSlide + 1) % total) return 'next';
-    return ''; // Outros slides ficam escondidos
+    return '';
   };
 
   return (
@@ -62,9 +84,10 @@ const HomePage = () => {
                 {latestBooks.map((book, index) => (
                   <img
                     key={book.slug}
-                    src={book.full_cover_url}
+                    // --- 3. CORREÇÃO DA FONTE DA IMAGEM ---
+                    // Usamos a propriedade 'coverUrl', que agora sempre estará presente.
+                    src={book.coverUrl} 
                     alt={`Capa do livro ${book.title}`}
-                    // A nova função é chamada aqui para aplicar as classes corretas
                     className={getSlideClass(index)}
                   />
                 ))}
@@ -74,25 +97,26 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* --- O resto do componente continua igual --- */}
-{loading ? (
-  <p style={{ textAlign: 'center', padding: '2rem 0' }}>Carregando destaques...</p>
-) : latestBooks.length > 0 && (
-  <section className="featured-section">
-    {/* NOVO: Div interna para controlar a largura do conteúdo */}
-    <div className="featured-section-container"> 
-      <h2>Adicionados Recentemente:</h2>
-      <div className="book-carousel">
-        {latestBooks.map(livro => (
-          <div className="carousel-item" key={livro.slug}>
-            <BookCard livro={livro} />
+      {/* Seção "Adicionados Recentemente" */}
+      {loading ? (
+        <p style={{ textAlign: 'center', padding: '2rem 0' }}>Carregando destaques...</p>
+      ) : latestBooks.length > 0 && (
+        <section className="featured-section">
+          <div className="featured-section-container"> 
+            <h2>Adicionados Recentemente</h2>
+            <div className="book-carousel">
+              {latestBooks.map(livro => (
+                <div className="carousel-item" key={livro.slug}>
+                  {/* O BookCard agora receberá o objeto correto e funcionará */}
+                  <BookCard livro={livro} />
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
-      </div>
-    </div>
-  </section>
-)}
+        </section>
+      )}
 
+      {/* O resto da página permanece igual */}
       <section className="how-it-works-section">
         <h2>Uma comunidade de leitores</h2>
         <div className="features-grid">
@@ -101,7 +125,6 @@ const HomePage = () => {
           <div className="feature-card"><h3>Avalie</h3><p>Dê sua opinião, deixe comentários e ajude outros leitores a escolherem suas próximas jornadas.</p></div>
         </div>
       </section>
-
       <section className="final-cta-section">
         <h2>Pronto para começar sua jornada?</h2>
         <p>Crie sua conta e comece a construir sua estante digital hoje mesmo.</p>
