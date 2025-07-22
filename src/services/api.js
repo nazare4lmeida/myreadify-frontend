@@ -2,7 +2,9 @@
 
 import axios from 'axios';
 
-const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3333';
+const backendUrl = 'https://myreadify-backend.vercel.app';
+
+const apiUrl = import.meta.env.PROD ? backendUrl : 'http://localhost:3333';
 
 const api = axios.create({
   baseURL: apiUrl
