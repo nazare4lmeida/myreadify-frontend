@@ -2,8 +2,10 @@
 
 import axios from 'axios';
 
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3333';
+
 const api = axios.create({
-  baseURL: 'http://localhost:3333/api',
+  baseURL: apiUrl
 });
 
 // Interceptor que insere o token JWT no cabeçalho Authorization
