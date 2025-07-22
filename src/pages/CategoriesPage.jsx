@@ -1,8 +1,6 @@
-// src/pages/CategoriesPage.jsx
-
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import { mockLivros } from '../data/mockData'; // Seus livros placeholder
+import { mockLivros } from '../data/mockData'; //placeholder
 import BookCard from '../components/BookCard';
 import './CategoriesPage.css';
 
@@ -14,17 +12,15 @@ const CategoriesPage = () => {
     // Busca os livros "reais" que já foram enviados e aprovados
     api.get('/books')
       .then(response => {
-        const apiBooks = response.data;
+        const apiBooks = response.data.books;
         
         // --- LÓGICA DE COMBINAÇÃO INTELIGENTE ---
 
         // 1. Cria um "Set" (conjunto) com os slugs de todos os livros que vieram da API.
-        // Um Set é super rápido para fazer buscas do tipo "contém ou não contém".
         const apiBookSlugs = new Set(apiBooks.map(book => book.slug));
 
         // 2. Filtra a sua lista de mockLivros.
         // Mantém apenas os livros do mock cujo slug NÃO EXISTE na lista da API.
-        // Isso efetivamente remove os placeholders que já foram "preenchidos".
         const filteredMockBooks = mockLivros.filter(
           mockBook => !apiBookSlugs.has(mockBook.slug)
         );

@@ -8,7 +8,7 @@ const api = axios.create({
 
 // Interceptor que insere o token JWT no cabeçalho Authorization
 api.interceptors.request.use((config) => {
-  // --- MUDANÇA ESSENCIAL AQUI ---
+
   // A chave usada para buscar o token agora é a mesma usada no seu AuthContext.
   const token = localStorage.getItem('@MyReadify:token');
 

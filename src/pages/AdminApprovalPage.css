@@ -120,9 +120,6 @@
   flex-shrink: 0;
 }
 
-
-/* --- A CORREÇÃO ESTÁ AQUI --- */
-
 /* Novo container da direita (status, botão) */
 .item-actions {
   display: flex;
@@ -131,7 +128,6 @@
   flex-shrink: 0; /* Impede que o container encolha */
 }
 
-/* Estilos individuais (tag e botão) continuam os mesmos */
 .item-status {
   font-size: 0.75rem;
   font-weight: 700;
@@ -141,7 +137,7 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-.status-pending { background-color: #EAB308; color: #422006; }
+.status-pending { background-color: #DB7093; color: #f0ebe8; }
 .status-approved { background-color: #0d9488; }
 .status-rejected { background-color: #94a3b8; }
 

@@ -36,7 +36,6 @@ const Footer = () => {
             {signed && (
               <>
                 <Link to="/enviar-resumo">Enviar um Resumo</Link>
-                <Link to="/meus-downloads">Meus Downloads</Link>
               </>
             )}
           </div>
