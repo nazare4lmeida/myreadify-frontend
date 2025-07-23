@@ -1,0 +1,56 @@
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    padding: 0;
+    margin: 0;
+  }
+
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  header nav,
+  .menu,
+  .navbar,
+  .nav-links,
+  .header-nav,
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .button,
+  .btn,
+  button {
+    width: 100%;
+  }
+
+  .footer,
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .container,
+  .content,
+  .main,
+  .form,
+  .card,
+  .section,
+  .page {
+    width: 100% !important;
+    padding: 0.5rem;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .nav-item {
+    display: block;
+    width: 100%;
+  }
+}

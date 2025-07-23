@@ -106,69 +106,45 @@
 /* === Responsividade básica para telas menores === */
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
-    padding: 1rem !important;
+    padding: 1rem;
   }
 
   .book-detail-content, .prompt-card, .form-section, .my-summaries-section {
-    flex-direction: column !important;
-    gap: 1.5rem !important;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
   .book-detail-cover, .login-container, .register-container {
-    width: 100% !important;
-    max-width: 100% !important;
+    width: 100%;
+    max-width: 100%;
   }
 
   .footer-content, .header-content {
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 }
 
 
 @media (max-width: 768px) {
-  .hero-section {
-    padding: 2rem 1rem;
-    min-height: auto;
-    flex-direction: column;
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
   }
-
-  .hero-content {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  body {
+    overflow-x: hidden;
+    padding: 0 1rem;
   }
-
-  .hero-text {
-    padding: 0;
-    text-align: center;
-  }
-
-  .hero-title {
-    font-size: 2rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1rem;
-  }
-
-  .book-card,
-  .admin-message,
-  .review-item,
-  .summary-card {
-    flex-direction: column;
-    padding: 1rem;
-  }
-
-  .book-cover {
-    width: 100%;
-    height: auto;
-  }
-
-  .nav-links,
-  .footer-links {
-    flex-direction: column;
-    text-align: center;
+  .container,
+  .content,
+  .main,
+  .card,
+  .form,
+  .section,
+  .page {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0.5rem !important;
   }
 }
