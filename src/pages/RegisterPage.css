@@ -2,24 +2,29 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 70vh;
+  min-height: 100vh;
   padding: 2rem;
+  background-color: #fdfaf7;
 }
 
 .register-container {
   background-color: #fff;
-    padding: 1rem 7rem;   border-radius: 8px;
+  padding: 2rem;
+  border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 500px;
   text-align: center;
 }
 
-.register-container h2 {
+.title-no-break {
   font-family: var(--fonte-titulo);
   color: var(--cor-destaque);
   margin-bottom: 2rem;
-  font-size: 2.4rem;
+  font-size: 2.2rem;
+  white-space: nowrap; /* Impede quebra de linha */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .input-group {
@@ -49,19 +54,25 @@
   align-items: center;
 }
 
+.password-wrapper input {
+  flex: 1;
+}
+
 .toggle-password {
   position: absolute;
   right: 10px;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.2rem;
   padding: 6px;
+  color: var(--cor-texto-secundario);
 }
 
 .error-message {
-  color:crimson;
+  color: crimson;
   margin-bottom: 1rem;
+  font-size: 0.95rem;
 }
 
 .register-button-submit {
@@ -85,6 +96,7 @@
 .login-link {
   margin-top: 1.5rem;
   color: var(--cor-texto-secundario);
+  font-size: 0.95rem;
 }
 
 .login-link a {
@@ -94,48 +106,31 @@
   text-decoration: underline;
 }
 
-
 @media (max-width: 768px) {
-  .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
-    padding: 1rem;
+  .register-container {
+    padding: 1.5rem;
   }
 
-  .book-detail-content, .prompt-card, .form-section, .my-summaries-section {
-    flex-direction: column;
-    gap: 1.5rem;
+  .title-no-break {
+    font-size: 1.8rem;
   }
 
-  .book-detail-cover, .login-container, .register-container {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .footer-content, .header-content {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
+.password-wrapper input {
+  padding-right: 2rem; /* espaço para o ícone */
 }
 
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+}
 
-@media (max-width: 768px) {
-  * {
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-  body {
-    overflow-x: hidden;
-    padding: 0 1rem;
-  }
-  .container,
-  .content,
-  .main,
-  .card,
-  .form,
-  .section,
-  .page {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0.5rem !important;
-  }
 }
