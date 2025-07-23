@@ -1,9 +1,5 @@
-/* Em src/pages/AboutPage.css */
 .about-page {
-  max-width: 800px; /* Limita a largura do conteúdo para melhor legibilidade */
-  margin: 0 auto; /* Centraliza o container */
-  animation: fadeIn 0.5s ease-in-out; /* Reutiliza nossa animação de fade */
-}
+  max-width: 800px;   margin: 0 auto;   animation: fadeIn 0.5s ease-in-out; }
 
 .about-header {
   text-align: center;
@@ -24,13 +20,11 @@
 
 .about-content p {
   font-size: 1.1rem;
-  line-height: 1.8; /* Espaçamento entre linhas generoso */
-  margin-bottom: 1.5rem;
+  line-height: 1.8;   margin-bottom: 1.5rem;
 }
 
 .about-content ul {
-  list-style-type: '📖 '; /* Um emoji de livro como marcador! */
-  padding-left: 2rem;
+  list-style-type: '📖 ';   padding-left: 2rem;
 }
 
 .about-content li {
@@ -45,7 +39,6 @@
 }
 
 
-/* === Responsividade básica para telas menores === */
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
     padding: 1rem;

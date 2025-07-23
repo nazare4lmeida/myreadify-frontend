@@ -1,4 +1,3 @@
-/* src/pages/SubmitPromptPage.css */
 
 .submit-prompt-page {
   display: flex;
@@ -68,7 +67,6 @@
 }
 
 
-/* === Responsividade básica para telas menores === */
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
     padding: 1rem;

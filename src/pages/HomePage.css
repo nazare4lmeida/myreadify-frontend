@@ -1,41 +1,26 @@
-/* src/pages/HomePage.css */
 
 .home-page {
   width: 100%;
 }
 
-/* --- 1. Estilos da Seção Herói ATUALIZADA --- */
-/* (Aqui estão as mudanças de layout, mantendo suas cores e fontes) */
 .hero-section {
   width: 100%;
-  padding: 0 0 0rem 2rem; /* Aumenta o padding lateral */
-  background-color: #FAF9F7;
-  display: flex; /* Habilita flexbox para o layout dividido */
-  align-items: center; /* Alinha os itens verticalmente */
-  justify-content: center; /* Centraliza o conteúdo */
-  min-height: 60vh; /* Altura mínima para ocupar boa parte da tela */
-}
+  padding: 0 0 0rem 2rem;   background-color: #FAF9F7;
+  display: flex;   align-items: center;   justify-content: center;   min-height: 60vh; }
 
-/* Novo container para o conteúdo da Hero */
 .hero-content {
   display: flex;
   align-items: center;
   max-width: 1200px;
   width: 100%;
-  gap: 2rem; /* Espaço entre o texto e o carrossel */
-}
+  gap: 2rem; }
 
-/* Container para a parte do texto */
 .hero-text {
-  flex: 1; /* Ocupa o espaço disponível */
-  text-align: left; /* Alinha o texto à esquerda */
-  padding-right: 2rem;
+  flex: 1;   text-align: left;   padding-right: 2rem;
 }
 
 .hero-title {
-  font-family: 'Lora', serif; /* SUA FONTE */
-  font-size: 3.5rem; /* Título um pouco maior */
-  color: #333;
+  font-family: 'Lora', serif;   font-size: 3.5rem;   color: #333;
   margin-bottom: 1rem;
   line-height: 1.2;
 }
@@ -44,40 +29,30 @@
   font-size: 1.2rem;
   color: #555;
   max-width: 600px;
-  margin-bottom: 2.5rem; /* Mais espaço antes do botão */
-}
+  margin-bottom: 2.5rem; }
 
 .hero-cta-button {
-  background-color: #975238; /* SUA COR */
-  color: #fff;
-  padding: 14px 28px; /* Padding atualizado */
-  border-radius: 8px;
+  background-color: #975238;   color: #fff;
+  padding: 14px 28px;   border-radius: 8px;
   text-decoration: none;
   font-weight: bold;
   font-size: 1rem;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  display: inline-block; /* Garante que o botão respeite o padding */
-}
+  display: inline-block; }
 
 .hero-cta-button:hover {
-  background-color: #a55f45; /* SUA COR DE HOVER */
-  transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Efeito de sombra adicionado */
-}
+  background-color: #a55f45;   transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-/* --- Estilos do NOVO Carrossel da Hero --- */
 .hero-carousel-container {
-  flex: 1; /* Ocupa o espaço disponível */
-  display: flex;
+  flex: 1;   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .hero-carousel {
-  position: relative; /* Base para o posicionamento das imagens */
-  width: 300px;
-  height: 450px; /* Proporção de capa de livro */
-}
+  position: relative;   width: 300px;
+  height: 450px; }
 
 .hero-carousel img {
   position: absolute;
@@ -89,8 +64,7 @@
   border-radius: 10px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   
-  /* Lógica da animação de fade */
-  opacity: 0;
+    opacity: 0;
   transform: scale(0.95);
   transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
 }
@@ -101,30 +75,18 @@
   z-index: 10;
 }
 
-/* --- (O RESTO DO SEU CSS PERMANECE IGUAL) --- */
 
-/* --- 2. Estilos da Seção de Destaques --- */
 .featured-section {
-  width: 100%; /* Garante que a seção ocupe a largura total */
-  background-color: #FAF9F7; /* A cor de fundo que você queria */
-  /* Padding vertical reduzido para diminuir o espaço vazio */
-  padding: 3rem 0; 
+  width: 100%;   background-color: #FAF9F7;     padding: 3rem 0; 
 }
 
-/* NOVO: Regra para o container que centraliza o conteúdo */
 .featured-section-container {
-  max-width: 1200px; /* Largura máxima do seu layout */
-  margin: 0 auto; /* Centraliza o container */
-  padding: 0 2rem; /* Espaçamento lateral para telas menores */
-}
+  max-width: 1200px;   margin: 0 auto;   padding: 0 2rem; }
 
-/* Regra do título SIMPLIFICADA */
 .featured-section h2,
 .how-it-works-section h2,
 .final-cta-section h2 {
-  /* As propriedades de largura e margem que estavam aqui foram movidas
-     para o container acima, resolvendo o problema da "caixa". */
-  text-align: center;
+    text-align: center;
   font-family: 'Lora', serif;
   font-size: 2.2rem;
   margin-bottom: 2.5rem;
@@ -159,7 +121,6 @@
   margin-right: 1.5rem;
 }
 
-/* --- 3. Estilos da Seção "Como Funciona" --- */
 .how-it-works-section {
   background-color: #FAF9F7;
   padding: 4rem 1.5rem;
@@ -183,12 +144,9 @@
 }
 
 .feature-card h3 {
-  font-family: 'Lora', serif; /* SUA FONTE */
-  margin-bottom: 1rem;
-  color: #975238; /* SUA COR */
-}
+  font-family: 'Lora', serif;   margin-bottom: 1rem;
+  color: #975238; }
 
-/* --- 4. Estilos da Seção de CTA Final --- */
 .final-cta-section {
   padding: 4rem 1.5rem;
   text-align: center;
@@ -201,16 +159,12 @@
 
 .final-cta-section .secondary {
   background-color: transparent;
-  color: #975238; /* SUA COR */
-  border: 2px solid #975238; /* SUA COR */
-}
+  color: #975238;   border: 2px solid #975238; }
 .final-cta-section .secondary:hover {
-  background-color: #975238; /* SUA COR */
-  color: #fff;
+  background-color: #975238;   color: #fff;
 }
 
 
-/* === Responsividade básica para telas menores === */
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
     padding: 1rem;

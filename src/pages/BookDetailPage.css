@@ -1,4 +1,3 @@
-/* Em src/pages/BookDetailPage.css */
 .book-detail-page {
   animation: fadeIn 0.5s ease-in-out;
 }
@@ -269,9 +268,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- ADIÇÕES NECESSÁRIAS AQUI --- */
 
-/* 1. Estilo para o container que aparece quando não há resumo */
 .summary-prompt {
   margin-top: 1rem;
   padding: 1.5rem;
@@ -286,7 +283,6 @@
   color: var(--cor-texto-secundario);
 }
 
-/* 2. Estilo para o botão "Seja o primeiro a enviar", para que ele use seu design */
 .btn-submit-summary {
   padding: 0.8rem 1.5rem;
   border-radius: 8px;
@@ -300,12 +296,10 @@
 }
 
 .btn-submit-summary:hover {
-  background-color: #6b3e2d; /* Use uma cor de hover consistente com seu design */
-  transform: translateY(-2px);
+  background-color: #6b3e2d;   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 3. Estilo para os links de login/cadastro no prompt de resumo */
 .summary-prompt a {
   color: var(--cor-destaque);
   font-weight: 600;
@@ -313,7 +307,6 @@
 }
 
 
-/* === Responsividade básica para telas menores === */
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
     padding: 1rem;

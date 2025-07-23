@@ -6,12 +6,9 @@
   padding: 2rem;
 }
 
-/* A MUDANÇA PRINCIPAL ESTÁ AQUI */
 .register-container {
   background-color: #fff;
-  /* Padding vertical generoso, mas o horizontal é menor para dar mais espaço aos inputs */
-  padding: 1rem 7rem; /* <<< Note o padding horizontal (ex: 4rem) */
-  border-radius: 8px;
+    padding: 1rem 7rem;   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 500px;
@@ -98,7 +95,6 @@
 }
 
 
-/* === Responsividade básica para telas menores === */
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
     padding: 1rem;

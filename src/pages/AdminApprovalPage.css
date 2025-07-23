@@ -1,4 +1,3 @@
-/* src/pages/AdminApprovalPage.css (Versão Final com Alinhamento Corrigido) */
 
 .admin-approval-page {
   animation: fadeIn 0.5s ease-in-out;
@@ -15,7 +14,6 @@
   padding: 1rem 0;
 }
 
-/* --- Seção de Pendentes --- */
 .pending-list, .approval-actions {
   display: flex;
 }
@@ -64,7 +62,6 @@
   background-color: #94a3b8;
 }
 
-/* --- Linha Divisória --- */
 .section-divider {
   border: 0;
   height: 1px;
@@ -73,7 +70,6 @@
   margin: 5rem auto;
 }
 
-/* --- Seção de Gerenciamento --- */
 .management-list {
   list-style-type: none;
   padding: 0;
@@ -82,7 +78,6 @@
   gap: 0.75rem;
 }
 
-/* Container de cada item */
 .management-item {
   display: flex;
   justify-content: space-between;
@@ -98,7 +93,6 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-/* Container da esquerda (título, id) */
 .item-info {
   display: flex;
   align-items: center;
@@ -120,13 +114,10 @@
   flex-shrink: 0;
 }
 
-/* Novo container da direita (status, botão) */
 .item-actions {
   display: flex;
   align-items: center;
-  gap: 1rem; /* Espaço entre a tag de status e o botão */
-  flex-shrink: 0; /* Impede que o container encolha */
-}
+  gap: 1rem;   flex-shrink: 0; }
 
 .item-status {
   font-size: 0.75rem;
@@ -156,7 +147,6 @@
 }
 
 
-/* === Responsividade básica para telas menores === */
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
     padding: 1rem;

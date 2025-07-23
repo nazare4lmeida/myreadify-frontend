@@ -1,4 +1,3 @@
-/* src/components/Footer.css */
 
 .app-footer {
   background-color: #1a1a1a;
@@ -13,8 +12,7 @@
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  gap: 1.5rem; /* Espaço entre as colunas do footer */
-  max-width: 1200px;
+  gap: 1.5rem;   max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -57,14 +55,12 @@
 }
 
 .footer-socials svg {
-  width: 24px; /* Tamanho padronizado */
-  height: 24px;
+  width: 24px;   height: 24px;
 }
 
 .footer-links-container {
   display: flex;
-  gap: 5rem; /* Espaço entre as colunas "Navegação" e "Sobre" */
-  flex-wrap: wrap;
+  gap: 5rem;   flex-wrap: wrap;
 }
 
 .footer-column {
@@ -103,7 +99,6 @@
 }
 
 
-/* === Responsividade básica para telas menores === */
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
     padding: 1rem;

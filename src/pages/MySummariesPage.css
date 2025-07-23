@@ -1,11 +1,8 @@
-/* src/pages/MySummariesPage.css */
 
 .my-summaries-page {
   max-width: 900px;
-  margin: 40px auto; /* Adiciona mais espaço no topo e na base */
-  padding: 2rem;
-  min-height: 60vh; /* Garante que a página tenha uma altura mínima */
-  display: flex;
+  margin: 40px auto;   padding: 2rem;
+  min-height: 60vh;   display: flex;
   flex-direction: column;
   align-items: center;
 }
@@ -70,18 +67,14 @@
   text-align: center;
 }
 
-/* Cores específicas para cada status */
 .status-pending {
-  background-color: #DB7093; /* Laranja */
-}
+  background-color: #DB7093; }
 
 .status-approved {
-  background-color: #27ae60; /* Verde */
-}
+  background-color: #27ae60; }
 
 .status-rejected {
-  background-color: #aa2212; /* Vermelho */
-}
+  background-color: #aa2212; }
 
 .error-message {
   color: #c0392b;
@@ -90,7 +83,6 @@
 }
 
 
-/* === Responsividade básica para telas menores === */
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
     padding: 1rem;

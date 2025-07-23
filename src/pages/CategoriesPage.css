@@ -30,7 +30,6 @@
   border-color: #ccc;
 }
 
-/* Estilo do botão ativo */
 .category-filters button.active {
   background-color: var(--cor-destaque);
   color: #fff;
@@ -38,7 +37,6 @@
 }
 
 
-/* === Responsividade básica para telas menores === */
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
     padding: 1rem;

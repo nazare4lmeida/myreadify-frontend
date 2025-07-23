@@ -1,4 +1,3 @@
-/* src/pages/MyReviewsPage.css */
 
 .my-reviews-page {
   animation: fadeIn 0.5s ease-in-out;
@@ -39,8 +38,7 @@
   height: 150px;
   object-fit: cover;
   border-radius: 4px;
-  flex-shrink: 0; /* Impede que a imagem encolha */
-}
+  flex-shrink: 0; }
 
 .my-review-details {
   flex-grow: 1;
@@ -72,32 +70,22 @@
 }
 
 .my-reviews-container {
-  max-height: 70vh; /* A lista ocupará no máximo 70% da altura da tela */
-  overflow-y: auto; /* Mostra a barra de rolagem vertical APENAS se necessário */
-  padding-right: 15px; /* Espaço para a barra não ficar colada no conteúdo */
-}
+  max-height: 70vh;   overflow-y: auto;   padding-right: 15px; }
 
-/* Estilizando a barra de rolagem (funciona em navegadores baseados em WebKit/Blink como Chrome, Edge, Safari) */
 .my-reviews-container::-webkit-scrollbar {
-  width: 10px; /* Largura da barra */
-}
+  width: 10px; }
 
-/* Fundo da barra (o caminho por onde ela corre) */
 .my-reviews-container::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
 }
 
-/* A parte que se move da barra */
 .my-reviews-container::-webkit-scrollbar-thumb {
-  background: #c5b5ad; /* Um tom de marrom claro/bege que combina com seu site */
-  border-radius: 10px;
+  background: #c5b5ad;   border-radius: 10px;
 }
 
-/* Efeito ao passar o mouse sobre a barra */
 .my-reviews-container::-webkit-scrollbar-thumb:hover {
-  background: #7b5b4c; /* O marrom mais escuro dos botões */
-}
+  background: #7b5b4c; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
@@ -105,7 +93,6 @@
 }
 
 
-/* === Responsividade básica para telas menores === */
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
     padding: 1rem;

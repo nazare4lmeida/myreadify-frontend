@@ -1,4 +1,3 @@
-/* src/components/Header.css */
 
 .app-header {
   width: 100%;
@@ -34,27 +33,23 @@
   margin: -5px 0 0 2px;
 }
 
-/* --- CONTAINER DE NAVEGAÇÃO --- */
 .main-nav {
   display: flex;
   align-items: center;
   gap: 2rem;
 }
 
-/* LINKS ESQUERDA */
 .nav-links {
   display: flex;
   gap: 1.8rem;
   align-items: center;
 }
 
-/* PERFIL DIREITA */
 .nav-profile {
   display: flex;
   align-items: center;
 }
 
-/* BASE DOS LINKS */
 .nav-item {
   position: relative;
 }
@@ -67,8 +62,7 @@
   transition: color 0.2s ease;
   padding-bottom: 5px;
   display: inline-block;
-  line-height: 38px; /* Adicionado para garantir alinhamento vertical com botões */
-}
+  line-height: 38px; }
 
 .nav-item > a:hover {
   color: var(--cor-destaque);
@@ -78,23 +72,18 @@
   color: var(--cor-destaque);
 }
 
-/* Sublinhado do item ativo */
 .nav-item > a.active::after {
   content: '';
   position: absolute;
-  bottom: 5px; /* Ajustado para alinhar melhor */
-  left: 0;
+  bottom: 5px;   left: 0;
   width: 100%;
   height: 2px;
   background-color: var(--cor-destaque);
 }
 
-/* --- ALTERADO: Botão de Login com borda cinza e mais grossa --- */
 .login-button-outline {
   background-color: transparent;
-  color: #A0522D; /* Cor do texto cinza */
-  border: 2px solid #A0522D; /* Borda mais grossa e cinza claro */
-  border-radius: 6px;
+  color: #A0522D;   border: 2px solid #A0522D;   border-radius: 6px;
   padding: 0.4rem 1.2rem;
   font-size: 0.9rem;
   font-weight: 600;
@@ -103,13 +92,9 @@
   transition: all 0.2s ease;
 }
 .login-button-outline:hover {
-  background-color: #A0522D; /* Fundo cinza no hover */
-  border-color: #A0522D; /* Borda cinza no hover */
-  color: #fff; /* Texto branco no hover */
-}
+  background-color: #A0522D;   border-color: #A0522D;   color: #fff; }
 
 
-/* --- DROPDOWN DO PERFIL (Estilos mantidos) --- */
 
 .profile-menu {
   position: relative;
@@ -139,8 +124,7 @@
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  height: 40px; /* Definindo altura explícita para consistência */
-  transition: background-color 0.2s ease;
+  height: 40px;   transition: background-color 0.2s ease;
 }
 .profile-button:hover {
   background-color: #8a5a4b;
@@ -215,7 +199,6 @@
 }
 
 
-/* === Responsividade básica para telas menores === */
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
     padding: 1rem;
