@@ -1,9 +1,7 @@
-// src/pages/HomePage.jsx
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
-import { mockLivros } from '../data/mockData'; // --- 1. Importamos os mocks ---
+import { mockLivros } from '../data/mockData'; 
 import BookCard from '../components/BookCard';
 import './HomePage.css';
 
@@ -20,7 +18,6 @@ const HomePage = () => {
         if (response.data && Array.isArray(response.data.books)) {
           const apiBooks = response.data.books;
 
-          // --- LÓGICA DE COMBINAÇÃO CORRIGIDA E FINAL ---
           const mockBooksMap = new Map(mockLivros.map(book => [book.slug, book]));
 
           const finalBookList = apiBooks
@@ -28,7 +25,6 @@ const HomePage = () => {
               const mockVersion = mockBooksMap.get(apiBook.slug);
               
               if (mockVersion) {
-                // Se o livro da API também está no mock, funde os dados.
                 return {
                   ...mockVersion,
                   ...apiBook,

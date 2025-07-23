@@ -10,6 +10,7 @@
     box-sizing: border-box;
   }
 
+  /* Navegação e layout geral */
   header nav,
   .menu,
   .navbar,
@@ -42,7 +43,8 @@
   .section,
   .page {
     width: 100% !important;
-    padding: 0.5rem;
+    max-width: 100% !important;
+    padding: 0.5rem !important;
   }
 
   .logo {
@@ -52,5 +54,80 @@
   .nav-item {
     display: block;
     width: 100%;
+  }
+
+  /* Carrossel horizontal */
+  .seletor-do-carrossel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .seletor-do-carrossel .item {
+    flex: 0 0 auto;
+    min-width: 90%;
+    scroll-snap-align: start;
+    margin-right: 16px;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-content {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem;
+    align-items: center;
+  }
+
+  .hero-text {
+  text-align: center;
+  padding: 0 1rem;
+  width: 100%;
+  max-width: 300px; 
+  margin: 0 auto; 
+}
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    max-width: 90%;
+    margin: 0 auto 1.5rem auto;
+  }
+
+  .hero-cta-button {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-carousel-container {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-carousel {
+    position: relative;
+    width: 80%;
+    max-width: 280px;
+    height: auto;
+    aspect-ratio: 2/3;
+  }
+
+  .hero-carousel img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
   }
 }
