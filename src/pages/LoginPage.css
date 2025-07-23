@@ -85,19 +85,26 @@
   align-items: center;
 }
 
+.password-wrapper input {
+  padding-right: 2.5rem; /* espaço para o botão */
+}
+
 .toggle-password {
   position: absolute;
   right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
   font-size: 1.2rem;
-  padding: 5px;
-  align-items: end;
-  justify-content: end;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-
+/* Responsividade */
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
     padding: 1rem;
@@ -118,8 +125,12 @@
     align-items: center;
     text-align: center;
   }
-}
 
+  .login-container h2 {
+    white-space: nowrap;
+    font-size: 1.8rem;
+  }
+}
 
 @media (max-width: 768px) {
   * {
