@@ -85,3 +85,6 @@ npm run build
 ---
 
 🔗 **Backend**: [Repositório](https://github.com/nazare4lmeida/myreadify-backend)
+
+
+Feito por Nazaré Almeida
