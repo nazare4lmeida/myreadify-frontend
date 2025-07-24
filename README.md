@@ -10,7 +10,6 @@ Interface web do projeto [MyReadify](https://github.com/nazare4lmeida/myreadify-
 - [React](https://reactjs.org/)
 - [React Router DOM](https://reactrouter.com/)
 - [Axios](https://axios-http.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
 - Integração com Supabase (backend)
 - Responsivo para desktop e mobile
 - Deploy: [Vercel](https://vercel.com/)

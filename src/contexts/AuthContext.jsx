@@ -39,13 +39,13 @@ export const AuthProvider = ({ children }) => {
   const signOut = () => {
     localStorage.removeItem('@MyReadify:user');
     localStorage.removeItem('@MyReadify:token');
+    api.defaults.headers.authorization = null; // CORREÇÃO AQUI
     setUser(null);
   };
 
   const signUp = async ({ name, email, password }) => {
     try {
       await api.post('/users', { name, email, password });
-
     } catch (error) {
       const errorMessage = error.response?.data?.error || 'Não foi possível realizar o cadastro.';
       throw new Error(errorMessage);
