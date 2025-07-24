@@ -1,3 +1,4 @@
+/* Estilos globais responsivos */
 @media (max-width: 768px) {
   html, body {
     overflow-x: hidden;
@@ -10,7 +11,6 @@
     box-sizing: border-box;
   }
 
-  
   header nav,
   .menu,
   .navbar,
@@ -49,7 +49,6 @@
     margin: 0 auto;
   }
 
-  
   .logo, .site-title, .header-logo {
     font-size: 2rem;
     white-space: nowrap;
@@ -62,7 +61,6 @@
     width: 100%;
   }
 
-  
   .seletor-do-carrossel {
     display: flex;
     overflow-x: auto;
@@ -77,7 +75,6 @@
     margin-right: 16px;
   }
 
-  
   .hero-section {
     display: flex;
     flex-direction: column;
@@ -129,15 +126,6 @@
     aspect-ratio: 2/3;
   }
 
-  .hero-carousel img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-
-  
   .footer-socials {
     display: flex;
     justify-content: center;
@@ -146,7 +134,6 @@
     margin-bottom: 1rem;
   }
 
-  
   .form-group {
     margin-bottom: 1rem;
     width: 100%;
@@ -157,32 +144,65 @@
     width: 100%;
   }
 
-  
- .password-wrapper {
-  position: relative;
-  width: 100%;
+  .password-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .password-wrapper input {
+    width: 100%;
+    padding-right: 2.75rem;
+    box-sizing: border-box;
+  }
+
+  .toggle-password {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--cor-texto-secundario);
+  }
 }
 
-.password-wrapper input {
-  width: 100%;
-  padding-right: 2.75rem; /* espaço para o botão */
-  box-sizing: border-box;
-}
+/* === Hero Carousel (efeito original restaurado) === */
 
-.toggle-password {
-  position: absolute;
-  right: 0.75rem; /* encosta no final */
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
+.hero-carousel-container {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  color: var(--cor-texto-secundario);
 }
 
+.hero-carousel {
+  position: relative;
+  width: 300px;
+  height: 450px;
+}
+
+.hero-carousel img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+}
+
+.hero-carousel img.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 10;
 }

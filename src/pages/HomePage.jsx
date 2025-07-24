@@ -10,6 +10,7 @@ const HomePage = () => {
   const [latestBooks, setLatestBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const { signed } = useAuth();
 
   useEffect(() => {
     const fetchLatestBooks = async () => {
@@ -26,7 +27,6 @@ const HomePage = () => {
           const finalBookList = apiBooks
             .map((apiBook) => {
               const mockVersion = mockBooksMap.get(apiBook.slug);
-
               if (mockVersion) {
                 return {
                   ...mockVersion,
@@ -34,7 +34,6 @@ const HomePage = () => {
                   isPlaceholder: !apiBook.summary,
                 };
               }
-              // Se o livro da API foi criado do zero e não está no mock, retorna ele como está.
               return apiBook;
             })
             .filter((book) => book !== null);
@@ -47,10 +46,9 @@ const HomePage = () => {
         setLoading(false);
       }
     };
+
     fetchLatestBooks();
   }, []);
-
-  const { signed } = useAuth();
 
   useEffect(() => {
     if (latestBooks.length > 0) {
@@ -60,14 +58,6 @@ const HomePage = () => {
       return () => clearInterval(timer);
     }
   }, [latestBooks]);
-
-  const getSlideClass = (index) => {
-    const total = latestBooks.length;
-    if (index === currentSlide) return "active";
-    if (index === (currentSlide - 1 + total) % total) return "prev";
-    if (index === (currentSlide + 1) % total) return "next";
-    return "";
-  };
 
   return (
     <main className="home-page">
@@ -85,25 +75,23 @@ const HomePage = () => {
               Explorar Resumos
             </Link>
           </div>
+
           <div className="hero-carousel-container">
             {loading ? (
-              // Se estiver carregando, mostra o placeholder do carrossel principal
               <div className="hero-carousel-placeholder"></div>
             ) : (
-              // Se já carregou, mostra o carrossel real, se houver livros
-              latestBooks.length > 0 && (
-                <div className="hero-carousel">
-                  {latestBooks.map((book, index) => (
-                    <img
-                      key={book.slug}
-                      src={book.coverUrl}
-                      alt={`Capa do livro ${book.title}`}
-                      className={getSlideClass(index)}
-                      loading="lazy"
-                    />
-                  ))}
-                </div>
-              )
+              <div className="hero-carousel">
+                {latestBooks.map((book, index) => (
+                  <img
+                    key={book.slug}
+                    src={book.coverUrl}
+                    alt={`Capa do livro ${book.title}`}
+                    className={`carousel-image ${
+                      index === currentSlide ? "active" : ""
+                    }`}
+                  />
+                ))}
+              </div>
             )}
           </div>
         </div>
@@ -119,26 +107,11 @@ const HomePage = () => {
             <div className="featured-section-container">
               <h2>Adicionados Recentemente</h2>
               <div className="book-carousel">
-                {loading
-                  ? // Se estiver carregando, renderiza 8 "esqueletos" diretamente aqui
-                    Array.from({ length: 8 }).map((_, index) => (
-                      <div className="carousel-item" key={index}>
-                        <div className="book-card-placeholder">
-                          <div className="skeleton-cover"></div>
-                          <div className="skeleton-info">
-                            <div className="skeleton-line title"></div>
-                            <div className="skeleton-line text"></div>
-                          </div>
-                          <div className="skeleton-button"></div>
-                        </div>
-                      </div>
-                    ))
-                  : // Se já carregou, renderiza os BookCards reais como antes
-                    latestBooks.map((livro) => (
-                      <div className="carousel-item" key={livro.slug}>
-                        <BookCard livro={livro} />
-                      </div>
-                    ))}
+                {latestBooks.map((livro) => (
+                  <div className="carousel-item" key={livro.slug}>
+                    <BookCard livro={livro} />
+                  </div>
+                ))}
               </div>
             </div>
           </section>
@@ -171,11 +144,11 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
       {signed ? (
         <section className="final-cta-section">
           <h2>Pronto para contribuir com a comunidade?</h2>
           <p>Envie seu primeiro resumo ou avalie um livro que você já leu!</p>
-
           <div className="contribution-actions">
             <Link to="/enviar-resumo" className="btn-action primary">
               Enviar Resumo
