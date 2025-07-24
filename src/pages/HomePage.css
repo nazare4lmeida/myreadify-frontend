@@ -4,7 +4,6 @@
 
 .hero-section {
   width: 100%;
-  padding: 0 0 0rem 2rem;
   background-color: #FAF9F7;
   display: flex;
   align-items: center;
@@ -18,6 +17,8 @@
   max-width: 1200px;
   width: 100%;
   gap: 2rem;
+  padding: 0 1rem;
+  margin: 0 auto;
 }
 
 .hero-text {
@@ -59,7 +60,6 @@
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* === HERO CAROUSEL ORIGINAL === */
 .hero-carousel-container {
   flex: 1;
   display: flex;
@@ -93,7 +93,6 @@
   z-index: 10;
 }
 
-/* === BOOK CAROUSEL (horizontal) === */
 .carousel-image {
   position: absolute;
   width: 100%;
@@ -126,7 +125,7 @@
 .featured-section-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1rem;
 }
 
 .featured-section h2,
@@ -142,7 +141,7 @@
 .book-carousel {
   display: flex;
   overflow-x: auto;
-  padding: 1rem 2rem;
+  padding: 1rem 1rem;
   scrollbar-width: thin;
   scrollbar-color: #ccc #f1f1f1;
 }
@@ -155,7 +154,7 @@
 
 .how-it-works-section {
   background-color: #FAF9F7;
-  padding: 4rem 1.5rem;
+  padding: 4rem 1rem;
 }
 
 .features-grid {
@@ -182,7 +181,7 @@
 }
 
 .final-cta-section {
-  padding: 4rem 1.5rem;
+  padding: 4rem 1rem;
   text-align: center;
 }
 
@@ -245,7 +244,7 @@
   transform: translateY(-2px);
 }
 
-/* === PLACEHOLDER DE CARREGAMENTO === */
+/* PLACEHOLDER */
 .book-card-placeholder {
   background-color: #fff;
   border-radius: 8px;
@@ -314,14 +313,11 @@
   .hero-content {
     flex-direction: column;
     text-align: center;
+    padding: 0 1rem;
   }
 
   .hero-text {
     padding-right: 0;
-  }
-
-  body {
-    padding: 0 1rem; 
   }
 
   .hero-carousel-placeholder {

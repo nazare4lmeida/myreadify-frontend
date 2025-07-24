@@ -15,6 +15,7 @@
   width: 100%;
   max-width: 450px;
   text-align: center;
+  margin: 0 auto; /* centralização */
 }
 
 .register-container h2 {
@@ -54,14 +55,14 @@
 }
 
 .password-wrapper input {
-  padding-right: 2.5rem;
+  padding-right: 2.75rem;
   width: 100%;
   box-sizing: border-box;
 }
 
 .toggle-password {
   position: absolute;
-  right: 10px;
+  right: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
   background: none;
@@ -71,7 +72,8 @@
   padding: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  height: 100%;
   color: var(--cor-texto-secundario);
 }
 
@@ -119,37 +121,10 @@
     padding: 2rem 1rem;
     width: 100%;
     max-width: 100%;
+    margin: 0 auto;
   }
 
   .register-container h2 {
     font-size: 1.8rem;
   }
-
- .password-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.password-wrapper input {
-  width: 100%;
-  padding-right: 2.75rem; /* espaço para o botão */
-  box-sizing: border-box;
-}
-
-.toggle-password {
-  position: absolute;
-  right: 0.75rem; /* encosta no final */
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: var(--cor-texto-secundario);
-}
-
 }

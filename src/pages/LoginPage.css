@@ -14,6 +14,7 @@
   width: 100%;
   max-width: 450px;
   text-align: center;
+  margin: 0 auto; /* centralização */
 }
 
 .login-container h2 {
@@ -89,95 +90,37 @@
 }
 
 .password-wrapper input {
-  padding-right: 2.5rem;
+  padding-right: 2.75rem;
   width: 100%;
   box-sizing: border-box;
 }
 
 .toggle-password {
   position: absolute;
+  right: 0.75rem;
   top: 50%;
-  right: 10px;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.2rem;
   padding: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  height: 100%;
   color: var(--cor-texto-secundario);
 }
 
 /* RESPONSIVO */
 @media (max-width: 768px) {
-  .container,
-  .admin-container,
-  .about-page,
-  .my-summaries-page,
-  .submit-summary-page,
-  .book-detail-cover,
-  .login-container,
-  .register-container,
-  .content,
-  .main,
-  .card,
-  .form,
-  .section,
-  .page {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 1rem !important;
-    box-sizing: border-box;
-  }
-
-  .footer-content,
-  .header-content,
-  .book-detail-content,
-  .prompt-card,
-  .form-section,
-  .my-summaries-section {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1.5rem;
-  }
-
-  body {
-    overflow-x: hidden;
-    padding: 0 1rem;
-  }
-
   .login-container {
     padding: 2rem 1rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
   }
 
- .password-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.password-wrapper input {
-  width: 100%;
-  padding-right: 2.75rem; /* espaço para o botão */
-  box-sizing: border-box;
-}
-
-.toggle-password {
-  position: absolute;
-  right: 0.75rem; /* encosta no final */
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: var(--cor-texto-secundario);
-}
-
+  .login-container h2 {
+    font-size: 1.8rem;
+  }
 }
