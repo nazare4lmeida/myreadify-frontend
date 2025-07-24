@@ -21,6 +21,7 @@
   color: var(--cor-destaque);
   margin-bottom: 2rem;
   font-size: 2.2rem;
+  white-space: nowrap;
 }
 
 .input-group {
@@ -70,7 +71,6 @@
 .signup-link {
   margin-top: 2rem;
   color: var(--cor-texto-secundario);
-  
 }
 
 .signup-link a {
@@ -85,16 +85,19 @@
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .password-wrapper input {
-  padding-right: 2.5rem; /* espaço para o botão */
+  padding-right: 2.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .toggle-password {
   position: absolute;
-  right: 10px;
   top: 50%;
+  right: 10px;
   transform: translateY(-50%);
   background: none;
   border: none;
@@ -104,46 +107,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--cor-texto-secundario);
 }
 
-/* Responsividade */
+/* RESPONSIVO */
 @media (max-width: 768px) {
-  .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
-    padding: 1rem;
-  }
-
-  .book-detail-content, .prompt-card, .form-section, .my-summaries-section {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .book-detail-cover, .login-container, .register-container {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .footer-content, .header-content {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .login-container h2 {
-    white-space: nowrap;
-    font-size: 1.8rem;
-  }
-}
-
-@media (max-width: 768px) {
-  * {
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-  body {
-    overflow-x: hidden;
-    padding: 0 1rem;
-  }
   .container,
+  .admin-container,
+  .about-page,
+  .my-summaries-page,
+  .submit-summary-page,
+  .book-detail-cover,
+  .login-container,
+  .register-container,
   .content,
   .main,
   .card,
@@ -152,13 +128,56 @@
   .page {
     width: 100% !important;
     max-width: 100% !important;
-    padding: 0.5rem !important;
+    padding: 1rem !important;
+    box-sizing: border-box;
   }
- 
-  .login-container {
-    padding: 2rem 1rem; /* padding lateral reduzido */
-    width: 100%;
-    max-width: 100%;
 
+  .footer-content,
+  .header-content,
+  .book-detail-content,
+  .prompt-card,
+  .form-section,
+  .my-summaries-section {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
   }
+
+  body {
+    overflow-x: hidden;
+    padding: 0 1rem;
+  }
+
+  .login-container {
+    padding: 2rem 1rem;
+  }
+
+ .password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 2.75rem; /* espaço para o botão */
+  box-sizing: border-box;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 0.75rem; /* encosta no final */
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--cor-texto-secundario);
+}
+
 }

@@ -1,54 +1,88 @@
-
 .book-card {
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 12px var(--cor-sombra);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
   height: 100%;
-  
-    display: flex;   flex-direction: column; }
+  display: flex;
+  flex-direction: column;
+}
 
 .book-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-.book-cover {
+
+.book-cover-wrapper {
+  position: relative; 
   width: 100%;
-  height: auto;
-  aspect-ratio: 2 / 3;
+  aspect-ratio: 2 / 3; 
+  background-color: #f0f0f0; 
+  cursor: pointer;
+}
+
+
+.skeleton-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+
+
+.book-cover-wrapper .book-cover {
+  width: 100%;
+  height: 100%; 
   object-fit: cover;
+  
+  transition: opacity 0.5s ease-in-out;
 }
 
 .book-info {
   padding: 1.2rem;
-    flex-grow: 1; 
+  flex-grow: 1; 
+  cursor: pointer;
 }
 
 .book-info h3 {
-  font-family: var(--fonte-titulo);
+  font-family: 'Lora', serif; 
   font-size: 1.25rem;
   margin: 0 0 0.25rem 0;
 }
 
 .book-info p {
   font-size: 0.95rem;
-  color: var(--cor-texto-secundario);
+  color: #555; 
   margin: 0;
 }
 
 .card-actions {
   padding: 0 1.2rem 1.2rem;
-  margin-top: auto; }
+  margin-top: auto; 
+}
 
 .card-actions button {
   width: 100%;
   border: none;
   padding: 0.8rem;
   border-radius: 6px;
-  font-family: var(--fonte-corpo);
+  font-family: 'Inter', sans-serif; 
   font-weight: 500;
   font-size: 0.95rem;
   cursor: pointer;
@@ -56,7 +90,7 @@
 }
 
 .btn-summary {
-  background-color: var(--cor-destaque);
+  background-color: #975238; 
   color: white;
 }
 
@@ -64,48 +98,13 @@
   background-color: #8a5a4b;
 }
 
-
+/* Ponto de Atenção: Você tem media queries duplicados aqui, o que pode causar problemas.
+   Mantenha apenas um para cada tamanho de tela. */
 @media (max-width: 768px) {
-  .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
-    padding: 1rem;
-  }
-
-  .book-detail-content, .prompt-card, .form-section, .my-summaries-section {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .book-detail-cover, .login-container, .register-container {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .footer-content, .header-content {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
+  
 }
 
 
-@media (max-width: 768px) {
-  * {
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-  body {
-    overflow-x: hidden;
-    padding: 0 1rem;
-  }
-  .container,
-  .content,
-  .main,
-  .card,
-  .form,
-  .section,
-  .page {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0.5rem !important;
-  }
+@media (max-width: 480px) {
+  
 }

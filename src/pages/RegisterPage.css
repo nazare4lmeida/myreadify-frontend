@@ -2,29 +2,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 70vh;
   padding: 2rem;
   background-color: #fdfaf7;
 }
 
 .register-container {
   background-color: #fff;
-  padding: 2rem;
-  border-radius: 10px;
+  padding: 3.5rem 6rem;
+  border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 500px;
+  max-width: 450px;
   text-align: center;
 }
 
-.title-no-break {
+.register-container h2 {
   font-family: var(--fonte-titulo);
   color: var(--cor-destaque);
   margin-bottom: 2rem;
   font-size: 2.2rem;
-  white-space: nowrap; /* Impede quebra de linha */
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .input-group {
@@ -52,25 +50,33 @@
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .password-wrapper input {
-  flex: 1;
+  padding-right: 2.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .toggle-password {
   position: absolute;
   right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
   font-size: 1.2rem;
-  padding: 6px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--cor-texto-secundario);
 }
 
 .error-message {
-  color: crimson;
+  color: #d93025;
   margin-bottom: 1rem;
   font-size: 0.95rem;
 }
@@ -90,11 +96,11 @@
 }
 
 .register-button-submit:hover {
-  background-color: #63382b;
+  background-color: #8a5a4b;
 }
 
 .login-link {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   color: var(--cor-texto-secundario);
   font-size: 0.95rem;
 }
@@ -104,33 +110,46 @@
   font-weight: 600;
   cursor: pointer;
   text-decoration: underline;
+  white-space: nowrap;
 }
 
+/* RESPONSIVO */
 @media (max-width: 768px) {
   .register-container {
-    padding: 1.5rem;
+    padding: 2rem 1rem;
+    width: 100%;
+    max-width: 100%;
   }
 
-  .title-no-break {
+  .register-container h2 {
     font-size: 1.8rem;
   }
 
+ .password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
 .password-wrapper input {
-  padding-right: 2rem; /* espaço para o ícone */
+  width: 100%;
+  padding-right: 2.75rem; /* espaço para o botão */
+  box-sizing: border-box;
 }
 
 .toggle-password {
   position: absolute;
+  right: 0.75rem; /* encosta no final */
   top: 50%;
-  right: 10px;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
   display: flex;
-  align-items: end;
-  justify-content: end;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--cor-texto-secundario);
 }
 
 }

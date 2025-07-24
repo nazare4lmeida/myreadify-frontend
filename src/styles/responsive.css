@@ -10,7 +10,7 @@
     box-sizing: border-box;
   }
 
-  /* Navegação e layout geral */
+  
   header nav,
   .menu,
   .navbar,
@@ -49,7 +49,7 @@
     margin: 0 auto;
   }
 
-  /* Logo responsivo */
+  
   .logo, .site-title, .header-logo {
     font-size: 2rem;
     white-space: nowrap;
@@ -62,7 +62,7 @@
     width: 100%;
   }
 
-  /* Carrossel horizontal */
+  
   .seletor-do-carrossel {
     display: flex;
     overflow-x: auto;
@@ -77,7 +77,7 @@
     margin-right: 16px;
   }
 
-  /* Hero Section */
+  
   .hero-section {
     display: flex;
     flex-direction: column;
@@ -137,7 +137,7 @@
     border-radius: 10px;
   }
 
-  /* Footer - ícones sociais */
+  
   .footer-socials {
     display: flex;
     justify-content: center;
@@ -146,7 +146,7 @@
     margin-bottom: 1rem;
   }
 
-  /* Formulários */
+  
   .form-group {
     margin-bottom: 1rem;
     width: 100%;
@@ -157,25 +157,32 @@
     width: 100%;
   }
 
-  /* Correção do botão de mostrar senha */
-  .password-wrapper {
-    position: relative;
-    width: 100%;
-  }
+  
+ .password-wrapper {
+  position: relative;
+  width: 100%;
+}
 
-  .password-wrapper input {
-    width: 100%;
-    padding-right: 2.5rem;
-  }
+.password-wrapper input {
+  width: 100%;
+  padding-right: 2.75rem; /* espaço para o botão */
+  box-sizing: border-box;
+}
 
-  .password-wrapper button.toggle-password {
-    position: absolute;
-    top: 50%;
-    right: 0.75rem;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-  }
+.toggle-password {
+  position: absolute;
+  right: 0.75rem; /* encosta no final */
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--cor-texto-secundario);
+}
+
 }

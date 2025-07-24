@@ -130,7 +130,7 @@ const SubmitSummaryPage = () => {
           {isUpdating ? (
             <div className="existing-cover-wrapper">
               <p>Capa do Livro:</p>
-              <img src={existingCoverUrl} alt={`Capa de ${title}`} className="existing-cover-preview" />
+              <img src={existingCoverUrl} alt={`Capa de ${title}`} loading="lazy" className="existing-cover-preview" />
             </div>
           ) : (
             <>
