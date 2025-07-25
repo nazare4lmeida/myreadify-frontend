@@ -9,7 +9,7 @@ const SubmitSummaryPage = () => {
   const { signed } = useAuth();
 
   const [slug, setSlug] = useState(state?.slug || null);
-  const [existingCoverUrl, setExistingCoverUrl] = useState(state?.cover_url || null);
+  const [existingCoverUrl, setExistingCoverUrl] = useState(state?.full_cover_url || null);
 
   const [title, setTitle] = useState(state?.title || '');
   const [author, setAuthor] = useState(state?.author || '');

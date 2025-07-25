@@ -1,22 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import api from '../services/api'; 
-import { useAuth } from '../contexts/AuthContext'; 
-import './MySummariesPage.css'; 
+import React, { useState, useEffect } from "react";
+import api from "../services/api";
+import { useAuth } from "../contexts/AuthContext";
+import { Link } from 'react-router-dom';
+import "./MySummariesPage.css";
 
 const MySummariesPage = () => {
   const [summaries, setSummaries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const { signed } = useAuth();
 
   useEffect(() => {
     if (signed) {
       const fetchMySummaries = async () => {
         try {
-          const response = await api.get('/my-books');
+          const response = await api.get("/my-books");
           setSummaries(response.data);
         } catch (err) {
-          setError('Não foi possível carregar seus envios. Tente recarregar a página.');
+          setError(
+            "Não foi possível carregar seus envios. Tente recarregar a página."
+          );
           console.error(err);
         } finally {
           setLoading(false);
@@ -27,7 +30,7 @@ const MySummariesPage = () => {
     } else {
       setLoading(false);
     }
-  }, [signed]); 
+  }, [signed]);
 
   if (loading) {
     return (
@@ -50,20 +53,28 @@ const MySummariesPage = () => {
   return (
     <div className="my-summaries-page container">
       <h2>Meus Resumos Enviados</h2>
-      
+
       {summaries.length > 0 ? (
         <ul className="summaries-list">
-          {summaries.map(summary => (
+          {summaries.map((summary) => (
             <li key={summary.id} className="summary-item">
-              <div className="summary-info">
-                <strong>{summary.title}</strong>
-                <span>por {summary.author}</span>
-              </div>
-              <span className={`status status-${summary.status.toLowerCase()}`}>
-                {summary.status === 'PENDING' && 'Pendente'}
-                {summary.status === 'APPROVED' && 'Aprovado'}
-                {summary.status === 'REJECTED' && 'Rejeitado'}
-              </span>
+              <Link
+                to={summary.status === "REJECTED" ? "/submit-summary" : "#"} 
+                state={summary.status === "REJECTED" ? summary : null} 
+                className="summary-link"
+              >
+                <div className="summary-info">
+                  <strong>{summary.title}</strong>
+                  <span>por {summary.author}</span>
+                </div>
+                <span
+                  className={`status status-${summary.status.toLowerCase()}`}
+                >
+                  {summary.status === "REJECTED"
+                    ? "Rejeitado (clique para corrigir)"
+                    : summary.status}
+                </span>
+              </Link>
             </li>
           ))}
         </ul>
