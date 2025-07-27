@@ -1,10 +1,11 @@
-
 .my-summaries-page {
   max-width: 900px;
-  margin: 40px auto;   padding: 2rem;
-  min-height: 60vh;   display: flex;
+  margin: 40px auto;
+  padding: 2rem;
+  min-height: 60vh;
+  display: flex;
   flex-direction: column;
-  align-items: center;
+  /* Foi removido o align-items: center para que a lista ocupe a largura total */
 }
 
 .my-summaries-page h2 {
@@ -21,18 +22,17 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 100%; /* Garante que a lista ocupe o espaço disponível */
 }
 
 .summary-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  /* O item da lista agora é apenas um container para o link */
   background-color: #fff;
-  padding: 1rem 1.5rem;
   border: 1px solid #ddd;
   border-radius: 8px;
   margin-bottom: 1rem;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+  overflow: hidden; /* Garante que o conteúdo respeite o border-radius */
 }
 
 .summary-item:hover {
@@ -40,9 +40,29 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+/* ===== NOVO: ESTILO PARA O LINK QUE CONTÉM TUDO ===== */
+.summary-link-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  gap: 1.5rem; /* Espaçamento entre a imagem, as informações e o status */
+}
+
+/* ===== NOVO: ESTILO PARA A IMAGEM DA CAPA ===== */
+.summary-cover-image {
+  width: 60px;
+  height: 85px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0; /* Impede que a imagem encolha */
+}
+
 .summary-info {
   display: flex;
   flex-direction: column;
+  flex-grow: 1; /* Faz com que esta div ocupe o espaço disponível */
 }
 
 .summary-info strong {
@@ -65,23 +85,25 @@
   color: #fff;
   min-width: 90px;
   text-align: center;
+  white-space: nowrap; /* Evita que o texto quebre */
 }
 
-.status-pending {
-  background-color: #DB7093; }
-
+/* Cores do status (mantidas como estavam) */
+.status-pending, .status-pendente {
+  background-color: #DB7093;
+}
 .status-approved {
-  background-color: #27ae60; }
-
+  background-color: #27ae60;
+}
 .status-rejected {
-  background-color: #aa2212; }
+  background-color: #aa2212;
+}
 
 .error-message {
   color: #c0392b;
   text-align: center;
   font-weight: bold;
 }
-
 
 @media (max-width: 768px) {
   .container, .admin-container, .about-page, .my-summaries-page, .submit-summary-page {
@@ -91,6 +113,12 @@
   .book-detail-content, .prompt-card, .form-section, .my-summaries-section {
     flex-direction: column;
     gap: 1.5rem;
+  }
+  
+  /* Ajuste para o link em telas menores */
+  .summary-link-wrapper {
+    padding: 1rem;
+    gap: 1rem;
   }
 
   .book-detail-cover, .login-container, .register-container {
@@ -105,7 +133,8 @@
   }
 }
 
-
+/* A segunda media query parece redundante e muito agressiva, pode ser uma boa ideia revisá-la ou removê-la */
+/*
 @media (max-width: 768px) {
   * {
     max-width: 100%;
@@ -127,3 +156,4 @@
     padding: 0.5rem !important;
   }
 }
+*/
