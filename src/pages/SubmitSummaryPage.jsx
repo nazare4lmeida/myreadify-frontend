@@ -98,6 +98,11 @@ const SubmitSummaryPage = () => {
     }
   };
 
+  const getCoverUrl = () => {
+    if (existingCoverUrl?.startsWith('http')) return existingCoverUrl;
+    return existingCoverUrl ? `http://localhost:3333/files/${existingCoverUrl}` : '';
+  };
+
   if (!signed) {
     return (
       <div className="submit-summary-page not-logged-in container">
@@ -130,7 +135,7 @@ const SubmitSummaryPage = () => {
           {isUpdating ? (
             <div className="existing-cover-wrapper">
               <p>Capa do Livro:</p>
-              <img src={existingCoverUrl} alt={`Capa de ${title}`} loading="lazy" className="existing-cover-preview" />
+              <img src={getCoverUrl()} alt={`Capa de ${title}`} loading="lazy" className="existing-cover-preview" />
             </div>
           ) : (
             <>

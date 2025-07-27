@@ -36,7 +36,7 @@ const AdminApprovalPage = () => {
         fetchData(); // Recarrega os dados para refletir a mudança de status
       })
       .catch(error => {
-        alert(`Falha ao ${newStatus === 'APPROVED' ? 'aprovar' : 'recusar'} o resumo.`);
+        alert(`Falha ao ${newStatus === 'COMPLETED' ? 'aprovar' : 'recusar'} o resumo.`);
       });
   };
 
@@ -114,8 +114,8 @@ const AdminApprovalPage = () => {
                   <p><strong>Enviado por:</strong> {book.submitter.name}</p>
                   <p className="summary-content">{book.summary}</p>
                   <div className="approval-actions">
-                    <button onClick={() => handleUpdateStatus(book.id, 'APPROVED')} className="btn-approve">Aprovar</button>
-                    <button onClick={() => handleUpdateStatus(book.id, 'REJECTED')} className="btn-reject">Recusar</button>
+                    <button onClick={() => handleUpdateStatus(book.id, 'COMPLETED')} className="btn-approve">Aprovar</button>
+                    <button onClick={() => handleUpdateStatus(book.id, 'PENDING')} className="btn-reject">Recusar</button>
                     <button onClick={() => handleTriggerUpload(book.id)} className="btn-change-cover">Alterar Capa</button>
                   </div>
                 </div>

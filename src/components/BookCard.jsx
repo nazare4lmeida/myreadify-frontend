@@ -6,23 +6,16 @@ const BookCard = ({ livro }) => {
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const getImageUrl = () => {
-    if (livro.coverUrl) {
-      return livro.coverUrl;
-    }
-    if (livro.cover_url) {
-      return `http://localhost:3333/files/${livro.cover_url}`;
-    }
-    return 'https://via.placeholder.com/150x220.png?text=Sem+Capa';
-  };
-
-  const imageUrl = getImageUrl();
+  const imageUrl = livro.cover_url || 'https://via.placeholder.com/200x300.png?text=Sem+Capa';
 
   const handleAction = () => {
-    if (livro.isPlaceholder) {
-      navigate('/enviar-resumo', { state: {} });
-    } else {
+    // CORREÇÃO PRINCIPAL AQUI:
+    // Só navega se o livro tiver um slug definido.
+    if (livro.slug) {
       navigate(`/livro/${livro.slug}`);
+    } else {
+      // Se não houver slug, podemos avisar no console para ajudar a depurar.
+      console.error("Tentativa de navegar para um livro sem slug:", livro);
     }
   };
 
@@ -49,7 +42,8 @@ const BookCard = ({ livro }) => {
 
       <div className="card-actions">
         <button className="btn-summary" onClick={handleAction}>
-          {livro.isPlaceholder ? 'Enviar Resumo' : 'Ler Resumo'}
+          {/* A lógica do texto do botão pode continuar a mesma */}
+          {livro.isPlaceholder ? 'Ver Detalhes' : 'Ler Resumo'}
         </button>
       </div>
     </div>

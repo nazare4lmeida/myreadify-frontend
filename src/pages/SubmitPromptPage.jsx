@@ -22,10 +22,19 @@ const SubmitPromptPage = () => {
     }
   };
 
+  const coverImage = book.cover_url?.startsWith('http')
+    ? book.cover_url
+    : `http://localhost:3333/files/${book.cover_url}`;
+
   return (
     <div className="submit-prompt-page container">
       <div className="prompt-card">
-        <img src={book.coverUrl} alt={`Capa de ${book.title}`} loading="lazy" className="prompt-cover" />
+        <img
+          src={coverImage}
+          alt={`Capa de ${book.title}`}
+          loading="lazy"
+          className="prompt-cover"
+        />
         <div className="prompt-info">
           <h1>{book.title}</h1>
           <p className="prompt-message">Este livro ainda não possui um resumo em nossa biblioteca.</p>

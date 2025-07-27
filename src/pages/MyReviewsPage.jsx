@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../contexts/AuthContext";
 import "./MyReviewsPage.css";
-import { mockLivros } from "../data/mockData";
+import mockLivros from '../data/mockData';
 
 const MyReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
@@ -16,22 +16,18 @@ const MyReviewsPage = () => {
         .get("/reviews/my-reviews")
         .then((response) => {
           const enrichedReviews = response.data.map((review) => {
-            // CORREÇÃO APLICADA AQUI:
-            // Normaliza os títulos para minúsculas e remove espaços extras antes de comparar.
-            // Isso garante que a busca funcione de forma consistente.
             const livroMock = mockLivros.find(
               (livro) =>
                 livro.title.toLowerCase().trim() ===
                 review.book.title.toLowerCase().trim()
             );
 
-            // Combina os dados, garantindo que 'slug' e 'coverUrl' venham do mock
             const bookData = {
               ...review.book,
               slug: livroMock ? livroMock.slug : undefined,
-              coverUrl: livroMock
-                ? livroMock.coverUrl
-                : review.book.full_cover_url,
+              cover_url: livroMock
+                ? livroMock.cover_url
+                : review.book.cover_url,
             };
 
             return {
@@ -68,11 +64,12 @@ const MyReviewsPage = () => {
         <div className="my-reviews-container">
           {reviews.map((review) => {
             const { book } = review;
-            const coverImage = book.coverUrl;
+            const coverImage = book.cover_url?.startsWith('http')
+              ? book.cover_url
+              : `http://localhost:3333/files/${book.cover_url}`;
 
             return (
               <div key={review.id} className="my-review-card">
-                {/* O link agora funcionará pois 'book.slug' terá o valor correto */}
                 <Link to={`/livro/${book.slug}#review-${review.id}`}>
                   <img
                     src={coverImage}
