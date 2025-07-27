@@ -1,3 +1,5 @@
+// src/contexts/AuthContext.jsx
+
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import api from '../services/api';
 
@@ -8,12 +10,10 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadStoragedData = async () => {
+    const loadStoragedData = () => {
       const storagedUser = localStorage.getItem('@MyReadify:user');
-      const storagedToken = localStorage.getItem('@MyReadify:token');
-
-      if (storagedUser && storagedToken) {
-        api.defaults.headers.authorization = `Bearer ${storagedToken}`;
+      // Não precisamos mais do token aqui, só do usuário
+      if (storagedUser) {
         setUser(JSON.parse(storagedUser));
       }
       setLoading(false);
@@ -26,29 +26,29 @@ export const AuthProvider = ({ children }) => {
       const response = await api.post('/login', { email, password });
       const { user: apiUser, token } = response.data;
 
-      setUser(apiUser);
-      api.defaults.headers.authorization = `Bearer ${token}`;
-
+      // Salvamos no localStorage
       localStorage.setItem('@MyReadify:user', JSON.stringify(apiUser));
       localStorage.setItem('@MyReadify:token', token);
+      
+      // E atualizamos o estado
+      setUser(apiUser);
     } catch (error) {
       throw new Error(error.response?.data?.error || 'Falha no login');
     }
   };
 
   const signOut = () => {
+    // Apenas limpamos o localStorage e o estado
     localStorage.removeItem('@MyReadify:user');
     localStorage.removeItem('@MyReadify:token');
-    api.defaults.headers.authorization = null; // CORREÇÃO AQUI
     setUser(null);
   };
 
   const signUp = async ({ name, email, password }) => {
     try {
-      await api.post('/users', { name, email, password });
+      await api.post('/register', { name, email, password });
     } catch (error) {
-      const errorMessage = error.response?.data?.error || 'Não foi possível realizar o cadastro.';
-      throw new Error(errorMessage);
+      throw new Error(error.response?.data?.error || 'Não foi possível realizar o cadastro.');
     }
   };
 
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export function useAuth() {
+export const useAuth = () => {
   const context = useContext(AuthContext);
   return context;
-}
+};

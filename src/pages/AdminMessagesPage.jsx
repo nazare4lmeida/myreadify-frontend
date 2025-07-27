@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'; 
 import api from '../services/api';
+import { useAuth } from '../contexts/AuthContext';
 import './AdminMessagesPage.css';
 
 const AdminMessagesPage = () => {
@@ -10,15 +11,28 @@ const AdminMessagesPage = () => {
   const [replyingMessage, setReplyingMessage] = useState(null);
   const [replyText, setReplyText] = useState('');
   const [isSending, setIsSending] = useState(false);
+  
+  const { loading: authLoading } = useAuth();
 
   const fetchMessages = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await api.get('/admin/messages');
+      
+      // >>> INÍCIO DA CORREÇÃO <<<
+      // Adicionamos um timeout de 15 segundos (15000 ms) à requisição.
+      // Se o servidor não responder a tempo, um erro será lançado.
+      const response = await api.get('/admin/messages', { timeout: 15000 });
+      // >>> FIM DA CORREÇÃO <<<
+
       setMessages(response.data);
       setError(null);
     } catch (err) {
-      setError('Não foi possível carregar as mensagens. Tente novamente mais tarde.');
+      // O 'catch' agora também será acionado se o timeout for atingido.
+      if (err.code === 'ECONNABORTED') {
+        setError('O servidor demorou muito para responder. Tente recarregar a página.');
+      } else {
+        setError('Não foi possível carregar as mensagens. Tente novamente mais tarde.');
+      }
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -26,8 +40,11 @@ const AdminMessagesPage = () => {
   }, []);
 
   useEffect(() => {
-    fetchMessages();
-  }, [fetchMessages]);
+    // A lógica de esperar a autenticação continua sendo uma boa prática
+    if (!authLoading) {
+      fetchMessages();
+    }
+  }, [authLoading, fetchMessages]);
 
   const handleDelete = async (messageId) => {
     if (!window.confirm('Tem certeza que deseja deletar esta mensagem permanentemente?')) {
@@ -66,7 +83,7 @@ const AdminMessagesPage = () => {
     }
   };
 
-  if (isLoading) {
+  if (authLoading || isLoading) {
     return <div className="admin-container"><p>Carregando mensagens...</p></div>;
   }
 

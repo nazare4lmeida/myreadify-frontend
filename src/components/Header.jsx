@@ -60,12 +60,14 @@ const Header = () => {
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="profile-button"
                 >
-                  <span className="profile-name">Olá, {user.name.split(' ')[0]}</span>
+                  {/* CORREÇÃO 1: Alterado para 'admin' (minúsculas) */}
+                  <span className="profile-name">Olá, {user?.role === 'admin' ? 'Admin' : user.name.split(' ')[0]}</span>
                   <span className={`arrow-down ${dropdownOpen ? 'open' : ''}`}>▼</span>
                 </button>
                 {dropdownOpen && (
                   <div className="dropdown-content">
-                    {user?.role === 'ADMIN' && (
+                    {/* CORREÇÃO 2: Alterado para 'admin' (minúsculas) */}
+                    {user?.role === 'admin' && (
                       <>
                         <NavLink to="/admin/aprovacoes" onClick={() => setDropdownOpen(false)}>
                           <span className="dropdown-icon">✓</span> Aprovações
