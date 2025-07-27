@@ -4,16 +4,15 @@ import mockLivros from '../data/mockData';
 import BookCard from '../components/BookCard';
 import './CategoriesPage.css';
 
-// ADICIONADO 1/3: Importa as imagens para que o Vite as reconheça.
+// Importa as imagens para que o Vite as reconheça (caso necessário para livros da API)
 const images = import.meta.glob('../assets/*.jpg', { eager: true });
 
 const CategoriesPage = () => {
   const [allBooks, setAllBooks] = useState(mockLivros);
   const [selectedCategory, setSelectedCategory] = useState('Todos');
 
-  // ADICIONADO 2/3: A mesma função helper para resolver o caminho da imagem.
   const resolveCoverUrl = (coverPath) => {
-    if (!coverPath) return '';
+    if (!coverPath || coverPath.startsWith('/src/assets')) return coverPath;
     const imageName = coverPath.split('/').pop();
     const imagePath = `../assets/${imageName}`;
     return images[imagePath]?.default || '';
@@ -40,15 +39,19 @@ const CategoriesPage = () => {
             return {
               ...mockVersion,
               ...apiVersion,
+              cover_url: mockVersion.cover_url, // mantém a imagem mock
               isPlaceholder: !apiVersion.content,
             };
           }
+
           if (apiVersion) {
             return {
               ...apiVersion,
+              cover_url: resolveCoverUrl(apiVersion.cover_url),
               isPlaceholder: !apiVersion.content,
             };
           }
+
           return {
             ...mockVersion,
             isPlaceholder: true,
@@ -87,10 +90,9 @@ const CategoriesPage = () => {
       </div>
       <div className="book-list">
         {filteredBooks.map(livro => (
-          // ADICIONADO 3/3: Processa a URL da capa ANTES de passar para o BookCard.
           <BookCard 
-            key={livro.slug} 
-            livro={{ ...livro, cover_url: resolveCoverUrl(livro.cover_url) }} 
+            key={livro.slug || livro.id || Math.random()} 
+            livro={livro} 
           />
         ))}
       </div>

@@ -14,7 +14,7 @@ const MySummariesPage = () => {
     if (signed) {
       const fetchMySummaries = async () => {
         try {
-          const response = await api.get("/my-books");
+          const response = await api.get("/my-summaries");
           setSummaries(response.data);
         } catch (err) {
           setError(

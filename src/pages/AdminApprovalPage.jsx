@@ -3,26 +3,32 @@ import api from '../services/api';
 import './AdminApprovalPage.css';
 
 const AdminApprovalPage = () => {
-  const [pendingBooks, setPendingBooks] = useState([]);
-  const [allBooks, setAllBooks] = useState([]);
+  // >>> ALTERAÇÃO 1: Renomeando estados para refletir que estamos lidando com resumos <<<
+  const [pendingSummaries, setPendingSummaries] = useState([]);
+  const [allSummaries, setAllSummaries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  // --- ALTERAÇÕES NO FRONTEND ---
+  
+  // O resto dos estados continua o mesmo
   const fileInputRef = useRef(null);
   const [selectedBookId, setSelectedBookId] = useState(null);
-  // --- FIM DAS ALTERAÇÕES ---
 
   const fetchData = () => {
     setIsLoading(true);
+    // >>> ALTERAÇÃO 2: Garantindo que ambas as rotas são de resumos <<<
     Promise.all([
-      api.get('/admin/pending-books'),
-      api.get('/admin/all-books')
+      api.get('/admin/pending-summaries'),
+      api.get('/admin/all-summaries') // Você precisará criar esta rota e controller no backend
     ])
     .then(([pendingResponse, allResponse]) => {
-      setPendingBooks(pendingResponse.data);
-      setAllBooks(allResponse.data);
+      setPendingSummaries(pendingResponse.data);
+      setAllSummaries(allResponse.data);
     })
-    .catch(error => console.error("Erro ao buscar dados de admin:", error))
+    .catch(error => {
+      console.error("Erro ao buscar dados de admin:", error);
+      // Fallback para evitar que a página quebre se uma das rotas falhar
+      if (error.config.url.includes('pending')) setPendingSummaries([]);
+      if (error.config.url.includes('all')) setAllSummaries([]);
+    })
     .finally(() => setIsLoading(false));
   };
 
@@ -30,21 +36,22 @@ const AdminApprovalPage = () => {
     fetchData();
   }, []);
 
-  const handleUpdateStatus = (bookId, newStatus) => {
-    api.patch(`/admin/books/${bookId}/status`, { status: newStatus })
+  // >>> ALTERAÇÃO 3: Corrigindo a lógica de atualização para resumos <<<
+  const handleUpdateStatus = (summaryId, newStatus) => {
+    api.patch(`/admin/summaries/${summaryId}/status`, { status: newStatus })
       .then(() => {
-        fetchData(); // Recarrega os dados para refletir a mudança de status
+        fetchData(); 
       })
       .catch(error => {
-        alert(`Falha ao ${newStatus === 'COMPLETED' ? 'aprovar' : 'recusar'} o resumo.`);
+        alert(`Falha ao atualizar o status do resumo.`);
       });
   };
 
-  const handleDeleteBook = (bookId, bookTitle) => {
+  const handleDeleteSummary = (summaryId, bookTitle) => {
     if (window.confirm(`Tem certeza que deseja deletar permanentemente o resumo de "${bookTitle}"?`)) {
-      api.delete(`/admin/books/${bookId}`)
+      api.delete(`/admin/summaries/${summaryId}`)
         .then(() => {
-          fetchData(); // Recarrega os dados após deletar
+          fetchData();
         })
         .catch(error => {
           alert('Falha ao deletar o resumo.');
@@ -52,71 +59,59 @@ const AdminApprovalPage = () => {
     }
   };
 
-  // --- NOVAS FUNÇÕES PARA ATUALIZAR A CAPA ---
   const handleTriggerUpload = (bookId) => {
     setSelectedBookId(bookId);
     fileInputRef.current.click();
   };
 
   const handleCoverFileChange = async (event) => {
+    // A lógica de upload de capa continua a mesma, pois ela se aplica a um 'book'
     const file = event.target.files[0];
     if (!file || !selectedBookId) return;
-
     const formData = new FormData();
     formData.append('coverImage', file);
-
     try {
-      // Usando o novo endpoint PATCH
       await api.patch(`/admin/books/${selectedBookId}/cover`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       alert('Capa do livro atualizada com sucesso!');
-      fetchData(); // Recarrega os dados para mostrar a nova capa se necessário
+      fetchData();
     } catch (error) {
-      alert('Erro ao enviar a nova capa. Verifique o console para mais detalhes.');
+      alert('Erro ao enviar a nova capa.');
       console.error(error);
     } finally {
-      // Limpa o input para permitir uploads futuros do mesmo arquivo
       event.target.value = null;
       setSelectedBookId(null);
     }
   };
-  // --- FIM DAS NOVAS FUNÇÕES ---
 
   if (isLoading) return <div className="container"><p>Carregando dados de administração...</p></div>;
 
   return (
     <div className="admin-approval-page container">
-
-      {/* Input de arquivo invisível que será usado pelos botões */}
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleCoverFileChange}
-        style={{ display: 'none' }}
-        accept="image/jpeg, image/png"
-      />
+      <input type="file" ref={fileInputRef} onChange={handleCoverFileChange} style={{ display: 'none' }} accept="image/jpeg, image/png" />
 
       <div className="pending-section">
         <h2>Resumos Pendentes de Aprovação</h2>
-        {pendingBooks.length > 0 ? (
+        {pendingSummaries.length > 0 ? (
           <div className="pending-list">
-            {pendingBooks.map(book => (
-              <div key={book.id} className="pending-card">
+            {/* >>> ALTERAÇÃO 4: Mapeando 'pendingSummaries' e usando dados de resumo <<< */}
+            {pendingSummaries.map(summary => (
+              <div key={summary.id} className="pending-card">
                 <img 
-                  src={book.full_cover_url || 'caminho/para/imagem/padrao.png'} 
-                  alt={`Capa de ${book.title}`} 
+                  src={`http://localhost:3333/files/${summary.book?.cover_url}` || 'caminho/para/imagem/padrao.png'} 
+                  alt={`Capa de ${summary.book?.title}`} 
                   className="book-cover-thumbnail"
                 />
                 <div className="card-content">
-                  <h3>{book.title}</h3>
-                  <p><strong>Autor:</strong> {book.author}</p>
-                  <p><strong>Enviado por:</strong> {book.submitter.name}</p>
-                  <p className="summary-content">{book.summary}</p>
+                  <h3>{summary.book?.title}</h3>
+                  <p><strong>Autor:</strong> {summary.book?.author}</p>
+                  <p><strong>Enviado por:</strong> {summary.user?.name}</p>
+                  <p className="summary-content">{summary.content}</p>
                   <div className="approval-actions">
-                    <button onClick={() => handleUpdateStatus(book.id, 'COMPLETED')} className="btn-approve">Aprovar</button>
-                    <button onClick={() => handleUpdateStatus(book.id, 'PENDING')} className="btn-reject">Recusar</button>
-                    <button onClick={() => handleTriggerUpload(book.id)} className="btn-change-cover">Alterar Capa</button>
+                    <button onClick={() => handleUpdateStatus(summary.id, 'COMPLETED')} className="btn-approve">Aprovar</button>
+                    <button onClick={() => handleUpdateStatus(summary.id, 'REJECTED')} className="btn-reject">Recusar</button>
+                    <button onClick={() => handleTriggerUpload(summary.book?.id)} className="btn-change-cover">Alterar Capa</button>
                   </div>
                 </div>
               </div>
@@ -131,29 +126,19 @@ const AdminApprovalPage = () => {
 
       <div className="management-section">
         <h2>Gerenciar Todos os Resumos</h2>
-        {allBooks.length > 0 ? (
+        {allSummaries.length > 0 ? (
           <ul className="management-list">
-            {allBooks.map(book => (
-              <li key={book.id} className="management-item">
+            {/* >>> ALTERAÇÃO 5: Mapeando 'allSummaries' e usando dados de resumo <<< */}
+            {allSummaries.map(summary => (
+              <li key={summary.id} className="management-item">
                 <div className="item-info">
-                  <span className="item-title">{book.title}</span>
-                  <span className="item-id">(ID: {book.id})</span>
+                  <span className="item-title">{summary.book?.title}</span>
+                  <span className="item-id">(ID do Resumo: {summary.id})</span>
                 </div>
                 <div className="item-actions">
-                  <span className={`item-status status-${book.status.toLowerCase()}`}>{book.status}</span>
-                  {/* BOTÃO PARA ALTERAR A CAPA */}
-                  <button
-                    onClick={() => handleTriggerUpload(book.id)}
-                    className="btn-change-cover"
-                  >
-                    Alterar Capa
-                  </button>
-                  <button 
-                    onClick={() => handleDeleteBook(book.id, book.title)} 
-                    className="btn-delete-permanent"
-                  >
-                    Deletar
-                  </button>
+                  <span className={`item-status status-${summary.status?.toLowerCase()}`}>{summary.status}</span>
+                  <button onClick={() => handleTriggerUpload(summary.book?.id)} className="btn-change-cover">Alterar Capa</button>
+                  <button onClick={() => handleDeleteSummary(summary.id, summary.book?.title)} className="btn-delete-permanent">Deletar</button>
                 </div>
               </li>
             ))}
