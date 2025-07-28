@@ -1,29 +1,24 @@
-// src/services/api.js
+// src/services/api.js (VERSÃO FINAL COMPLETA E CORRIGIDA)
 
 import axios from 'axios';
 
 const api = axios.create({
-  // Se você usa variáveis de ambiente, mantenha como estava.
-  // Senão, coloque a URL base aqui.
-  baseURL: 'http://localhost:3333/api',
+  // <<< CORREÇÃO PRINCIPAL AQUI >>>
+  // Agora o código busca a variável de ambiente que você configurou na Vercel.
+  baseURL: import.meta.env.VITE_API_URL, 
 });
 
-// >>> O INTERCEPTOR <<<
-// Esta função será executada ANTES de CADA requisição que usar a instância 'api'
+// O seu interceptor para adicionar o token de autenticação está perfeito.
+// Ele garante que o usuário continue logado em todas as requisições.
 api.interceptors.request.use(
   (config) => {
-    // Pega o token do localStorage no último momento possível
     const token = localStorage.getItem('@MyReadify:token');
-    
-    // Se o token existir, ele é anexado ao cabeçalho da requisição
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
-    return config; // Retorna a configuração modificada para a requisição prosseguir
+    return config;
   },
   (error) => {
-    // Para tratar erros de requisição
     return Promise.reject(error);
   }
 );
