@@ -72,7 +72,7 @@ const BookDetailPage = () => {
               <form className="review-form">
                 <h4>Deixe sua avaliação</h4>
                 <div className="form-group"><label>Nota</label><StarRatingForm /></div>
-                <div className="form-group"><label htmlFor="comment">Comentário</label><textarea id="comment" name="comment" rows="4"></textarea></div>
+                <div className="form-group"><label htmlFor="content">Comentário</label><textarea id="content" name="content" rows="4"></textarea></div>
                 <button type="submit">Enviar Avaliação</button>
               </form>
             ) : (

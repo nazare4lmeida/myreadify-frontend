@@ -1,11 +1,12 @@
-// src/pages/MySummariesPage.jsx (Versão Final e Corrigida)
+// src/pages/MySummariesPage.jsx (Versão Final e Simplificada)
 
 import React, { useState, useEffect } from "react";
 import api from "../services/api";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import "./MySummariesPage.css";
-import mockLivros from "../data/mockData";
+// O mockData não é mais necessário aqui para a lógica da imagem
+// import mockLivros from "../data/mockData";
 
 const MySummariesPage = () => {
   const [summaries, setSummaries] = useState([]);
@@ -18,6 +19,8 @@ const MySummariesPage = () => {
       const fetchMySummaries = async () => {
         try {
           const response = await api.get("/my-summaries");
+          // Vamos dar um console.log para ter 100% de certeza do que chegou
+          console.log("Dados recebidos da API:", response.data); 
           setSummaries(response.data);
         } catch (err) {
           setError(
@@ -28,13 +31,13 @@ const MySummariesPage = () => {
           setLoading(false);
         }
       };
-
       fetchMySummaries();
     } else {
       setLoading(false);
     }
   }, [signed]);
 
+  // A lógica de loading e error continua a mesma...
   if (loading) {
     return (
       <div className="my-summaries-page container">
@@ -59,46 +62,34 @@ const MySummariesPage = () => {
 
       {summaries.length > 0 ? (
         <ul className="summaries-list">
-          {summaries.map((summary) => {
-            // >>> INÍCIO DA LÓGICA FINAL <<<
-            
-            // 1. Pegamos o slug que agora vem da API.
-            const apiSlug = summary.books?.slug;
+          {/* O map agora ficou muito mais simples */}
+          {summaries.map((summary) => (
+            <li key={summary.id} className="summary-item">
+              <Link
+                // Usamos o slug diretamente do objeto summary
+                to={summary.slug ? `/livro/${summary.slug}` : '#'}
+                className="summary-link-wrapper"
+              >
+                <img
+                  // Usamos a cover_url diretamente do objeto summary
+                  // O backend já nos dá a URL completa e pronta!
+                  src={summary.cover_url} 
+                  alt={`Capa do livro ${summary.title}`}
+                  className="summary-cover-image"
+                />
 
-            // 2. Usamos o slug para encontrar o livro correspondente no nosso mockData local.
-            const localBook = mockLivros.find(book => book.slug === apiSlug);
+                <div className="summary-info">
+                  {/* O título e autor também vêm direto de summary */}
+                  <strong>{summary.title}</strong>
+                  <span>por {summary.author}</span>
+                </div>
 
-            // 3. A imagem será a do mock local se o livro for encontrado, senão, será a da API.
-            const imageUrl = localBook ? localBook.cover_url : summary.books?.cover_url;
-
-            // >>> FIM DA LÓGICA FINAL <<<
-
-            return (
-              <li key={summary.id} className="summary-item">
-                <Link
-                  // O link agora usa o slug da API, resolvendo o erro 'undefined'.
-                  to={apiSlug ? `/livro/${apiSlug}` : '#'}
-                  className="summary-link-wrapper"
-                >
-                  <img
-                    // A imagem agora é a correta (local ou da API).
-                    src={imageUrl}
-                    alt={`Capa do livro ${summary.title}`}
-                    className="summary-cover-image"
-                  />
-
-                  <div className="summary-info">
-                    <strong>{summary.title}</strong>
-                    <span>por {summary.author}</span>
-                  </div>
-
-                  <span className={`status status-${summary.status.toLowerCase()}`}>
-                    {summary.status === "PENDING" ? "Pendente" : summary.status}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
+                <span className={`status status-${summary.status.toLowerCase()}`}>
+                  {summary.status === "PENDING" ? "Pendente" : summary.status}
+                </span>
+              </Link>
+            </li>
+          ))}
         </ul>
       ) : (
         <p>Você ainda não enviou nenhum resumo.</p>

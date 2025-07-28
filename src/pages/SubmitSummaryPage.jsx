@@ -80,7 +80,7 @@ const SubmitSummaryPage = () => {
         formData.append("title", prefilledBook.title);
         formData.append("author", prefilledBook.author);
         formData.append("category", prefilledBook.category);
-        formData.append("summary_text", content);
+        formData.append("content", content);
 
         // 🔍 Adiciona a capa apenas se não for uma URL externa (mock/local)
         if (!prefilledBook.cover_url.startsWith("http")) {
@@ -112,7 +112,7 @@ const SubmitSummaryPage = () => {
       formData.append("title", title);
       formData.append("author", author);
       formData.append("category", category);
-      formData.append("summary_text", content);
+      formData.append("content", content);
       formData.append("coverImage", coverImage);
 
       await api.post("/summaries", formData, {

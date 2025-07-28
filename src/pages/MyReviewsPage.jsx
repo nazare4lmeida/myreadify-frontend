@@ -85,7 +85,7 @@ const MyReviewsPage = () => {
                     {"★".repeat(review.rating)}
                     {"☆".repeat(5 - review.rating)}
                   </p>
-                  <p className="my-review-comment">"{review.comment}"</p>
+                  <p className="my-review-content">"{review.content}"</p>
                 </div>
               </div>
             );
