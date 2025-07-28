@@ -1,30 +1,30 @@
-// SubmitSummaryPage.js
+// src/pages/SubmitSummaryPage.jsx (VERSÃO FINAL COMPLETA PARA SUBSTITUIÇÃO)
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../contexts/AuthContext";
 import "./SubmitSummaryPage.css";
+
+const images = import.meta.glob('../assets/*.jpg', { eager: true });
 
 const SubmitSummaryPage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { signed } = useAuth();
-
   const prefilledBook = state?.book;
   const isUpdating = !!prefilledBook;
-
   const [title, setTitle] = useState(prefilledBook?.title || "");
   const [author, setAuthor] = useState(prefilledBook?.author || "");
   const [category, setCategory] = useState(prefilledBook?.category || "");
   const [content, setContent] = useState("");
   const [coverImage, setCoverImage] = useState(null);
-
   const [mySummaries, setMySummaries] = useState([]);
   const [loadingMySummaries, setLoadingMySummaries] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [resolvedCoverUrl, setResolvedCoverUrl] = useState('');
 
   const fetchMySummaries = useCallback(async () => {
     setLoadingMySummaries(true);
@@ -39,6 +39,19 @@ const SubmitSummaryPage = () => {
   }, []);
 
   useEffect(() => {
+    if (prefilledBook?.cover_url) {
+      const path = prefilledBook.cover_url;
+      if (path.startsWith('http')) {
+        setResolvedCoverUrl(path);
+      } else {
+        const imageName = path.split('/').pop();
+        const viteImagePath = `../assets/${imageName}`;
+        setResolvedCoverUrl(images[viteImagePath]?.default || '');
+      }
+    }
+  }, [prefilledBook]);
+
+  useEffect(() => {
     if (signed) {
       fetchMySummaries();
     } else {
@@ -46,91 +59,42 @@ const SubmitSummaryPage = () => {
     }
   }, [signed, fetchMySummaries]);
 
-  const getCoverUrl = () => {
-    if (!prefilledBook?.cover_url) return null;
-
-    if (prefilledBook.cover_url.includes("/src/assets/")) {
-      return prefilledBook.cover_url.replace("/src/assets/", "/assets/");
-    }
-
-    if (prefilledBook.cover_url.startsWith("http")) {
-      return prefilledBook.cover_url;
-    }
-
-    return `http://localhost:3333/files/${prefilledBook.cover_url}`;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
     setIsSubmitting(true);
+    setError("");
 
-    try {
-      if (isUpdating) {
-        // 🧠 CENÁRIO 1: Livro vindo do mock (já tem id, slug, cover_url)
-        if (!content) {
-          setError("Por favor, escreva o resumo.");
-          setIsSubmitting(false);
-          return;
-        }
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("author", author);
+    formData.append("category", category);
+    formData.append("content", content);
+    
+    if (isUpdating && prefilledBook.slug) {
+        formData.append('slug', prefilledBook.slug);
+    }
 
-        const formData = new FormData();
-        formData.append("bookId", prefilledBook.id);
-        formData.append("title", prefilledBook.title);
-        formData.append("author", prefilledBook.author);
-        formData.append("category", prefilledBook.category);
-        formData.append("content", content);
-
-        // 🔍 Adiciona a capa apenas se não for uma URL externa (mock/local)
-        if (!prefilledBook.cover_url.startsWith("http")) {
-          const response = await fetch(getCoverUrl());
-          const blob = await response.blob();
-          const file = new File([blob], prefilledBook.cover_url, {
-            type: blob.type,
-          });
-          formData.append("coverImage", file);
-        }
-
-        await api.post("/summaries", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-
-        alert("Resumo enviado com sucesso!");
-        navigate(`/livro/${prefilledBook.slug}`);
-        return;
-      }
-
-      // 🧠 CENÁRIO 2: Livro criado do zero (sem id/slug)
-      if (!title || !author || !category || !content || !coverImage) {
-        setError("Por favor, preencha todos os campos e selecione uma imagem.");
+    if (isUpdating) {
+        // <<< A CORREÇÃO FINAL ESTÁ AQUI >>>
+        // Em vez de enviar o caminho completo, extraímos e enviamos SÓ o nome do arquivo.
+        const imageName = prefilledBook.cover_url.split('/').pop();
+        formData.append('coverUrlMock', imageName); 
+    } else if (coverImage) {
+        formData.append("coverImage", coverImage);
+    } else {
+        setError("Para um novo livro, a imagem da capa é obrigatória.");
         setIsSubmitting(false);
         return;
-      }
-
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("author", author);
-      formData.append("category", category);
-      formData.append("content", content);
-      formData.append("coverImage", coverImage);
-
-      await api.post("/summaries", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      alert("Seu novo livro e resumo foram enviados para avaliação!");
-      setTitle("");
-      setAuthor("");
-      setCategory("");
-      setContent("");
-      setCoverImage(null);
-      document.getElementById("coverImage").value = "";
-
-      fetchMySummaries();
+    }
+    
+    try {
+        await api.post("/summaries", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+        alert("Resumo enviado para avaliação com sucesso!");
+        navigate("/meus-resumos");
     } catch (err) {
-      const errorMessage =
-        err.response?.data?.error || "Erro desconhecido ao enviar.";
+      const errorMessage = err.response?.data?.error || "Erro desconhecido ao enviar.";
       setError(errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -147,17 +111,10 @@ const SubmitSummaryPage = () => {
     return (
       <div className="submit-summary-page not-logged-in container">
         <h2>Envie seu Resumo</h2>
-        <p>
-          Para enviar resumos e acompanhar seus envios, é necessário estar
-          logado.
-        </p>
+        <p>Para enviar resumos e acompanhar seus envios, é necessário estar logado.</p>
         <div className="auth-links">
-          <Link to="/login" className="btn-login">
-            Fazer Login
-          </Link>
-          <Link to="/register" className="btn-register">
-            Cadastrar-se
-          </Link>
+          <Link to="/login" className="btn-login">Fazer Login</Link>
+          <Link to="/register" className="btn-register">Cadastrar-se</Link>
         </div>
       </div>
     );
@@ -166,56 +123,23 @@ const SubmitSummaryPage = () => {
   return (
     <div className="submit-summary-page">
       <div className="form-section">
-        <h2>{isUpdating ? "Complete o Resumo" : "Envie seu Resumo"}</h2>
+        <h2>{isUpdating ? "Complete o Resumo" : "Envie um Novo Resumo"}</h2>
         <p>
           {isUpdating
-            ? `Você está enviando um resumo para o livro "${prefilledBook.title}". As informações do livro não podem ser alteradas.`
-            : "Após o envio, seu resumo será avaliado por nossa equipe. Se aprovado, será publicado com seu nome."}
+            ? `Você está enviando um resumo para o livro "${prefilledBook.title}".`
+            : "Preencha todos os campos. Após o envio, seu resumo será avaliado."}
         </p>
-
         <form onSubmit={handleSubmit} noValidate>
-          <input
-            type="text"
-            placeholder="Nome do Livro"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            readOnly={isUpdating}
-          />
-          <input
-            type="text"
-            placeholder="Autor do Livro"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            required
-            readOnly={isUpdating}
-          />
-          <input
-            type="text"
-            placeholder="Categoria"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-            readOnly={isUpdating}
-          />
-          <textarea
-            placeholder="Escreva seu resumo aqui..."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows="8"
-            required
-          />
-
+          <input type="text" placeholder="Nome do Livro" value={title} onChange={(e) => setTitle(e.target.value)} required readOnly={isUpdating} />
+          <input type="text" placeholder="Autor do Livro" value={author} onChange={(e) => setAuthor(e.target.value)} required readOnly={isUpdating} />
+          <input type="text" placeholder="Categoria" value={category} onChange={(e) => setCategory(e.target.value)} required readOnly={isUpdating} />
+          <textarea placeholder="Escreva seu resumo aqui..." value={content} onChange={(e) => setContent(e.target.value)} rows="8" required />
           {isUpdating ? (
             <div className="input-group">
               <label>Capa do Livro:</label>
               <div className="file-upload-wrapper static-preview">
-                {getCoverUrl() ? (
-                  <img
-                    src={getCoverUrl()}
-                    alt={`Capa de ${title}`}
-                    className="existing-cover-preview"
-                  />
+                {resolvedCoverUrl ? (
+                  <img src={resolvedCoverUrl} alt={`Capa de ${title}`} className="existing-cover-preview" />
                 ) : (
                   <p style={{ fontStyle: "italic" }}>Capa não disponível.</p>
                 )}
@@ -224,33 +148,19 @@ const SubmitSummaryPage = () => {
           ) : (
             <div className="input-group">
               <label htmlFor="coverImage" className="file-upload-wrapper">
-                {coverImage ? (
-                  <p>{coverImage.name}</p>
-                ) : (
-                  <p>Clique para escolher a capa</p>
-                )}
+                {coverImage ? <p>{coverImage.name}</p> : <p>Clique para escolher a capa</p>}
                 <span>JPEG ou PNG</span>
               </label>
-              <input
-                type="file"
-                id="coverImage"
-                name="coverImage"
-                accept="image/jpeg, image/png"
-                onChange={handleFileChange}
-                required
-              />
+              <input type="file" id="coverImage" name="coverImage" accept="image/jpeg, image/png" onChange={handleFileChange} required />
             </div>
           )}
-
           <button type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Enviando..." : "Enviar para Avaliação"}
           </button>
-
           {message && <p className="feedback-message success">{message}</p>}
           {error && <p className="feedback-message error">{error}</p>}
         </form>
       </div>
-
       <div className="my-summaries-section">
         <h3>Meus Envios:</h3>
         {loadingMySummaries ? (
@@ -264,11 +174,7 @@ const SubmitSummaryPage = () => {
                   <span>por {summary.author}</span>
                 </div>
                 {typeof summary.status === "string" && (
-                  <span
-                    className={`status status-${summary.status.toLowerCase()}`}
-                  >
-                    {summary.status}
-                  </span>
+                  <span className={`status status-${summary.status.toLowerCase()}`}>{summary.status}</span>
                 )}
               </li>
             ))}

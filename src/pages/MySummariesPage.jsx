@@ -1,12 +1,13 @@
-// src/pages/MySummariesPage.jsx (Versão Final e Simplificada)
+// src/pages/MySummariesPage.jsx (VERSÃO FINAL COMPLETA E CORRIGIDA)
 
 import React, { useState, useEffect } from "react";
 import api from "../services/api";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import "./MySummariesPage.css";
-// O mockData não é mais necessário aqui para a lógica da imagem
-// import mockLivros from "../data/mockData";
+
+// Adicionar a importação dinâmica de imagens do Vite
+const images = import.meta.glob('../assets/*.jpg', { eager: true });
 
 const MySummariesPage = () => {
   const [summaries, setSummaries] = useState([]);
@@ -19,8 +20,6 @@ const MySummariesPage = () => {
       const fetchMySummaries = async () => {
         try {
           const response = await api.get("/my-summaries");
-          // Vamos dar um console.log para ter 100% de certeza do que chegou
-          console.log("Dados recebidos da API:", response.data); 
           setSummaries(response.data);
         } catch (err) {
           setError(
@@ -37,7 +36,35 @@ const MySummariesPage = () => {
     }
   }, [signed]);
 
-  // A lógica de loading e error continua a mesma...
+  // <<< CORREÇÃO PRINCIPAL: UMA FUNÇÃO MAIS ROBUSTA E COM DEPURADOR >>>
+  const resolveCoverUrl = (coverPath) => {
+    // 1. Se não houver caminho, retorna um placeholder.
+    if (!coverPath) {
+      return 'https://via.placeholder.com/150x220.png?text=Sem+Capa';
+    }
+    
+    // 2. Se já for uma URL completa da API, retorna ela mesma.
+    if (coverPath.startsWith('http')) {
+      return coverPath;
+    }
+
+    // 3. Se for um caminho local do mockData, tenta resolver.
+    const imageName = coverPath.split('/').pop(); // Pega o nome do arquivo, ex: "lordoftherings.jpg"
+    const viteImagePath = `../assets/${imageName}`; // Monta a chave que o Vite espera: "../assets/lordoftherings.jpg"
+
+    // 4. Verifica se a imagem foi encontrada pelo Vite.
+    if (images[viteImagePath]) {
+      // Se encontrou, retorna a URL processada pelo Vite.
+      return images[viteImagePath].default;
+    } else {
+      // Se não encontrou, avisa no console qual chave estava procurando.
+      // Isso nos ajuda a depurar se o caminho no mockData estiver diferente.
+      console.error(`[MySummariesPage] Imagem do mock não encontrada! Procurando por: "${viteImagePath}"`);
+      return 'https://via.placeholder.com/150x220.png?text=Capa+N%C3%A3o+Encontrada';
+    }
+  };
+
+  // O resto do seu componente continua como estava...
   if (loading) {
     return (
       <div className="my-summaries-page container">
@@ -62,28 +89,21 @@ const MySummariesPage = () => {
 
       {summaries.length > 0 ? (
         <ul className="summaries-list">
-          {/* O map agora ficou muito mais simples */}
           {summaries.map((summary) => (
             <li key={summary.id} className="summary-item">
               <Link
-                // Usamos o slug diretamente do objeto summary
                 to={summary.slug ? `/livro/${summary.slug}` : '#'}
                 className="summary-link-wrapper"
               >
                 <img
-                  // Usamos a cover_url diretamente do objeto summary
-                  // O backend já nos dá a URL completa e pronta!
-                  src={summary.cover_url} 
+                  src={resolveCoverUrl(summary.cover_url)}
                   alt={`Capa do livro ${summary.title}`}
                   className="summary-cover-image"
                 />
-
                 <div className="summary-info">
-                  {/* O título e autor também vêm direto de summary */}
                   <strong>{summary.title}</strong>
                   <span>por {summary.author}</span>
                 </div>
-
                 <span className={`status status-${summary.status.toLowerCase()}`}>
                   {summary.status === "PENDING" ? "Pendente" : summary.status}
                 </span>
