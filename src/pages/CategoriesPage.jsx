@@ -1,17 +1,24 @@
+// src/pages/CategoriesPage.jsx (VERSÃO FINAL COM CORREÇÃO MÍNIMA)
+
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import mockLivros from '../data/mockData';
 import BookCard from '../components/BookCard';
 import './CategoriesPage.css';
 
-// Importa as imagens para que o Vite as reconheça (caso necessário para livros da API)
 const images = import.meta.glob('../assets/*.jpg', { eager: true });
 
 const CategoriesPage = () => {
   const [allBooks, setAllBooks] = useState(mockLivros);
   const [selectedCategory, setSelectedCategory] = useState('Todos');
 
+  // <<< CORREÇÃO PRINCIPAL AQUI >>>
   const resolveCoverUrl = (coverPath) => {
+    // Se a URL já é completa (começa com http), retorna ela mesma.
+    if (coverPath && coverPath.startsWith('http')) {
+      return coverPath;
+    }
+    // Se não, tenta resolver o caminho local como antes (para o mockData).
     if (!coverPath || coverPath.startsWith('/src/assets')) return coverPath;
     const imageName = coverPath.split('/').pop();
     const imagePath = `../assets/${imageName}`;
@@ -39,16 +46,17 @@ const CategoriesPage = () => {
             return {
               ...mockVersion,
               ...apiVersion,
-              cover_url: mockVersion.cover_url, // mantém a imagem mock
-              isPlaceholder: !apiVersion.content,
+              cover_url: mockVersion.cover_url,
+              isPlaceholder: !apiVersion.summary, // Verificamos o campo 'summary' que vem da API
             };
           }
 
           if (apiVersion) {
+            // A chamada para resolveCoverUrl agora vai funcionar para a URL da API
             return {
               ...apiVersion,
               cover_url: resolveCoverUrl(apiVersion.cover_url),
-              isPlaceholder: !apiVersion.content,
+              isPlaceholder: !apiVersion.summary,
             };
           }
 
@@ -78,11 +86,7 @@ const CategoriesPage = () => {
         <h2>Navegue por Categoria</h2>
         <div className="category-filters">
           {allCategories.map(category => (
-            <button
-              key={category}
-              className={category === selectedCategory ? 'active' : ''}
-              onClick={() => setSelectedCategory(category)}
-            >
+            <button key={category} className={category === selectedCategory ? 'active' : ''} onClick={() => setSelectedCategory(category)}>
               {category}
             </button>
           ))}
@@ -90,10 +94,7 @@ const CategoriesPage = () => {
       </div>
       <div className="book-list">
         {filteredBooks.map(livro => (
-          <BookCard 
-            key={livro.slug || livro.id || Math.random()} 
-            livro={livro} 
-          />
+          <BookCard key={livro.slug || livro.id} livro={livro} />
         ))}
       </div>
     </div>

@@ -1,10 +1,12 @@
-import React from 'react';
+// src/pages/BookDetailPage.jsx (VERSÃO FINAL COMPLETA E CORRIGIDA)
+
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import api from '../services/api'; // Precisamos da API
 import './BookDetailPage.css';
-import mockLivros from '../data/mockData';
 import { useAuth } from '../contexts/AuthContext';
 
-// Componente placeholder
+// Componente placeholder para as estrelas de avaliação
 const StarRatingForm = () => (
   <div className="star-rating"><div className="stars"><button>★</button><button>★</button><button>★</button><button>★</button><button>★</button></div></div>
 );
@@ -12,39 +14,73 @@ const StarRatingForm = () => (
 const BookDetailPage = () => {
   const { slug } = useParams();
   const { signed } = useAuth();
-  const bookData = mockLivros.find(book => book.slug === slug);
+  
+  // Estados para guardar os dados do livro, loading e erro
+  const [book, setBook] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  if (!bookData) {
-    return <div className="centered-message">Livro não encontrado.</div>;
+  useEffect(() => {
+    // Função para buscar os detalhes do livro na API
+    const fetchBookDetails = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get(`/books/${slug}`);
+        setBook(response.data);
+      } catch (err) {
+        console.error("Erro ao buscar detalhes do livro:", err);
+        setError("Livro não encontrado ou indisponível.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBookDetails();
+  }, [slug]); // Roda o efeito sempre que o slug na URL mudar
+
+  // Renderiza mensagens de loading e erro
+  if (loading) {
+    return <div className="centered-message">Carregando detalhes do livro...</div>;
   }
 
-  const imageUrl = bookData.cover_url;
+  if (error || !book) {
+    return <div className="centered-message">{error || "Livro não encontrado."}</div>;
+  }
 
+  // A partir daqui, o componente usa o estado 'book' que veio da API
   return (
     <div className="book-detail-page container">
       <div className="book-detail-content">
-        <img src={imageUrl} alt={`Capa do livro ${bookData.title}`} className="book-detail-cover" />
+        <img src={book.cover_url} alt={`Capa do livro ${book.title}`} className="book-detail-cover" />
         <div className="book-detail-info">
-          <h1>{bookData.title}</h1>
-          <h2>por {bookData.author}</h2>
-          <p className="category-tag">{bookData.category}</p>
+          <h1>{book.title}</h1>
+          <h2>por {book.author}</h2>
+          <p className="category-tag">{book.category}</p>
           
-          {bookData.summary && !bookData.isPlaceholder ? (
+          {/* Verifica se existe um resumo vindo da API */}
+          {book.summary ? (
             <>
               <h3>Resumo</h3>
-              <p className="book-summary-text">{bookData.summary}</p>
+              <p className="book-summary-text">{book.summary}</p>
+              
+              {/* <<< CORREÇÃO PRINCIPAL: Exibe o nome do usuário >>> */}
+              {/* Se o campo 'submitted_by' existir, exibimos a linha de crédito. */}
+              {book.submitted_by && (
+                <p className="submitted-by-text">
+                  Enviado por: <strong>{book.submitted_by}</strong>
+                </p>
+              )}
             </>
           ) : (
+            // Se não houver resumo, mostra o prompt para enviar um
             <div className="summary-prompt">
-              <p>Este livro ainda não tem um resumo.</p>
+              <p>Este livro ainda não tem um resumo aprovado.</p>
               {signed ? (
-                // >>> A CORREÇÃO ESTÁ AQUI <<<
-                // Usamos a mesma estrutura dos botões de login/registro para reutilizar o estilo.
                 <div className="summary-actions" style={{ justifyContent: 'center' }}>
                   <Link 
                     to="/enviar-resumo" 
-                    state={{ book: bookData }} 
-                    className="btn btn-primary" // Classe correta para o botão marrom
+                    state={{ book: book }} // Envia os dados do livro para a página de envio
+                    className="btn btn-primary"
                   >
                     Seja o primeiro a enviar!
                   </Link>
@@ -60,7 +96,7 @@ const BookDetailPage = () => {
         </div>
       </div>
 
-      {/* Seção de Avaliações */}
+      {/* Seção de Avaliações (continua como estava) */}
       <div className="book-detail-reviews-wrapper">
         <div className="reviews-section">
           <h3>Avaliações</h3>
