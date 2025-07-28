@@ -1,3 +1,5 @@
+// src/pages/BookDetailPage.jsx (VERSÃO FINAL COMPLETA E CORRIGIDA)
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../services/api';
@@ -17,61 +19,74 @@ const BookDetailPage = () => {
   
   const [bookData, setBookData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  
+  // <<< CORREÇÃO 1: Um estado separado para a URL final da imagem >>>
+  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
-    setLoading(true);
-    
-    // Primeiro, sempre procuramos no mock para ter os dados base.
-    const initialBook = mockLivros.find(book => book.slug === slug);
-    
-    // Tentamos buscar na API para obter os dados mais recentes (como o resumo).
-    api.get(`/books/${slug}`)
-      .then(response => {
-        // SUCESSO: O livro existe na API (já foi enviado e aprovado).
-        // Usamos os dados da API, mas GARANTIMOS que a imagem do mock seja usada se o livro for do mock.
-        const apiBook = response.data;
-        const finalBookData = initialBook 
-          ? { ...initialBook, ...apiBook, cover_url: initialBook.cover_url } 
-          : apiBook;
-        setBookData(finalBookData);
-      })
-      .catch(err => {
-        // FALHA: A API deu erro (provavelmente 404). Isso significa que o livro SÓ existe no mock.
-        if (initialBook) {
-          // Nesse caso, usamos apenas os dados do mock.
-          setBookData(initialBook);
+    const fetchBookData = async () => {
+      setLoading(true);
+      setError('');
+      setBookData(null);
+      setImageUrl('');
+
+      try {
+        const response = await api.get(`/books/${slug}`);
+        setBookData(response.data);
+      } catch (err) {
+        if (err.response && err.response.status === 404) {
+          const mockBook = mockLivros.find(book => book.slug === slug);
+          if (mockBook) {
+            setBookData(mockBook);
+          } else {
+            setError("Livro não encontrado.");
+          }
         } else {
-          // Não está na API nem no mock.
-          setBookData(null); 
+          setError("Não foi possível carregar o livro.");
         }
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchBookData();
   }, [slug]);
 
-  // A função para resolver a imagem está correta
-  const resolveCoverUrl = (coverPath) => {
-    if (!coverPath) return 'https://via.placeholder.com/200x300.png?text=Sem+Capa';
-    if (coverPath.startsWith('http')) return coverPath; // Para livros 100% da API
-    const imageName = coverPath.split('/').pop();
-    const viteImagePath = `../assets/${imageName}`;
-    return images[viteImagePath]?.default || 'https://via.placeholder.com/200x300.png?text=Capa+Inv%C3%A1lida';
-  };
-  
+  // <<< CORREÇÃO 2: Um segundo useEffect para resolver a imagem DEPOIS que os dados do livro forem carregados >>>
+  useEffect(() => {
+    if (bookData?.cover_url) {
+      const path = bookData.cover_url;
+
+      if (path.startsWith('http')) {
+        setImageUrl(path); // URL da API, usa direto
+      } else {
+        // Caminho do mock, resolvemos com o Vite
+        const imageName = path.split('/').pop();
+        const viteImagePath = `../assets/${imageName}`;
+        const resolvedPath = images[viteImagePath]?.default;
+        
+        if (resolvedPath) {
+          setImageUrl(resolvedPath);
+        } else {
+          setImageUrl('https://via.placeholder.com/200x300.png?text=Capa+Inv%C3%A1lida');
+        }
+      }
+    }
+  }, [bookData]); // Roda sempre que o bookData mudar
+
   if (loading) {
     return <div className="centered-message">Carregando livro...</div>;
   }
   
-  if (!bookData) {
-    return <div className="centered-message">Livro não encontrado.</div>;
+  if (error || !bookData) {
+    return <div className="centered-message">{error || "Livro não encontrado."}</div>;
   }
-
-  const imageUrl = resolveCoverUrl(bookData.cover_url);
 
   return (
     <div className="book-detail-page container">
       <div className="book-detail-content">
+        {/* <<< CORREÇÃO 3: Usar o estado 'imageUrl' que foi resolvido pelo useEffect >>> */}
         <img src={imageUrl} alt={`Capa do livro ${bookData.title}`} className="book-detail-cover" />
         <div className="book-detail-info">
           <h1>{bookData.title}</h1>
