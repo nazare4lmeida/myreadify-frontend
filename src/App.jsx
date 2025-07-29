@@ -17,7 +17,7 @@ import AdminApprovalPage from "./pages/AdminApprovalPage";
 import SubmitPromptPage from "./pages/SubmitPromptPage";
 import ContactPage from "./pages/ContactPage";
 import AdminMessagesPage from "./pages/AdminMessagesPage";
-import AdminRoute from "./components/adminRoute"; // Certifique-se que este caminho está correto
+import AdminRoute from "./components/adminRoute"; 
 
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -39,7 +39,7 @@ function App() {
             <Route path="/fale-conosco" element={<ContactPage />} /> {/* Rota pública para ENVIAR mensagem */}
 
             {/* --- ROTAS PRIVADAS (EXIGEM LOGIN) --- */}
-            {/* Você provavelmente vai querer envolver estas em um <PrivateRoute> no futuro */}
+            {/* envolver estas em um <PrivateRoute> no futuro */}
             <Route path="/meus-resumos" element={<MySummariesPage />} />
             <Route path="/minhas-avaliacoes" element={<MyReviewsPage />} />
             <Route
@@ -47,9 +47,8 @@ function App() {
               element={<SubmitPromptPage />}
             />
             
-            {/* >>> INÍCIO DA CORREÇÃO <<< */}
             {/* --- ROTAS DE ADMIN (EXIGEM LOGIN E CARGO 'admin') --- */}
-            {/* Usamos o AdminRoute como um grupo para proteger todas as rotas filhas */}
+            {/* Uso o AdminRoute como um grupo para proteger todas as rotas filhas */}
             <Route element={<AdminRoute />}>
               <Route
                 path="/admin/aprovacoes"
@@ -57,10 +56,9 @@ function App() {
               />
               <Route 
                 path="/admin/mensagens" 
-                element={<AdminMessagesPage />} // Agora está protegida!
+                element={<AdminMessagesPage />} 
               />
             </Route>
-            {/* >>> FIM DA CORREÇÃO <<< */}
 
           </Routes>
         </div>
