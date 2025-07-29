@@ -1,66 +1,72 @@
-// src/pages/MyReviewsPage.jsx
+// src/pages/MyReviewsPage.jsx (VERSÃO FINAL COMPLETA E CORRIGIDA)
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../contexts/AuthContext";
 import "./MyReviewsPage.css";
-import mockLivros from "../data/mockData";
+// mockLivros não é mais estritamente necessário para resolver as URLs de capa
+// porque o backend agora envia a URL completa ou o caminho que o frontend resolve dinamicamente.
+// No entanto, pode ser útil para outras lógicas, se for o caso.
+// import mockLivros from "../data/mockData"; 
 
-const images = import.meta.glob("../assets/*.jpg", { eager: true });
+// Importação dinâmica de imagens para o Vite.
+// Isso é necessário para que o Vite processe corretamente as referências a imagens locais,
+// caso alguma cover_url ainda venha como caminho relativo do mock.
+const images = import.meta.glob('../assets/*.jpg', { eager: true });
+
 
 const MyReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { signed } = useAuth();
+  const { signed, user } = useAuth(); // Importar 'user' para verificar o ID do usuário
+
+  // Função para resolver a URL da capa de forma inteligente (copiada de CategoriesPage/HomePage)
+  const resolveCoverUrl = (coverPath) => {
+    if (!coverPath) return 'https://via.placeholder.com/200x300.png?text=Sem+Capa';
+    if (coverPath.startsWith('http')) { // Se já é uma URL completa (ex: de upload)
+      return coverPath;
+    }
+    // Se for um caminho relativo (do mockData), tenta resolver com Vite
+    const imageName = coverPath.split('/').pop();
+    const viteImagePath = `../assets/${imageName}`;
+    if (images[viteImagePath]) {
+      return images[viteImagePath].default;
+    } else {
+      console.warn(`[MyReviewsPage] Imagem do mock não encontrada! Procurando por: "${viteImagePath}". Caminho original: "${coverPath}"`);
+      return 'https://via.placeholder.com/200x300.png?text=Capa+N%C3%A3o+Encontrada';
+    }
+  };
 
   useEffect(() => {
     if (signed) {
-      api
-        .get("/reviews/my-reviews")
-        .then((response) => {
-          const enrichedReviews = response.data.map((review) => {
-            const livroMock = mockLivros.find(
-              (livro) =>
-                livro.title.toLowerCase().trim() ===
-                review.book.title.toLowerCase().trim()
-            );
-
-            let coverUrl = "";
-            if (livroMock) {
-              // se for livro mockado → usa imagem local
-              const imageName = livroMock.cover_url.split("/").pop();
-              const vitePath = `../assets/${imageName}`;
-              coverUrl = images[vitePath]?.default || livroMock.cover_url;
-            } else if (review.book.cover_url) {
-              // se for livro enviado → usa direto a URL ou caminho salvo
-              if (review.book.cover_url.startsWith("http")) {
-                coverUrl = review.book.cover_url;
-              } else {
-                coverUrl = `http://localhost:3333/files/${review.book.cover_url}`;
-              }
-            }
-
-            const bookData = {
+      const fetchMyReviews = async () => {
+        setIsLoading(true);
+        try {
+          // CORREÇÃO PRINCIPAL: Endpoint correto para buscar minhas avaliações
+          const response = await api.get("/reviews/my"); 
+          
+          // Mapeia as reviews para garantir que a cover_url está resolvida
+          const formattedReviews = response.data.map(review => ({
+            ...review,
+            book: {
               ...review.book,
-              slug: livroMock ? livroMock.slug : review.book.slug || review.book.id,
-              cover_url: coverUrl,
-            };
+              cover_url: resolveCoverUrl(review.book.cover_url) // Usa a função de resolução
+            }
+          }));
 
-            return { ...review, book: bookData };
-          });
-
-          setReviews(enrichedReviews);
-        })
-        .catch((error) => {
+          setReviews(formattedReviews);
+        } catch (error) {
           console.error("Falha ao buscar minhas avaliações:", error);
-        })
-        .finally(() => {
+          // Opcional: mostrar uma mensagem de erro para o usuário
+        } finally {
           setIsLoading(false);
-        });
+        }
+      };
+      fetchMyReviews();
     } else {
-      setIsLoading(false);
+      setIsLoading(false); // Se não estiver logado, para o carregamento
     }
-  }, [signed]);
+  }, [signed]); // Dependência em 'signed' para rebuscar quando o status de login mudar
 
   if (isLoading) {
     return (
@@ -80,9 +86,10 @@ const MyReviewsPage = () => {
 
             return (
               <div key={review.id} className="my-review-card">
+                {/* O slug do livro agora deve vir corretamente do backend */}
                 <Link to={`/livro/${book.slug}#review-${review.id}`}>
                   <img
-                    src={book.cover_url}
+                    src={book.cover_url} // A cover_url já está resolvida pela função resolveCoverUrl
                     alt={`Capa de ${book.title}`}
                     className="my-review-cover"
                   />
@@ -96,6 +103,7 @@ const MyReviewsPage = () => {
                     {"☆".repeat(5 - review.rating)}
                   </p>
                   <p className="my-review-content">"{review.content}"</p>
+                  {/* Se você quiser adicionar botões de editar/deletar aqui, a lógica é similar a BookDetailPage */}
                 </div>
               </div>
             );

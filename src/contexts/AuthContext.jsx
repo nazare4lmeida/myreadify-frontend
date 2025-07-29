@@ -12,12 +12,11 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadStoragedData = () => {
       const storagedUser = localStorage.getItem('@MyReadify:user');
-      // Token não é mais carregado ou usado aqui
-      // const storagedToken = localStorage.getItem('@MyReadify:token');
+      const storagedToken = localStorage.getItem('@MyReadify:token'); // <<-- Reativado: Carrega o token
 
-      if (storagedUser) {
+      if (storagedUser && storagedToken) { // <<-- Reativado: Verifica também o token
         setUser(JSON.parse(storagedUser));
-        // api.defaults.headers.Authorization = `Bearer ${storagedToken}`; // Não é mais necessário
+        api.defaults.headers.Authorization = `Bearer ${storagedToken}`; // <<-- Reativado: Define o token no Axios
       }
       setLoading(false);
     };
@@ -27,12 +26,14 @@ export const AuthProvider = ({ children }) => {
   const signIn = async ({ email, password }) => {
     try {
       const response = await api.post('/login', { email, password });
-      const { user: apiUser } = response.data; // Removido 'token' da desestruturação
+      const { user: apiUser, token } = response.data; // <<-- Recebe o token da resposta
 
       localStorage.setItem('@MyReadify:user', JSON.stringify(apiUser));
-      // localStorage.removeItem('@MyReadify:token'); // Token não é mais salvo
+      localStorage.setItem('@MyReadify:token', token); // <<-- Armazena o token
 
       setUser(apiUser);
+      api.defaults.headers.Authorization = `Bearer ${token}`; // <<-- Define o token para requisições futuras
+
     } catch (error) {
       throw new Error(error.response?.data?.error || 'Falha no login');
     }
@@ -40,13 +41,22 @@ export const AuthProvider = ({ children }) => {
 
   const signOut = () => {
     localStorage.removeItem('@MyReadify:user');
-    localStorage.removeItem('@MyReadify:token'); // Remove o token mesmo que não seja salvo (para limpar qualquer resquício)
+    localStorage.removeItem('@MyReadify:token'); // <<-- Remove o token também
     setUser(null);
+    delete api.defaults.headers.Authorization; // <<-- Remove o token do Axios
   };
 
   const signUp = async ({ name, email, password }) => {
     try {
-      await api.post('/register', { name, email, password });
+      const response = await api.post('/register', { name, email, password }); // <<-- Ajustado para capturar a resposta
+      const { user: apiUser, token } = response.data; // <<-- Captura user e token do registro
+
+      // Opcional: Logar automaticamente após o registro
+      localStorage.setItem('@MyReadify:user', JSON.stringify(apiUser));
+      localStorage.setItem('@MyReadify:token', token);
+      setUser(apiUser);
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+      
     } catch (error) {
       throw new Error(error.response?.data?.error || 'Não foi possível realizar o cadastro.');
     }

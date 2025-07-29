@@ -13,11 +13,11 @@ import AboutPage from "./pages/AboutPage";
 import MyReviewsPage from "./pages/MyReviewsPage";
 import RegisterPage from "./pages/RegisterPage";
 import SubmitSummaryPage from "./pages/SubmitSummaryPage";
-// import AdminApprovalPage from "./pages/AdminApprovalPage"; // Comentado
+import AdminApprovalPage from "./pages/AdminApprovalPage"; // Descomentado
 import SubmitPromptPage from "./pages/SubmitPromptPage";
 import ContactPage from "./pages/ContactPage";
-// import AdminMessagesPage from "./pages/AdminMessagesPage"; // Comentado
-// import AdminRoute from "./components/adminRoute"; // Comentado
+import AdminMessagesPage from "./pages/AdminMessagesPage"; // Descomentado
+import AdminRoute from "./components/AdminRoute"; // Descomentado
 
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -39,8 +39,7 @@ function App() {
             <Route path="/fale-conosco" element={<ContactPage />} />
 
             {/* --- ROTAS PRIVADAS (EXIGEM LOGIN) --- */}
-            {/* ATENÇÃO: Estas rotas não terão proteção de token. */}
-            {/* Se o seu backend ainda as protege, elas podem falhar. */}
+            {/* ATENÇÃO: Estas rotas agora estarão protegidas pelo authMiddleware. */}
             <Route path="/meus-resumos" element={<MySummariesPage />} />
             <Route path="/minhas-avaliacoes" element={<MyReviewsPage />} />
             <Route
@@ -49,8 +48,8 @@ function App() {
             />
 
             {/* --- ROTAS DE ADMIN (EXIGEM LOGIN E CARGO 'admin') --- */}
-            {/* Comentadas porque dependem do AdminRoute e autenticação. */}
-            {/* <Route element={<AdminRoute />}>
+            {/* Reabilitadas: Agora dependem do AdminRoute e autenticação. */}
+            <Route element={<AdminRoute />}>
               <Route
                 path="/admin/aprovacoes"
                 element={<AdminApprovalPage />}
@@ -59,7 +58,7 @@ function App() {
                 path="/admin/mensagens"
                 element={<AdminMessagesPage />}
               />
-            </Route> */}
+            </Route>
 
           </Routes>
         </div>

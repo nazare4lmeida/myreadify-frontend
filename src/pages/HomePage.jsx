@@ -6,6 +6,8 @@ import BookCard from "../components/BookCard";
 import { useAuth } from "../contexts/AuthContext";
 import "./HomePage.css";
 
+// Importação dinâmica de imagens para o Vite.
+// Isso é necessário para que o Vite processe corretamente as referências a imagens locais.
 const images = import.meta.glob('../assets/*.jpg', { eager: true });
 
 const HomePage = () => {
@@ -14,68 +16,92 @@ const HomePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { signed } = useAuth();
 
+  // Função para resolver a URL da capa de forma inteligente.
+  // Ela lida tanto com caminhos locais (mockdata) quanto com URLs completas (uploads da API).
   const resolveCoverUrl = (coverPath) => {
+    // Se não houver caminho, retorna uma string vazia (ou um placeholder se preferir).
     if (!coverPath) return '';
-    // Se o coverPath já for uma URL processada do mock, use-a diretamente
-    if (coverPath.includes('/assets/')) return coverPath;
     
+    // Se o caminho já for uma URL completa (ex: de um upload no Render/Supabase Storage),
+    // retorna-a diretamente. O backend agora garante que 'cover_url' é a URL completa ou o caminho relativo do mock.
+    if (coverPath.startsWith('http')) {
+      return coverPath;
+    }
+    
+    // Se for um caminho relativo (como os do mockData, ex: 'lordoftherings.jpg' ou '/src/assets/1984.jpg'),
+    // tenta resolver usando as imagens importadas pelo Vite.
+    // Extrai apenas o nome do arquivo para formar a chave de importação.
     const imageName = coverPath.split('/').pop();
-    const imagePath = `../assets/${imageName}`;
-    return images[imagePath]?.default || '';
+    const viteImagePath = `../assets/${imageName}`;
+    
+    // Verifica se a imagem foi encontrada no objeto de importação do Vite.
+    if (images[viteImagePath]) {
+      return images[viteImagePath].default; // Retorna a URL final da imagem local processada pelo Vite.
+    } else {
+      console.warn(`[HomePage] Imagem do mock não encontrada! Procurando por: "${viteImagePath}". Caminho original: "${coverPath}"`);
+      return 'https://via.placeholder.com/200x300.png?text=Capa+N%C3%A3o+Encontrada'; // Fallback se não encontrar.
+    }
   };
 
   useEffect(() => {
     const fetchLatestBooks = async () => {
       try {
         const response = await api.get("/books?page=1&limit=8");
+        // Garante que response.data é um array, mesmo que a API retorne um objeto com 'books'.
         const apiBooks = Array.isArray(response.data) ? response.data : Array.isArray(response.data.books) ? response.data.books : [];
         const mockBooksMap = new Map(mockLivros.map((book) => [book.slug, book]));
 
-        // CORREÇÃO NA LÓGICA DE MERGE:
-        // Garante que usamos a base do mock (com slug e cover_url) e atualizamos com dados da API.
-        const finalBookList = apiBooks
+        // Constrói a lista final de livros, mesclando dados da API com os do mock.
+        // Isso garante que temos os slugs e covers corretos para os livros mockados,
+        // mas com a informação de resumo e status da API.
+        const mergedBooks = apiBooks
           .map((apiBook) => {
             const mockVersion = mockBooksMap.get(apiBook.slug);
             if (mockVersion) {
-              // Mistura, priorizando o slug e a capa do mock, e o resto da API
+              // Se o livro existe no mock e na API, mescla, priorizando cover_url do mock
+              // para garantir que a imagem local seja usada se o mock tiver uma.
               return { 
-                ...apiBook, 
-                ...mockVersion, 
-                isPlaceholder: !apiBook.summary 
+                ...mockVersion, // Pega o ID, cover_url e slug do mock
+                ...apiBook,     // Sobrescreve com os dados da API (título, autor, categoria, resumo, status)
+                isPlaceholder: !apiBook.summary // Indica se tem resumo da API
               };
             }
-            // Se não encontrar no mock, mas a API tiver slug, ainda pode funcionar
-            // Mas é mais seguro considerar apenas os livros que temos localmente
-            return null;
-          })
-          .filter(Boolean); // Remove os nulos da lista
+            // Se o livro veio da API e não está no mock, usa a versão da API diretamente.
+            // A cover_url já virá resolvida pelo getter do backend.
+            return { ...apiBook, isPlaceholder: !apiBook.summary };
+          });
 
-        // Se a lista da API for curta, podemos completá-la com mocks
-        if (finalBookList.length < 8) {
-            const existingSlugs = new Set(finalBookList.map(b => b.slug));
-            const neededMocks = mockLivros.filter(b => !existingSlugs.has(b.slug)).slice(0, 8 - finalBookList.length);
-            finalBookList.push(...neededMocks);
-        }
+        // Coleta todos os slugs já presentes na lista mesclada para evitar duplicatas.
+        const existingSlugs = new Set(mergedBooks.map(b => b.slug));
+        // Adiciona livros do mock que não foram sobrepostos pela API (ex: livros que ainda não tiveram resumo enviado).
+        const uniqueMockBooks = mockLivros.filter(b => !existingSlugs.has(b.slug));
 
-        setLatestBooks(finalBookList.slice(0, 8));
+        // Combina os livros mesclados com os mockbooks únicos e limita a 8.
+        const finalBookList = [...mergedBooks, ...uniqueMockBooks]
+          .map(book => ({ ...book, cover_url: resolveCoverUrl(book.cover_url) })) // Garante que todas as URLs de capa estão resolvidas.
+          .slice(0, 8); // Pega apenas os 8 primeiros para a seção de "Adicionados Recentemente".
+
+        setLatestBooks(finalBookList);
 
       } catch (error) {
         console.error("Erro ao buscar os destaques, usando dados locais:", error);
-        setLatestBooks(mockLivros.slice(0, 8)); // Fallback para mocks em caso de erro
+        // Fallback para usar apenas os livros mockados em caso de erro na API.
+        setLatestBooks(mockLivros.slice(0, 8).map(book => ({ ...book, cover_url: resolveCoverUrl(book.cover_url) })));
       } finally {
         setLoading(false);
       }
     };
 
     fetchLatestBooks();
-  }, []);
+  }, []); // Array de dependências vazio para rodar uma vez na montagem.
 
   useEffect(() => {
     if (latestBooks.length > 0) {
       const timer = setInterval(() => {
+        // O carrossel exibe no máximo 5 imagens, então o cálculo do slide deve ser baseado nisso.
         setCurrentSlide((prevSlide) => (prevSlide + 1) % Math.min(latestBooks.length, 5));
-      }, 3000);
-      return () => clearInterval(timer);
+      }, 3000); // Muda de slide a cada 3 segundos.
+      return () => clearInterval(timer); // Limpa o timer ao desmontar o componente.
     }
   }, [latestBooks]);
 
@@ -90,13 +116,14 @@ const HomePage = () => {
           </div>
           <div className="hero-carousel-container">
             {loading ? (
-              <div className="hero-carousel-placeholder"></div>
+              <div className="hero-carousel-placeholder"></div> // Placeholder enquanto carrega.
             ) : (
               <div className="hero-carousel">
+                {/* Exibe os primeiros 5 livros no carrossel do herói. */}
                 {latestBooks.slice(0, 5).map((book, index) => (
                   <img
-                    key={book.slug || book.id} // Usa ID como fallback para a key
-                    src={resolveCoverUrl(book.cover_url)}
+                    key={book.slug || book.id} // Usa slug ou ID como fallback para a key.
+                    src={book.cover_url} // A URL da capa já está resolvida pelo useEffect.
                     alt={`Capa do livro ${book.title}`}
                     className={`carousel-image ${index === currentSlide ? "active" : ""}`}
                   />
@@ -111,12 +138,14 @@ const HomePage = () => {
         <div className="featured-section-container">
           <h2 className="section-title">Adicionados Recentemente</h2>
           {loading ? (
-            <p>Carregando...</p>
+            <p>Carregando...</p> // Mensagem de carregamento.
           ) : (
             <div className="book-carousel">
+              {/* Exibe todos os 8 livros (ou menos, se não houver tantos). */}
               {latestBooks.map((book) => (
                 <div className="carousel-item" key={book.slug || book.id}>
-                  <BookCard livro={{ ...book, cover_url: resolveCoverUrl(book.cover_url) }} />
+                  {/* Passa o objeto book completo, com a cover_url já resolvida. */}
+                  <BookCard livro={book} />
                 </div>
               ))}
             </div>
@@ -124,7 +153,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* O resto do seu código continua aqui... */}
+      {/* Seções "Como Funciona" e CTA final */}
       <section className="how-it-works-section">
         <h2 className="section-title">Uma comunidade de leitores</h2>
         <div className="features-grid">
