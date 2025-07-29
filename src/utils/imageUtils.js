@@ -1,44 +1,91 @@
 // src/utils/imageUtils.js
 
-// Importa dinamicamente todas as imagens JPG da pasta assets
-// O Vite vai processar isso e retornar um objeto com os caminhos processados
-const localImagesRaw = import.meta.glob('../assets/images/covers/*.jpg', { eager: true });
+// Importa explicitamente todas as imagens locais do mockData.
+// Isso garante que o Vite as inclua no bundle e que possamos referenciá-las.
+import lordOfTheRingsCover from "../assets/lordoftherings.jpg";
+import orwell1984Cover from "../assets/1984.jpg";
+import toKillAMockingbirdCover from "../assets/tosol.jpg";
+import prideAndPrejudiceCover from "../assets/orgulhoepreconceito.jpg";
+import dunaCover from "../assets/duna.jpg";
+import oneHundredYearsCover from "../assets/cemanos.jpg";
+import gameOfThronesCover from "../assets/tronos.jpg";
+import littlePrinceCover from "../assets/pequenoprincipe.jpg";
+import homemESeusSimbolosCover from "../assets/homemeseussimbolos.jpg";
+import asDoresDoMundoCover from "../assets/asdoresdomundo.jpg";
+import aObscenaSenhoraDCover from "../assets/aobscenasenhorad.jpg";
+import aHoraDaEstrelaCover from "../assets/ahoradaestrela.jpg";
+import delicadoAbismoCover from "../assets/delicadoabismo.jpg";
+import quartoDeDespejoCover from "../assets/quartodedespejo.jpg";
+import diarioDeAnneFrankCover from "../assets/diariodeannefrank.jpg";
 
-// Mapeia os caminhos brutos para um formato mais fácil de usar:
-// { 'lordoftherings.jpg': '/src/assets/images/covers/lordoftherings.jpg' }
-const localImages = Object.keys(localImagesRaw).reduce((acc, path) => {
-  const filename = path.split('/').pop();
-  acc[`/src/assets/images/covers/${filename}`] = localImagesRaw[path].default; // Usa o caminho completo como chave
-  return acc;
-}, {});
+// Mapeia os caminhos relativos completos (como salvos no mockData.js e no seeder)
+// para as URLs processadas pelo Vite.
+const localImagesMap = {
+  "/src/assets/lordoftherings.jpg": lordOfTheRingsCover,
+  "/src/assets/1984.jpg": orwell1984Cover,
+  "/src/assets/tosol.jpg": toKillAMockingbirdCover,
+  "/src/assets/orgulhoepreconceito.jpg": prideAndPrejudiceCover,
+  "/src/assets/duna.jpg": dunaCover,
+  "/src/assets/cemanos.jpg": oneHundredYearsCover,
+  "/src/assets/tronos.jpg": gameOfThronesCover,
+  "/src/assets/pequenoprincipe.jpg": littlePrinceCover,
+  "/src/assets/homemeseussimbolos.jpg": homemESeusSimbolosCover,
+  "/src/assets/asdoresdomundo.jpg": asDoresDoMundoCover,
+  "/src/assets/aobscenasenhorad.jpg": aObscenaSenhoraDCover,
+  "/src/assets/ahoradaestrela.jpg": aHoraDaEstrelaCover,
+  "/src/assets/delicadoabismo.jpg": delicadoAbismoCover,
+  "/src/assets/quartodedespejo.jpg": quartoDeDespejoCover,
+  "/src/assets/diariodeannefrank.jpg": diarioDeAnneFrankCover,
+};
 
 /**
  * Retorna a URL correta para a capa de um livro.
- * Prioriza a `full_cover_url` vinda do backend. Se não houver, tenta resolver
- * o `cover_url` localmente (para mockdata).
- * @param {object} book - O objeto livro com as propriedades cover_url e/ou full_cover_url.
- * @returns {string} A URL da imagem ou um placeholder.
+ * Esta função é a ÚNICA responsável por resolver caminhos de imagem no frontend.
+ * @param {object} book - O objeto do livro, que pode ter 'full_cover_url' (da API)
+ *   ou 'cover_url' (caminho relativo do mockdata ou nome do arquivo de upload).
+ * @returns {string} A URL da imagem pronta para exibição ou um placeholder.
  */
 export const getImageUrl = (book) => {
-  if (!book) {
-    return 'https://via.placeholder.com/200x300.png?text=Sem+Capa';
-  }
+  // Se o objeto book não existe ou não tem informações de capa, retorna placeholder.
+  if (!book || (!book.full_cover_url && !book.cover_url)) {
+    return "https://via.placeholder.com/200x300.png?text=Sem+Capa";
+  }
 
-  // 1. Prioriza full_cover_url (que já vem pronta do backend para uploads ou mock)
-  if (book.full_cover_url) {
-    return book.full_cover_url;
-  }
+  let finalUrl = null;
 
-  // 2. Se não houver full_cover_url, tenta resolver cover_url como um caminho de asset local
-  if (book.cover_url && book.cover_url.startsWith('/src/assets')) {
-    // Verifica se o caminho do asset local existe no nosso mapa processado pelo Vite
-    if (localImages[book.cover_url]) {
-      return localImages[book.cover_url];
-    } else {
-      console.warn(`[getImageUrl] Asset local não encontrado para: ${book.cover_url}`);
-    }
-  }
+  // Tenta resolver a URL a partir de 'full_cover_url' (campo virtual do backend)
+  if (book.full_cover_url) {
+    // Se já é uma URL HTTP completa (upload da API), usa diretamente.
+    if (book.full_cover_url.startsWith("http")) {
+      finalUrl = book.full_cover_url;
+    }
+    // Se é um caminho relativo (do mockdata, vindo do backend via full_cover_url)
+    else if (book.full_cover_url.startsWith("/src/assets")) {
+      finalUrl = localImagesMap[book.full_cover_url];
+    }
+  }
 
-  // 3. Fallback: Se nada funcionou, retorna um placeholder genérico
-  return 'https://via.placeholder.com/200x300.png?text=Sem+Capa';
+  // Se 'full_cover_url' não resolveu, tenta resolver a partir de 'cover_url' (campo do DB)
+  if (!finalUrl && book.cover_url) {
+    // Se é um caminho relativo (do mockdata, diretamente do mockLivros)
+    if (book.cover_url.startsWith("/src/assets")) {
+      finalUrl = localImagesMap[book.cover_url];
+    }
+    // Se é apenas o nome do arquivo (para uploads que não vieram com full_cover_url por algum motivo)
+    else if (!book.cover_url.startsWith("http")) {
+      const backendBaseUrl = import.meta.env.VITE_API_URL.replace("/api", "");
+      finalUrl = `${backendBaseUrl}/files/${book.cover_url}`;
+    }
+  }
+
+  // Se 'finalUrl' ainda não foi definida ou é inválida, retorna um placeholder de erro.
+  if (!finalUrl) {
+    console.warn(
+      `[getImageUrl] Não foi possível resolver a imagem para:`,
+      book
+    );
+    return "https://via.placeholder.com/200x300.png?text=Capa+N%C3%A3o+Encontrada";
+  }
+
+  return finalUrl;
 };
