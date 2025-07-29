@@ -8,8 +8,8 @@ import { useAuth } from "../contexts/AuthContext";
 
 const images = import.meta.glob("../assets/*.jpg", { eager: true });
 
-const StarRatingForm = ({ onChange }) => {
-  const [rating, setRating] = useState(0);
+const StarRatingForm = ({ onChange, initialValue = 0 }) => {
+  const [rating, setRating] = useState(initialValue);
 
   const handleClick = (value) => {
     setRating(value);
@@ -36,13 +36,16 @@ const StarRatingForm = ({ onChange }) => {
 
 const BookDetailPage = () => {
   const { slug } = useParams();
-  const { signed } = useAuth();
+  const { signed, user } = useAuth();
   const [bookData, setBookData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [selectedRating, setSelectedRating] = useState(0);
   const [reviews, setReviews] = useState([]);
+  const [editingReviewId, setEditingReviewId] = useState(null);
+  const [editContent, setEditContent] = useState("");
+  const [editRating, setEditRating] = useState(0);
 
   useEffect(() => {
     const fetchBookData = async () => {
@@ -101,6 +104,49 @@ const BookDetailPage = () => {
     }
   }, [bookData]);
 
+  const handleDeleteReview = async (id) => {
+    if (!window.confirm("Tem certeza que deseja excluir esta avaliação?")) return;
+    try {
+      const token = localStorage.getItem("@MyReadify:token");
+      await api.delete(`/reviews/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setReviews((prev) => prev.filter((review) => review.id !== id));
+    } catch (err) {
+      console.error("Erro ao excluir avaliação:", err.response || err);
+      alert("Erro ao excluir avaliação.");
+    }
+  };
+
+  const handleEditReview = (review) => {
+    setEditingReviewId(review.id);
+    setEditContent(review.content);
+    setEditRating(review.rating);
+  };
+
+  const handleUpdateReview = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("@MyReadify:token");
+      const response = await api.put(
+        `/reviews/${editingReviewId}`,
+        { content: editContent, rating: editRating },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setReviews((prev) =>
+        prev.map((rev) =>
+          rev.id === editingReviewId ? response.data : rev
+        )
+      );
+      setEditingReviewId(null);
+      setEditContent("");
+      setEditRating(0);
+    } catch (err) {
+      console.error("Erro ao atualizar avaliação:", err.response || err);
+      alert("Erro ao atualizar avaliação.");
+    }
+  };
+
   if (loading) {
     return <div className="centered-message">Carregando livro...</div>;
   }
@@ -140,10 +186,7 @@ const BookDetailPage = () => {
             <div className="summary-prompt">
               <p>Este livro ainda não tem um resumo.</p>
               {signed ? (
-                <div
-                  className="summary-actions"
-                  style={{ justifyContent: "center" }}
-                >
+                <div className="summary-actions" style={{ justifyContent: "center" }}>
                   <Link
                     to="/enviar-resumo"
                     state={{ book: bookData }}
@@ -153,10 +196,7 @@ const BookDetailPage = () => {
                   </Link>
                 </div>
               ) : (
-                <div
-                  className="summary-actions"
-                  style={{ justifyContent: "center" }}
-                >
+                <div className="summary-actions" style={{ justifyContent: "center" }}>
                   <Link to="/login" className="btn btn-primary">
                     Entrar
                   </Link>
@@ -176,19 +216,65 @@ const BookDetailPage = () => {
             {reviews.length > 0 ? (
               reviews.map((review) => (
                 <div key={review.id} className="review-item">
-                  <p>
-                    <strong>{review.user?.name || "Anônimo"}</strong> —{" "}
-                    {"★".repeat(review.rating)}
-                  </p>
-                  <p>{review.content}</p>
+                  {editingReviewId === review.id ? (
+                    <form onSubmit={handleUpdateReview} className="review-form">
+                      <h4>Editar Avaliação</h4>
+                      <StarRatingForm
+                        onChange={(value) => setEditRating(value)}
+                        initialValue={editRating}
+                      />
+                      <textarea
+                        value={editContent}
+                        onChange={(e) => setEditContent(e.target.value)}
+                        rows="4"
+                      />
+                      <div className="user-review-actions">
+                        <button type="submit" className="btn-user-action btn-edit">
+                          Salvar
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditingReviewId(null)}
+                          className="btn-user-action btn-cancel"
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <>
+                      <p>
+                        <strong>{review.user?.name || "Anônimo"}</strong> —{" "}
+                        {"★".repeat(review.rating)}
+                      </p>
+                      <p>{review.content}</p>
+                      {signed && user?.id === review.userId && (
+                        <div className="user-review-actions">
+                          <button
+                            onClick={() => handleEditReview(review)}
+                            className="btn-user-action btn-edit"
+                          >
+                            Editar
+                          </button>
+                          <button
+                            onClick={() => handleDeleteReview(review.id)}
+                            className="btn-user-action btn-delete"
+                          >
+                            Excluir
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
               ))
             ) : (
               <p>Ainda não há avaliações para este livro.</p>
             )}
           </div>
+
           <div className="add-review-section">
-            {signed ? (
+            {signed && !editingReviewId ? (
               <form
                 className="review-form"
                 onSubmit={async (e) => {
@@ -213,11 +299,7 @@ const BookDetailPage = () => {
                       }
                     );
 
-                    console.log("Review criada:", response.data);
-
-                    // usa callback para garantir atualização
                     setReviews((prev) => [response.data, ...prev]);
-
                     e.target.reset();
                     setSelectedRating(0);
                   } catch (err) {
@@ -242,7 +324,7 @@ const BookDetailPage = () => {
                 </div>
                 <button type="submit">Enviar Avaliação</button>
               </form>
-            ) : (
+            ) : !signed && (
               <div className="login-prompt">
                 <h4>Deixe sua avaliação</h4>
                 <p>Você precisa estar logado para avaliar este livro.</p>
