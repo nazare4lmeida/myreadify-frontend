@@ -74,7 +74,7 @@ const BookDetailPage = () => {
           const mockBook = mockLivros.find((book) => book.slug === slug);
           if (mockBook) {
             // Simula a estrutura que viria da API, incluindo o campo de cover_url do mock
-            setBookData({ ...mockBook, summary: null, submitted_by: null }); 
+            setBookData({ ...mockBook, summary: null, submitted_by: null, full_cover_url: getImageUrl(mockBook) }); 
           } else {
             setError("Livro não encontrado.");
           }
