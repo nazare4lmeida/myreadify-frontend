@@ -1,122 +1,103 @@
-// src/pages/MyReviewsPage.jsx (VERSÃO FINAL COMPLETA E CORRIGIDA)
+// src/pages/MyReviewsPage.jsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../contexts/AuthContext";
 import "./MyReviewsPage.css";
-// mockLivros não é mais estritamente necessário para resolver as URLs de capa
-// porque o backend agora envia a URL completa ou o caminho que o frontend resolve dinamicamente.
-// No entanto, pode ser útil para outras lógicas, se for o caso.
-// import mockLivros from "../data/mockData"; 
+import mockLivros from "../data/mockData"; // Importe mockLivros para a lógica de mesclagem/fallback
+import { getImageUrl } from '../utils/imageUtils'; // Importe a nova função utilitária
 
-// Importação dinâmica de imagens para o Vite.
-// Isso é necessário para que o Vite processe corretamente as referências a imagens locais,
-// caso alguma cover_url ainda venha como caminho relativo do mock.
-const images = import.meta.glob('../assets/*.jpg', { eager: true });
-
+// REMOVER: A importação dinâmica de imagens do Vite não é mais necessária aqui
+// const images = import.meta.glob("../assets/*.jpg", { eager: true });
 
 const MyReviewsPage = () => {
-  const [reviews, setReviews] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { signed, user } = useAuth(); // Importar 'user' para verificar o ID do usuário
+  const [reviews, setReviews] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { signed } = useAuth();
 
-  // Função para resolver a URL da capa de forma inteligente (copiada de CategoriesPage/HomePage)
-  const resolveCoverUrl = (coverPath) => {
-    if (!coverPath) return 'https://via.placeholder.com/200x300.png?text=Sem+Capa';
-    if (coverPath.startsWith('http')) { // Se já é uma URL completa (ex: de upload)
-      return coverPath;
-    }
-    // Se for um caminho relativo (do mockData), tenta resolver com Vite
-    const imageName = coverPath.split('/').pop();
-    const viteImagePath = `../assets/${imageName}`;
-    if (images[viteImagePath]) {
-      return images[viteImagePath].default;
-    } else {
-      console.warn(`[MyReviewsPage] Imagem do mock não encontrada! Procurando por: "${viteImagePath}". Caminho original: "${coverPath}"`);
-      return 'https://via.placeholder.com/200x300.png?text=Capa+N%C3%A3o+Encontrada';
-    }
-  };
+  useEffect(() => {
+    if (signed) {
+      api
+        .get("/reviews/my") // CORREÇÃO: endpoint correto conforme o backend
+        .then((response) => {
+          // A API agora deve retornar 'full_cover_url' no objeto 'book' aninhado.
+          // Vamos enriquecer os dados para garantir que `cover_url` seja sempre a URL completa para exibição.
+          const enrichedReviews = response.data.map((review) => {
+            // Se o livro da review já vier da API com cover_url (que é full_cover_url), use-a.
+            // Caso contrário, tente resolver via mockData ou placeholder.
+            return {
+              ...review,
+              book: {
+                ...review.book,
+                // Use getImageUrl para garantir que a URL da capa é a correta para exibição
+                cover_url: getImageUrl(review.book),
+              },
+            };
+          });
 
-  useEffect(() => {
-    if (signed) {
-      const fetchMyReviews = async () => {
-        setIsLoading(true);
-        try {
-          // CORREÇÃO PRINCIPAL: Endpoint correto para buscar minhas avaliações
-          const response = await api.get("/reviews/my"); 
-          
-          // Mapeia as reviews para garantir que a cover_url está resolvida
-          const formattedReviews = response.data.map(review => ({
-            ...review,
-            book: {
-              ...review.book,
-              cover_url: resolveCoverUrl(review.book.cover_url) // Usa a função de resolução
-            }
-          }));
+          setReviews(enrichedReviews);
+        })
+        .catch((error) => {
+          console.error("Falha ao buscar minhas avaliações:", error);
+          // Em caso de erro na API, você pode decidir mostrar reviews mockadas ou vazias.
+          // Por agora, mantemos vazio.
+          setReviews([]);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      setIsLoading(false);
+    }
+  }, [signed]);
 
-          setReviews(formattedReviews);
-        } catch (error) {
-          console.error("Falha ao buscar minhas avaliações:", error);
-          // Opcional: mostrar uma mensagem de erro para o usuário
-        } finally {
-          setIsLoading(false);
-        }
-      };
-      fetchMyReviews();
-    } else {
-      setIsLoading(false); // Se não estiver logado, para o carregamento
-    }
-  }, [signed]); // Dependência em 'signed' para rebuscar quando o status de login mudar
+  if (isLoading) {
+    return (
+      <div className="container">
+        <p>Carregando suas avaliações...</p>
+      </div>
+    );
+  }
 
-  if (isLoading) {
-    return (
-      <div className="container">
-        <p>Carregando suas avaliações...</p>
-      </div>
-    );
-  }
+  return (
+    <div className="my-reviews-page">
+      <h2>Minhas Avaliações</h2>
+      {reviews.length > 0 ? (
+        <div className="my-reviews-container">
+          {reviews.map((review) => {
+            const { book } = review;
 
-  return (
-    <div className="my-reviews-page">
-      <h2>Minhas Avaliações</h2>
-      {reviews.length > 0 ? (
-        <div className="my-reviews-container">
-          {reviews.map((review) => {
-            const { book } = review;
-
-            return (
-              <div key={review.id} className="my-review-card">
-                {/* O slug do livro agora deve vir corretamente do backend */}
-                <Link to={`/livro/${book.slug}#review-${review.id}`}>
-                  <img
-                    src={book.cover_url} // A cover_url já está resolvida pela função resolveCoverUrl
-                    alt={`Capa de ${book.title}`}
-                    className="my-review-cover"
-                  />
-                </Link>
-                <div className="my-review-details">
-                  <Link to={`/livro/${book.slug}#review-${review.id}`}>
-                    <h3>{book.title}</h3>
-                  </Link>
-                  <p className="my-review-rating">
-                    {"★".repeat(review.rating)}
-                    {"☆".repeat(5 - review.rating)}
-                  </p>
-                  <p className="my-review-content">"{review.content}"</p>
-                  {/* Se você quiser adicionar botões de editar/deletar aqui, a lógica é similar a BookDetailPage */}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <p>
-          Você ainda não fez nenhuma avaliação. Explore nosso acervo e
-          compartilhe sua opinião!
-        </p>
-      )}
-    </div>
-  );
+            return (
+              <div key={review.id} className="my-review-card">
+                <Link to={`/livro/${book.slug}#review-${review.id}`}>
+                  <img
+                    src={book.cover_url} // A cover_url já estará resolvida por getImageUrl acima
+                    alt={`Capa de ${book.title}`}
+                    className="my-review-cover"
+                  />
+                </Link>
+                <div className="my-review-details">
+                  <Link to={`/livro/${book.slug}#review-${review.id}`}>
+                    <h3>{book.title}</h3>
+                  </Link>
+                  <p className="my-review-rating">
+                    {"★".repeat(review.rating)}
+                    {"☆".repeat(5 - review.rating)}
+                  </p>
+                  <p className="my-review-content">"{review.content}"</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <p>
+          Você ainda não fez nenhuma avaliação. Explore nosso acervo e
+          compartilhe sua opinião!
+        </p>
+      )}
+    </div>
+  );
 };
 
 export default MyReviewsPage;

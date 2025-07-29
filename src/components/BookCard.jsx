@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './BookCard.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./BookCard.css";
+import { getImageUrl } from "../utils/imageUtils"; // Importe a nova função utilitária
 
 const BookCard = ({ livro }) => {
   const navigate = useNavigate();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false); // Usa a função centralizada para obter a URL da imagem. // 'livro' agora deve conter 'full_cover_url' (da API) ou 'cover_url' (do mock).
 
-  // CORREÇÃO: imageUrl agora usa o cover_url que já vem do backend (seja mock ou upload)
-  // O BookController já mapeia para o getter full_cover_url.
-  // Se for um caminho relativo do mock, o Vite irá resolver. Se for um URL, será usado direto.
-  const imageUrl = livro.cover_url || 'https://via.placeholder.com/200x300.png?text=Sem+Capa';
+  const imageUrl = getImageUrl(livro);
 
   const handleAction = () => {
     // Só navega se o livro tiver um slug definido.
@@ -22,10 +20,12 @@ const BookCard = ({ livro }) => {
 
   return (
     <div className="book-card">
+           {" "}
       <div className="book-cover-wrapper" onClick={handleAction}>
-        <img 
-          src={imageUrl} 
-          alt={`Capa do livro ${livro.title}`} 
+               {" "}
+        <img
+          src={imageUrl}
+          alt={`Capa do livro ${livro.title}`}
           loading="lazy"
           width={200}
           height={300}
@@ -33,19 +33,22 @@ const BookCard = ({ livro }) => {
           style={{ opacity: isLoaded ? 1 : 0 }}
           onLoad={() => setIsLoaded(true)}
         />
-        {!isLoaded && <div className="skeleton-loader"></div>}
+                {!isLoaded && <div className="skeleton-loader"></div>}     {" "}
       </div>
-
+           {" "}
       <div className="book-info" onClick={handleAction}>
-        <h3>{livro.title}</h3>
-        <p>{livro.author}</p>
+                <h3>{livro.title}</h3>        <p>{livro.author}</p>     {" "}
       </div>
-
+           {" "}
       <div className="card-actions">
+               {" "}
         <button className="btn-summary" onClick={handleAction}>
-          {livro.isPlaceholder ? 'Ver Detalhes' : 'Ler Resumo'}
+                    {/* A lógica do texto do botão pode continuar a mesma */}   
+                {livro.isPlaceholder ? "Ver Detalhes" : "Ler Resumo"}       {" "}
         </button>
+             {" "}
       </div>
+         {" "}
     </div>
   );
 };
