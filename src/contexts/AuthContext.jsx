@@ -12,9 +12,12 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadStoragedData = () => {
       const storagedUser = localStorage.getItem('@MyReadify:user');
-      // Não precisamos mais do token aqui, só do usuário
+      // Token não é mais carregado ou usado aqui
+      // const storagedToken = localStorage.getItem('@MyReadify:token');
+
       if (storagedUser) {
         setUser(JSON.parse(storagedUser));
+        // api.defaults.headers.Authorization = `Bearer ${storagedToken}`; // Não é mais necessário
       }
       setLoading(false);
     };
@@ -24,13 +27,11 @@ export const AuthProvider = ({ children }) => {
   const signIn = async ({ email, password }) => {
     try {
       const response = await api.post('/login', { email, password });
-      const { user: apiUser, token } = response.data;
+      const { user: apiUser } = response.data; // Removido 'token' da desestruturação
 
-      // Salvamos no localStorage
       localStorage.setItem('@MyReadify:user', JSON.stringify(apiUser));
-      localStorage.setItem('@MyReadify:token', token);
-      
-      // E atualizamos o estado
+      // localStorage.removeItem('@MyReadify:token'); // Token não é mais salvo
+
       setUser(apiUser);
     } catch (error) {
       throw new Error(error.response?.data?.error || 'Falha no login');
@@ -38,9 +39,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signOut = () => {
-    // Apenas limpamos o localStorage e o estado
     localStorage.removeItem('@MyReadify:user');
-    localStorage.removeItem('@MyReadify:token');
+    localStorage.removeItem('@MyReadify:token'); // Remove o token mesmo que não seja salvo (para limpar qualquer resquício)
     setUser(null);
   };
 

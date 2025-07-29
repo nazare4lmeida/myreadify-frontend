@@ -13,11 +13,11 @@ import AboutPage from "./pages/AboutPage";
 import MyReviewsPage from "./pages/MyReviewsPage";
 import RegisterPage from "./pages/RegisterPage";
 import SubmitSummaryPage from "./pages/SubmitSummaryPage";
-import AdminApprovalPage from "./pages/AdminApprovalPage";
+// import AdminApprovalPage from "./pages/AdminApprovalPage"; // Comentado
 import SubmitPromptPage from "./pages/SubmitPromptPage";
 import ContactPage from "./pages/ContactPage";
-import AdminMessagesPage from "./pages/AdminMessagesPage";
-import AdminRoute from "./components/adminRoute"; 
+// import AdminMessagesPage from "./pages/AdminMessagesPage"; // Comentado
+// import AdminRoute from "./components/adminRoute"; // Comentado
 
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -36,29 +36,30 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/enviar-resumo" element={<SubmitSummaryPage />} />
-            <Route path="/fale-conosco" element={<ContactPage />} /> {/* Rota pública para ENVIAR mensagem */}
+            <Route path="/fale-conosco" element={<ContactPage />} />
 
             {/* --- ROTAS PRIVADAS (EXIGEM LOGIN) --- */}
-            {/* envolver estas em um <PrivateRoute> no futuro */}
+            {/* ATENÇÃO: Estas rotas não terão proteção de token. */}
+            {/* Se o seu backend ainda as protege, elas podem falhar. */}
             <Route path="/meus-resumos" element={<MySummariesPage />} />
             <Route path="/minhas-avaliacoes" element={<MyReviewsPage />} />
             <Route
               path="/proposta-resumo/:slug"
               element={<SubmitPromptPage />}
             />
-            
+
             {/* --- ROTAS DE ADMIN (EXIGEM LOGIN E CARGO 'admin') --- */}
-            {/* Uso o AdminRoute como um grupo para proteger todas as rotas filhas */}
-            <Route element={<AdminRoute />}>
+            {/* Comentadas porque dependem do AdminRoute e autenticação. */}
+            {/* <Route element={<AdminRoute />}>
               <Route
                 path="/admin/aprovacoes"
                 element={<AdminApprovalPage />}
               />
-              <Route 
-                path="/admin/mensagens" 
-                element={<AdminMessagesPage />} 
+              <Route
+                path="/admin/mensagens"
+                element={<AdminMessagesPage />}
               />
-            </Route>
+            </Route> */}
 
           </Routes>
         </div>

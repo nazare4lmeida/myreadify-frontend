@@ -58,6 +58,7 @@ const BookDetailPage = () => {
         setBookData(response.data);
 
         try {
+          // As requisições de reviews agora não enviarão token
           const reviewsResponse = await api.get(`/books/${slug}/reviews`);
           setReviews(reviewsResponse.data);
         } catch (err) {
@@ -107,10 +108,8 @@ const BookDetailPage = () => {
   const handleDeleteReview = async (id) => {
     if (!window.confirm("Tem certeza que deseja excluir esta avaliação?")) return;
     try {
-      const token = localStorage.getItem("@MyReadify:token");
-      await api.delete(`/reviews/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      // const token = localStorage.getItem("@MyReadify:token"); // Removido
+      await api.delete(`/reviews/${id}`); // Headers removidos
       setReviews((prev) => prev.filter((review) => review.id !== id));
     } catch (err) {
       console.error("Erro ao excluir avaliação:", err.response || err);
@@ -127,11 +126,11 @@ const BookDetailPage = () => {
   const handleUpdateReview = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("@MyReadify:token");
+      // const token = localStorage.getItem("@MyReadify:token"); // Removido
       const response = await api.put(
         `/reviews/${editingReviewId}`,
-        { content: editContent, rating: editRating },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { content: editContent, rating: editRating }
+        // Headers removidos
       );
       setReviews((prev) =>
         prev.map((rev) =>
@@ -147,6 +146,10 @@ const BookDetailPage = () => {
     }
   };
 
+  // Esta verificação de 'hasReviewed' pode não funcionar corretamente
+  // se as reviews do backend não vierem com o userId populado
+  // ou se você não tiver como verificar o usuário logado sem token.
+  // Por enquanto, mantenha, mas esteja ciente que pode ser imprecisa.
   const hasReviewed = signed && reviews.some(r => r.userId === user?.id);
 
   if (loading) {
@@ -295,15 +298,11 @@ const BookDetailPage = () => {
                     }
 
                     try {
-                      const token = localStorage.getItem("@MyReadify:token");
+                      // const token = localStorage.getItem("@MyReadify:token"); // Removido
                       const response = await api.post(
                         `/books/${slug}/reviews`,
-                        { rating, content },
-                        {
-                          headers: {
-                            Authorization: `Bearer ${token}`,
-                          },
-                        }
+                        { rating, content }
+                        // Headers de autenticação removidos
                       );
 
                       setReviews((prev) => [response.data, ...prev]);

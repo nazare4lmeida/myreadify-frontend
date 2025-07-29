@@ -1,20 +1,21 @@
-// src/services/api.js (VERSÃO FINAL COM URL "CHUMBADA" PARA PRODUÇÃO)
+// src/services/api.js
 
 import axios from 'axios';
 
 const api = axios.create({
-  // <<< A CORREÇÃO FINAL ESTÁ AQUI >>>
-  // Nós colocamos a URL completa e correta do seu backend no Render,
-  // incluindo o /api no final.
-  baseURL: 'https://myreadify-backend.onrender.com/api', 
+  baseURL: 'https://myreadify-backend.onrender.com/api',
 });
 
-// O seu interceptor para adicionar o token de autenticação está perfeito.
+// O interceptor para adicionar o token de autenticação foi removido.
+/*
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('@MyReadify:token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log('API INTERCEPTOR: Token JWT adicionado à requisição.', config.url);
+    } else {
+      console.log('API INTERCEPTOR: Nenhum token JWT encontrado no localStorage para esta requisição.', config.url);
     }
     return config;
   },
@@ -22,5 +23,6 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+*/
 
 export default api;
