@@ -185,6 +185,63 @@
   cursor: not-allowed;
 }
 
+.reviews-section {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+  max-width: 700px;
+  width: 100%;
+  padding: 20px;
+  margin-left: 0; 
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.review-item {
+  width: 100%;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.already-reviewed {
+  background-color: #f1f8f6;
+  border: 1px solid #cde4db;
+  padding: 1.5rem;
+  border-radius: 6px;
+  color: #2f6f56;
+  font-weight: 600;
+  margin-top: 1rem;
+  text-align: center;
+}
+.already-reviewed {
+  background-color: #f1f8f6;
+  border: 1px solid #cde4db;
+  padding: 1.5rem;
+  border-radius: 6px;
+  color: #2f6f56;
+  font-weight: 600;
+  margin-top: 1rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.already-reviewed::before {
+  content: "✔";
+  color: #2f6f56;
+  font-size: 1.2rem;
+}
+
+
 .book-detail-reviews-wrapper {
   margin-top: 50px;
   display: flex;

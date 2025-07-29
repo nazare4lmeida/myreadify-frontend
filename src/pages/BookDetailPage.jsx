@@ -147,6 +147,8 @@ const BookDetailPage = () => {
     }
   };
 
+  const hasReviewed = signed && reviews.some(r => r.userId === user?.id);
+
   if (loading) {
     return <div className="centered-message">Carregando livro...</div>;
   }
@@ -275,55 +277,61 @@ const BookDetailPage = () => {
 
           <div className="add-review-section">
             {signed && !editingReviewId ? (
-              <form
-                className="review-form"
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  const content = e.target.content.value;
-                  const rating = selectedRating;
-
-                  if (!rating || !content) {
-                    alert("Preencha a nota e o comentário.");
-                    return;
-                  }
-
-                  try {
-                    const token = localStorage.getItem("@MyReadify:token");
-                    const response = await api.post(
-                      `/books/${slug}/reviews`,
-                      { rating, content },
-                      {
-                        headers: {
-                          Authorization: `Bearer ${token}`,
-                        },
-                      }
-                    );
-
-                    setReviews((prev) => [response.data, ...prev]);
-                    e.target.reset();
-                    setSelectedRating(0);
-                  } catch (err) {
-                    console.error("Erro ao enviar avaliação:", err.response || err);
-                    alert(
-                      err.response?.data?.error ||
-                        "Não foi possível enviar sua avaliação."
-                    );
-                  }
-                }}
-              >
-                <h4>Deixe sua avaliação</h4>
-                <div className="form-group">
-                  <label>Nota</label>
-                  <StarRatingForm
-                    onChange={(value) => setSelectedRating(value)}
-                  />
+              hasReviewed ? (
+                <div className="already-reviewed">
+                  <p>✅ Você já avaliou este livro.</p>
                 </div>
-                <div className="form-group">
-                  <label htmlFor="content">Comentário</label>
-                  <textarea id="content" name="content" rows="4"></textarea>
-                </div>
-                <button type="submit">Enviar Avaliação</button>
-              </form>
+              ) : (
+                <form
+                  className="review-form"
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    const content = e.target.content.value;
+                    const rating = selectedRating;
+
+                    if (!rating || !content) {
+                      alert("Preencha a nota e o comentário.");
+                      return;
+                    }
+
+                    try {
+                      const token = localStorage.getItem("@MyReadify:token");
+                      const response = await api.post(
+                        `/books/${slug}/reviews`,
+                        { rating, content },
+                        {
+                          headers: {
+                            Authorization: `Bearer ${token}`,
+                          },
+                        }
+                      );
+
+                      setReviews((prev) => [response.data, ...prev]);
+                      e.target.reset();
+                      setSelectedRating(0);
+                    } catch (err) {
+                      console.error("Erro ao enviar avaliação:", err.response || err);
+                      alert(
+                        err.response?.data?.error ||
+                          "Não foi possível enviar sua avaliação."
+                      );
+                    }
+                  }}
+                >
+                  <h4>Deixe sua avaliação</h4>
+                  <div className="form-group">
+                    <label>Nota</label>
+                    <StarRatingForm
+                      onChange={(value) => setSelectedRating(value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="content">Comentário</label>
+                    <textarea id="content" name="content" rows="4"></textarea>
+                  </div>
+                  <button type="submit">Enviar Avaliação</button>
+                </form>
+              )
             ) : !signed && (
               <div className="login-prompt">
                 <h4>Deixe sua avaliação</h4>

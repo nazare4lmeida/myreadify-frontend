@@ -1,9 +1,12 @@
+// src/pages/MyReviewsPage.jsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../contexts/AuthContext";
 import "./MyReviewsPage.css";
-import mockLivros from '../data/mockData';
+import mockLivros from "../data/mockData";
+
+const images = import.meta.glob("../assets/*.jpg", { eager: true });
 
 const MyReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
@@ -22,18 +25,28 @@ const MyReviewsPage = () => {
                 review.book.title.toLowerCase().trim()
             );
 
+            let coverUrl = "";
+            if (livroMock) {
+              // se for livro mockado → usa imagem local
+              const imageName = livroMock.cover_url.split("/").pop();
+              const vitePath = `../assets/${imageName}`;
+              coverUrl = images[vitePath]?.default || livroMock.cover_url;
+            } else if (review.book.cover_url) {
+              // se for livro enviado → usa direto a URL ou caminho salvo
+              if (review.book.cover_url.startsWith("http")) {
+                coverUrl = review.book.cover_url;
+              } else {
+                coverUrl = `http://localhost:3333/files/${review.book.cover_url}`;
+              }
+            }
+
             const bookData = {
               ...review.book,
-              slug: livroMock ? livroMock.slug : undefined,
-              cover_url: livroMock
-                ? livroMock.cover_url
-                : review.book.cover_url,
+              slug: livroMock ? livroMock.slug : review.book.slug || review.book.id,
+              cover_url: coverUrl,
             };
 
-            return {
-              ...review,
-              book: bookData,
-            };
+            return { ...review, book: bookData };
           });
 
           setReviews(enrichedReviews);
@@ -64,15 +77,12 @@ const MyReviewsPage = () => {
         <div className="my-reviews-container">
           {reviews.map((review) => {
             const { book } = review;
-            const coverImage = book.cover_url?.startsWith('http')
-              ? book.cover_url
-              : `http://localhost:3333/files/${book.cover_url}`;
 
             return (
               <div key={review.id} className="my-review-card">
                 <Link to={`/livro/${book.slug}#review-${review.id}`}>
                   <img
-                    src={coverImage}
+                    src={book.cover_url}
                     alt={`Capa de ${book.title}`}
                     className="my-review-cover"
                   />
