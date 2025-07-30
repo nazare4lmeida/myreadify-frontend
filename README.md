@@ -1,12 +1,8 @@
 # 📚 MyReadify – Frontend
 
 <p align="center">
-  <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzlwcnZyb3UxeHZlYXl4NDYwM2oyM2lzdGExb3BjMjFjMjhtaGgzdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rSCVJasn8uZP2/giphy.gif" alt="MyReadify Demo GIF" width="400"/>
-</p>
-
-<p align="center">
   <a href="https://myreadify.vercel.app/" target="_blank">
-    <img src="src/assets/myreadify-logo.JPG" alt="MyReadify Logo" width="200"/>
+    <img src="src/assets/myreadify-logo.JPG" alt="MyReadify Logo" width="250"/>
 </p>
 
 Interface web do projeto **MyReadify**, uma plataforma focada em leitura colaborativa, onde usuários podem enviar e gerenciar resumos de livros. Esta aplicação frontend interage diretamente com a API do [MyReadify Backend](https://github.com/nazare4lmeida/myreadify-backend).
@@ -15,7 +11,7 @@ Interface web do projeto **MyReadify**, uma plataforma focada em leitura colabor
 
 ## ✨ Demonstração ao Vivo
 
-Acesse a aplicação em produção: [**MyReadify App**](https://myreadify.vercel.app/) 
+Acesse a aplicação em produção: [**MyReadify App**](https://myreadify-frontend.vercel.app/) 
 
 ----------------------------------------
 
