@@ -170,10 +170,113 @@
 .status-completed, .status-approved { background-color: #0d9488; }
 .status-rejected { background-color: #94a3b8; }
 
-/* Media queries continuam iguais */
+/* --- MEDIA QUERIES PARA RESPONSIVIDADE --- */
+
+/* Para telas menores (celulares, tablets em modo retrato) */
 @media (max-width: 768px) {
-  /* ... */
+  .admin-approval-page {
+    padding: 1rem; /* Reduz o padding geral da página */
+    margin: 1.5rem auto; /* Ajusta a margem para ocupar mais espaço na tela */
+  }
+
+  /* Ajustes para o card de resumo pendente */
+  .pending-card {
+    flex-direction: column; /* Empilha a imagem e o conteúdo verticalmente */
+    align-items: center; /* Centraliza os itens horizontalmente quando empilhados */
+    text-align: center; /* Centraliza o texto dentro do card */
+    gap: 1rem; /* Reduz o espaçamento entre a imagem e o conteúdo */
+    padding: 1rem; /* Reduz o padding do card */
+  }
+
+  .book-cover-thumbnail {
+    width: 80px; /* Reduz o tamanho da thumbnail */
+    height: 120px;
+  }
+
+  .card-content {
+    align-items: center; /* Centraliza o conteúdo (título, autor, etc.) */
+  }
+
+  .summary-content {
+    max-height: 150px; /* Reduz a altura máxima do resumo em telas menores */
+    padding: 0.8rem;
+    width: 100%; /* Garante que o resumo ocupe a largura total disponível */
+  }
+
+  .approval-actions {
+    flex-direction: column; /* Empilha os botões de ação verticalmente */
+    width: 100%; /* Garante que os botões ocupem a largura total */
+    gap: 0.75rem; /* Reduz o espaçamento entre os botões empilhados */
+  }
+
+  .approval-actions .btn-approve,
+  .approval-actions .btn-reject,
+  .approval-actions .btn-change-cover,
+  .approval-actions .btn-delete-permanent {
+    width: 100%; /* Botões ocupam a largura total */
+    text-align: center;
+  }
+
+  /* Ajustes para o item de gerenciamento */
+  .management-item {
+    flex-direction: column; /* Empilha os itens verticalmente */
+    align-items: flex-start; /* Alinha o conteúdo à esquerda */
+    padding: 1rem; /* Reduz o padding do item */
+    gap: 0.5rem; /* Reduz o espaçamento entre os elementos */
+  }
+
+  .item-info {
+    flex-direction: column; /* Empilha o título e o ID */
+    align-items: flex-start; /* Alinha o título e o ID à esquerda */
+    gap: 0.2rem; /* Espaçamento menor entre título e ID */
+    width: 100%; /* Ocupa a largura total */
+  }
+
+  .item-title {
+    white-space: normal; /* Permite que o título quebre linha */
+    text-overflow: clip; /* Remove o ellipsis se quebrar linha */
+  }
+
+  .item-id {
+    font-size: 0.75rem; /* Reduz o tamanho da fonte do ID */
+    width: 100%; /* Garante que o ID ocupe a largura total */
+  }
+
+  .item-actions {
+    flex-direction: column; /* Empilha os botões de ação */
+    width: 100%; /* Ocupa a largura total */
+    margin-top: 0.75rem; /* Espaçamento do bloco de ações */
+  }
+
+  .item-actions .btn-delete-permanent {
+    width: 100%; /* Botão de deletar ocupa a largura total */
+    text-align: center;
+  }
+
+  .item-status {
+    margin-top: 0.5rem; /* Adiciona um espaço acima do status */
+    align-self: flex-end; /* Alinha o status à direita (se houver espaço) */
+  }
+
+  .section-divider {
+    margin: 3rem auto; /* Reduz margem do divisor */
+    width: 90%; /* Aumenta a largura do divisor */
+  }
 }
-@media (max-width: 768px) {
-  /* ... */
+
+/* Opcional: Para telas ainda menores (apenas para refino, se necessário) */
+@media (max-width: 480px) {
+  .admin-approval-page {
+    padding: 0.8rem;
+    margin: 1rem auto;
+  }
+
+  .pending-card, .management-item {
+    padding: 0.8rem;
+  }
+
+  .btn-approve, .btn-reject, .btn-change-cover, .btn-delete-permanent {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
 }

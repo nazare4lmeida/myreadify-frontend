@@ -1,4 +1,3 @@
-// src/pages/MySummariesPage.jsx
 import React, { useState, useEffect } from "react";
 import api from "../services/api";
 import { useAuth } from "../contexts/AuthContext";
@@ -17,16 +16,8 @@ const MySummariesPage = () => {
       const fetchMySummaries = async () => {
         try {
           const response = await api.get("/my-summaries");
-          // A cover_url já virá como full_cover_url do backend no objeto book aninhado
-          // graças ao mapeamento no SummaryController.
-          // No entanto, para garantir que o 'book' seja sempre um objeto válido
-          // e tenha 'cover_url' processável por getImageUrl,
-          // vamos mapear e aplicar getImageUrl aqui.
-          const formattedSummaries = response.data.map(s => ({
-            ...s,
-            book: s.book ? { ...s.book, cover_url: getImageUrl(s.book) } : null,
-          }));
-          setSummaries(formattedSummaries);
+          // *** REMOVA O MAP AQUI ***
+          setSummaries(response.data); // Apenas use os dados diretamente do backend
         } catch (err) {
           setError(
             "Não foi possível carregar seus envios. Tente recarregar a página."
@@ -69,17 +60,19 @@ const MySummariesPage = () => {
           {summaries.map((summary) => (
             <li key={summary.id} className="summary-item">
               <Link
-                to={summary.book?.slug ? `/livro/${summary.book.slug}` : '#'} // Use summary.book.slug
+                // to={summary.book?.slug ? `/livro/${summary.book.slug}` : '#'}
+                to={summary.slug ? `/livro/${summary.slug}` : '#'} // Use summary.slug
                 className="summary-link-wrapper"
               >
                 <img
-                  src={summary.book?.cover_url} // A cover_url já estará resolvida por getImageUrl acima
-                  alt={`Capa do livro ${summary.book?.title}`}
+                  // src={summary.book?.cover_url}
+                  src={getImageUrl(summary)} // Use getImageUrl com o objeto summary inteiro
+                  alt={`Capa do livro ${summary.title}`} // Use summary.title
                   className="summary-cover-image"
                 />
                 <div className="summary-info">
-                  <strong>{summary.book?.title}</strong>
-                  <span>por {summary.book?.author}</span>
+                  <strong>{summary.title}</strong> {/* Use summary.title */}
+                  <span>por {summary.author}</span> {/* Use summary.author */}
                 </div>
                 {typeof summary.status === "string" && (
                   <span className={`status status-${summary.status.toLowerCase()}`}>{summary.status === "PENDING" ? "PENDING" : summary.status}</span>

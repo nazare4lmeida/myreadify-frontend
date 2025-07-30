@@ -169,9 +169,7 @@ h2, h3 {
 
 .summary-item {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-    padding: 0.75rem 1rem; 
+  padding: 0.75rem 1rem;
   background-color: #fff;
   border-radius: 8px;
   border: 1px solid #eee;
@@ -186,31 +184,52 @@ h2, h3 {
 .summary-info {
   display: flex;
   flex-direction: column;
+  justify-content: center; /* Centraliza o texto verticalmente dentro do summary-info */
+  flex-grow: 1; /* Permite que o info ocupe o espaço restante */
+  /* margin-right: 1rem; remova este, pois o gap no summary-link-wrapper já gerencia o espaçamento */
 }
 
 .summary-info strong {
   color: var(--cor-texto-principal);
   font-weight: 600;
   font-size: 1rem;
+  line-height: 1.3; 
+  margin-bottom: 0.2rem; 
 }
 
 .summary-info span {
   color: var(--cor-texto-secundario);
   font-size: 0.8rem;
-  margin-top: 0.2rem;
+  line-height: 1.3; 
+}
+
+
+.summary-cover-image {
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
 }
 
 .status {
   padding: 0.3rem 0.75rem;
-  border-radius: 16px;
+  border-radius: 14px;
   font-size: 0.7rem;
   font-weight: 500;
   text-transform: capitalize;
+  flex-shrink: 0;
+
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  min-width: 80px; 
+  height: 20px; 
 }
 
 .status-pending {
   background-color: #fff8e1;
-  color: #DB7093;
+  color: #9c4260;
 }
 
 .status-approved {
@@ -220,7 +239,7 @@ h2, h3 {
 
 .status-rejected {
   background-color: #ffebee;
-  color: #c62828;
+  color: #ac1b1b;
 }
 
 .summary-link {
@@ -235,6 +254,14 @@ h2, h3 {
   color: #6b3e2d;
 }
 
+.summary-link-wrapper { 
+  display: flex; 
+  align-items: center; 
+  gap: 1rem; 
+  text-decoration: none;
+  color: inherit; 
+  flex-grow: 1;
+}
 
 .submit-summary-page.not-logged-in {
   max-width: 700px;

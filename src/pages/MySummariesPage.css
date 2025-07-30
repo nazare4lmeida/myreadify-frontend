@@ -133,27 +133,3 @@
   }
 }
 
-/* A segunda media query parece redundante e muito agressiva, pode ser uma boa ideia revisá-la ou removê-la */
-/*
-@media (max-width: 768px) {
-  * {
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-  body {
-    overflow-x: hidden;
-    padding: 0 1rem;
-  }
-  .container,
-  .content,
-  .main,
-  .card,
-  .form,
-  .section,
-  .page {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0.5rem !important;
-  }
-}
-*/
