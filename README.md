@@ -1,9 +1,12 @@
 # 📚 MyReadify – Frontend
 
 <p align="center">
+  <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzlwcnZyb3UxeHZlYXl4NDYwM2oyM2lzdGExb3BjMjFjMjhtaGgzdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/rSCVJasn8uZP2/giphy.gif" alt="MyReadify Demo GIF" width="400"/>
+</p>
+
+<p align="center">
   <a href="https://myreadify.vercel.app/" target="_blank">
-    <img src="https://via.placeholder.com/150x50?text=MyReadify+Logo" alt="MyReadify Logo" width="200"/>
-  </a>
+    <img src="src/assets/myreadify-logo.JPG" alt="MyReadify Logo" width="200"/>
 </p>
 
 Interface web do projeto **MyReadify**, uma plataforma focada em leitura colaborativa, onde usuários podem enviar e gerenciar resumos de livros. Esta aplicação frontend interage diretamente com a API do [MyReadify Backend](https://github.com/nazare4lmeida/myreadify-backend).
@@ -12,7 +15,9 @@ Interface web do projeto **MyReadify**, uma plataforma focada em leitura colabor
 
 ## ✨ Demonstração ao Vivo
 
-Acesse a aplicação em produção: [**MyReadify App**](https://myreadify.vercel.app/) ---
+Acesse a aplicação em produção: [**MyReadify App**](https://myreadify.vercel.app/) 
+
+----------------------------------------
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -27,7 +32,7 @@ Este projeto foi construído utilizando as seguintes tecnologias e bibliotecas:
 * **Requisições HTTP:**
     * [**Axios**](https://axios-http.com/) - Cliente HTTP baseado em Promises para fazer requisições à API.
 * **Autenticação e Banco de Dados (via Backend):**
-    * **Supabase** - Utilizado no backend como serviço de banco de dados.
+    * [**Supabase**](https://supabase.com/) - Utilizado no backend como serviço de banco de dados.
 * **Deploy:**
     * [**Vercel**](https://vercel.com/) - Plataforma para hospedagem e deploy contínuo.
 * **Outros:**
@@ -39,24 +44,24 @@ Este projeto foi construído utilizando as seguintes tecnologias e bibliotecas:
 
 A estrutura do projeto está organizada de forma modular para facilitar a manutenção e escalabilidade:
 
+```
 myreadify-frontend/
 │
-├── public/                  # Arquivos estáticos que serão copiados para a raiz do build
 ├── src/
-│   ├── assets/              # Imagens estáticas (logos, ícones, capas de fallback)
-│   ├── components/          # Componentes React reutilizáveis (botões, cards, headers, footers, modais)
-│   ├── contexts/            # Contextos React para gerenciamento de estado global (ex: autenticação)
-│   ├── pages/               # Componentes que representam páginas completas da aplicação (Login, Home, Perfil, etc.)
-│   ├── routes/              # Definições de rotas da aplicação (ex: ProtectedRoutes)
-│   ├── services/            # Configurações de serviços e chamadas à API (ex: instância do Axios)
-│   ├── utils/               # Funções utilitárias diversas (ex: getImageUrl)
-│   ├── App.jsx              # Componente principal que define a estrutura da aplicação e as rotas
-│   └── main.jsx             # Ponto de entrada da aplicação React
-├── .env.example             # Exemplo de arquivo de variáveis de ambiente
-├── index.html               # Ponto de entrada HTML
-├── package.json             # Dependências e scripts do projeto
-└── README.md                # Este arquivo
-
+│   ├── assets/              \# Imagens estáticas 
+│   ├── components/          \# Componentes React reutilizáveis 
+│   ├── contexts/            \# Contextos React para gerenciamento de estado global
+│   ├── data/         
+│   ├── pages/               \# Componentes que representam páginas completas da aplicação 
+│   ├── styles/              \# Css voltado para toda a aplicação
+│   ├── services/            \# Configurações de serviços e chamadas à API 
+│   ├── utils/               \# Funções utilitárias diversas 
+│   ├── App.jsx              \# Componente principal que define a estrutura da aplicação e as rotas
+│   └── main.jsx             \# Ponto de entrada da aplicação React
+├── index.html               \# Ponto de entrada HTML
+├── package.json             \# Dependências e scripts do projeto
+└── README.md                \# Este arquivo
+```
 
 ---
 
@@ -66,7 +71,7 @@ Para configurar e rodar o projeto em sua máquina local:
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/nazare4lmeida/myreadify-frontend.git](https://github.com/nazare4lmeida/myreadify-frontend.git)
+    git clone https://github.com/nazare4lmeida/myreadify-frontend.git
     cd myreadify-frontend
     ```
 
@@ -86,12 +91,10 @@ Para configurar e rodar o projeto em sua máquina local:
     *Certifique-se de que seu [backend](https://github.com/nazare4lmeida/myreadify-backend) esteja em execução para que o frontend possa se comunicar com a API.*
 
 4.  **Rode o projeto localmente:**
-
     ```bash
     npm run dev
     # ou yarn dev
     ```
-
     O aplicativo estará disponível em `http://localhost:5173` (ou outra porta disponível).
 
 ---
@@ -109,26 +112,28 @@ npm run build
 
 O diretório dist/ será gerado com os arquivos otimizados para produção.
 
-🧠 Funcionalidades Principais
+## 🧠 Funcionalidades Principais
 
-MyReadify oferece as seguintes funcionalidades no frontend:
+**MyReadify** oferece as seguintes funcionalidades no frontend:
 
-Cadastro e Login de Usuários: Permite que novos usuários se registrem e usuários existentes façam login para acessar as funcionalidades da plataforma.
+**Cadastro e Login de Usuários:** Permite que novos usuários se registrem e usuários existentes façam login para acessar as funcionalidades da plataforma.
 
-Envio de Resumos: Usuários logados podem enviar resumos de livros para avaliação.
+**Envio de Resumos:** Usuários logados podem enviar resumos de livros para avaliação.
 
-Meus Envios: Visualização do histórico de resumos enviados pelo usuário, com seus respectivos status (pendente, aprovado, rejeitado).
+**Envio de avaliação:** Usuários logados podem avaliar livros e deixar um comentário sobre cada um deles.
 
-Listagem e Detalhes de Livros: Exibição de livros com resumos aprovados.
+**Meus Envios:** Visualização do histórico de resumos enviados pelo usuário, com seus respectivos status (pendente, aprovado, rejeitado).
 
-Painel Administrativo: (Acesso restrito) Interface para administradores gerenciarem os resumos pendentes e aprovados/rejeitá-los, além de outras ações de gerenciamento.
+**Listagem e Detalhes de Livros:** Exibição de livros com resumos aprovados.
 
-Página de Contato: Formulário para os usuários entrarem em contato (a funcionalidade de envio de email é gerenciada pelo backend via Nodemailer).
+**Painel Administrativo:** (Acesso restrito) Interface para administradores gerenciarem os resumos pendentes e aprovados/rejeitá-los, além de outras ações de gerenciamento.
 
-Design Moderno e Responsivo: Experiência de usuário otimizada em diferentes tamanhos de tela (desktop, tablet, mobile).
+**Página de Contato:** Formulário para os usuários entrarem em contato (a funcionalidade de envio de email é gerenciada pelo backend via Nodemailer).
 
-🔗 Backend do Projeto: MyReadify Backend Repository
+**Design Responsivo:** Experiência de usuário otimizada em diferentes tamanhos de tela (desktop, tablet, mobile).
 
-👩‍💻 Autora
+## 🔗 Backend do Projeto: MyReadify Backend Repository
 
-Feito por Nazaré Almeida
+## 👩‍💻 Autora
+
+Feito por Nazaré Almeida, estudante de Análise e Desenvolvimento de Sistemas e leitora assídua.
