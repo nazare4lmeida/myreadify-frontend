@@ -82,7 +82,7 @@ const MySummariesPage = () => {
                   <span>por {summary.book?.author}</span>
                 </div>
                 {typeof summary.status === "string" && (
-                  <span className={`status status-${summary.status.toLowerCase()}`}>{summary.status === "PENDING" ? "Pendente" : summary.status}</span>
+                  <span className={`status status-${summary.status.toLowerCase()}`}>{summary.status === "PENDING" ? "PENDING" : summary.status}</span>
                 )}
               </Link>
             </li>

@@ -170,29 +170,29 @@ const SubmitSummaryPage = () => {
         {loadingMySummaries ? (
           <p>Carregando seus envios...</p>
         ) : mySummaries.length > 0 ? (
-          <ul className="summaries-list">
-            {mySummaries.map((summary) => (
-              <li key={summary.id} className="summary-item">
-                <Link
-                  to={summary.book?.slug ? `/livro/${summary.book.slug}` : '#'}
-                  className="summary-link-wrapper"
-                >
-                  <img
-                    src={getImageUrl(summary.book)} // Use getImageUrl aqui
-                    alt={`Capa do livro ${summary.book?.title}`}
-                    className="summary-cover-image"
-                  />
-                  <div className="summary-info">
-                    <strong>{summary.book?.title}</strong>
-                    <span>por {summary.book?.author}</span>
-                  </div>
-                  {typeof summary.status === "string" && (
-                    <span className={`status status-${summary.status.toLowerCase()}`}>{summary.status === "PENDING" ? "Pendente" : summary.status}</span>
-                  )}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <ul className="summaries-list">
+            {mySummaries.map((summary) => (
+              <li key={summary.id} className="summary-item">
+                <Link
+                  to={summary.slug ? `/livro/${summary.slug}` : '#'} 
+                  className="summary-link-wrapper"
+                >
+                  <img
+                    src={getImageUrl(summary)} 
+                    alt={`Capa do livro ${summary.title}`} 
+                    className="summary-cover-image"
+                  />
+                  <div className="summary-info">
+                    <strong>{summary.title}</strong> 
+                    <span>por {summary.author}</span> 
+                  </div>
+                  {typeof summary.status === "string" && (
+                    <span className={`status status-${summary.status.toLowerCase()}`}>{summary.status === "PENDING" ? "PENDING" : summary.status}</span>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
         ) : (
           <p>Você ainda não enviou nenhum resumo.</p>
         )}

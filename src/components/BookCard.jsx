@@ -44,7 +44,7 @@ const BookCard = ({ livro }) => {
                {" "}
         <button className="btn-summary" onClick={handleAction}>
                     {/* A lógica do texto do botão pode continuar a mesma */}   
-                {livro.isPlaceholder ? "Ver Detalhes" : "Ler Resumo"}       {" "}
+                {livro.isPlaceholder ? "Ler Resumo" : "Ler Resumo"}       {" "}
         </button>
              {" "}
       </div>

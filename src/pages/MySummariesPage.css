@@ -89,7 +89,7 @@
 }
 
 /* Cores do status (mantidas como estavam) */
-.status-pending, .status-pendente {
+.status-pending {
   background-color: #DB7093;
 }
 .status-approved {
