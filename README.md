@@ -1,89 +1,134 @@
 # 📚 MyReadify – Frontend
 
-Interface web do projeto [MyReadify](https://github.com/nazare4lmeida/myreadify-backend), focado em leitura colaborativa.
+<p align="center">
+  <a href="https://myreadify.vercel.app/" target="_blank">
+    <img src="https://via.placeholder.com/150x50?text=MyReadify+Logo" alt="MyReadify Logo" width="200"/>
+  </a>
+</p>
+
+Interface web do projeto **MyReadify**, uma plataforma focada em leitura colaborativa, onde usuários podem enviar e gerenciar resumos de livros. Esta aplicação frontend interage diretamente com a API do [MyReadify Backend](https://github.com/nazare4lmeida/myreadify-backend).
 
 ---
+
+## ✨ Demonstração ao Vivo
+
+Acesse a aplicação em produção: [**MyReadify App**](https://myreadify.vercel.app/) ---
 
 ## 🚀 Tecnologias Utilizadas
 
-- [Vite](https://vitejs.dev/)
-- [React](https://reactjs.org/)
-- [React Router DOM](https://reactrouter.com/)
-- [Axios](https://axios-http.com/)
-- Integração com Supabase (backend)
-- Responsivo para desktop e mobile
-- Deploy: [Vercel](https://vercel.com/)
+Este projeto foi construído utilizando as seguintes tecnologias e bibliotecas:
+
+* **Desenvolvimento:**
+    * [**React**](https://react.dev/) (v18+) - Biblioteca JavaScript para construção de interfaces de usuário.
+    * [**Vite**](https://vitejs.dev/) - Ferramenta de build rápido para desenvolvimento frontend.
+    * **CSS Puro** - Estilização completa da aplicação sem uso de frameworks CSS como Tailwind.
+* **Roteamento:**
+    * [**React Router DOM**](https://reactrouter.com/) - Gerenciamento de rotas e navegação na aplicação.
+* **Requisições HTTP:**
+    * [**Axios**](https://axios-http.com/) - Cliente HTTP baseado em Promises para fazer requisições à API.
+* **Autenticação e Banco de Dados (via Backend):**
+    * **Supabase** - Utilizado no backend como serviço de banco de dados.
+* **Deploy:**
+    * [**Vercel**](https://vercel.com/) - Plataforma para hospedagem e deploy contínuo.
+* **Outros:**
+    * **Responsividade** - Layout adaptável para desktop e dispositivos móveis (tablets e celulares).
 
 ---
 
-## 📁 Estrutura de Pastas (principais)
+## 📁 Estrutura de Pastas
 
-```
+A estrutura do projeto está organizada de forma modular para facilitar a manutenção e escalabilidade:
+
 myreadify-frontend/
 │
+├── public/                  # Arquivos estáticos que serão copiados para a raiz do build
 ├── src/
-│   ├── assets/           # Imagens e ícones
-│   ├── components/       # Componentes reutilizáveis
-│   ├── pages/            # Páginas (Login, Home, etc)
-│   ├── routes/           # Definições de rotas
-│   ├── services/         # Configuração do Axios
-│   └── App.jsx           # Componente principal
-├── public/
-├── index.html
-└── tailwind.config.js
-```
+│   ├── assets/              # Imagens estáticas (logos, ícones, capas de fallback)
+│   ├── components/          # Componentes React reutilizáveis (botões, cards, headers, footers, modais)
+│   ├── contexts/            # Contextos React para gerenciamento de estado global (ex: autenticação)
+│   ├── pages/               # Componentes que representam páginas completas da aplicação (Login, Home, Perfil, etc.)
+│   ├── routes/              # Definições de rotas da aplicação (ex: ProtectedRoutes)
+│   ├── services/            # Configurações de serviços e chamadas à API (ex: instância do Axios)
+│   ├── utils/               # Funções utilitárias diversas (ex: getImageUrl)
+│   ├── App.jsx              # Componente principal que define a estrutura da aplicação e as rotas
+│   └── main.jsx             # Ponto de entrada da aplicação React
+├── .env.example             # Exemplo de arquivo de variáveis de ambiente
+├── index.html               # Ponto de entrada HTML
+├── package.json             # Dependências e scripts do projeto
+└── README.md                # Este arquivo
+
 
 ---
 
-## ⚙️ Instalação e Execução
+## ⚙️ Instalação e Execução Local
 
-```bash
-# Clone o repositório
-git clone https://github.com/nazare4lmeida/myreadify-frontend.git
-cd myreadify-frontend
+Para configurar e rodar o projeto em sua máquina local:
 
-# Instale as dependências
-npm install
+1.  **Clone o repositório:**
+    ```bash
+    git clone [https://github.com/nazare4lmeida/myreadify-frontend.git](https://github.com/nazare4lmeida/myreadify-frontend.git)
+    cd myreadify-frontend
+    ```
 
-# Rode o projeto localmente
-npm run dev
-```
+2.  **Instale as dependências:**
+    ```bash
+    npm install
+    # ou yarn install
+    ```
+
+3.  **Configure as Variáveis de Ambiente:**
+    Crie um arquivo `.env` na raiz do projeto (`myreadify-frontend/.env`) e adicione a seguinte variável, apontando para a URL onde seu backend está rodando (geralmente `http://localhost:3000` em ambiente de desenvolvimento):
+
+    ```
+    VITE_API_URL=http://localhost:3000
+    ```
+
+    *Certifique-se de que seu [backend](https://github.com/nazare4lmeida/myreadify-backend) esteja em execução para que o frontend possa se comunicar com a API.*
+
+4.  **Rode o projeto localmente:**
+
+    ```bash
+    npm run dev
+    # ou yarn dev
+    ```
+
+    O aplicativo estará disponível em `http://localhost:5173` (ou outra porta disponível).
 
 ---
-
-## 🌐 Variáveis de Ambiente
-
-Crie um arquivo `.env` com a seguinte variável:
-
-```
-VITE_API_URL=http://localhost:3000
-```
-
-Aponte para a URL onde seu backend está rodando.
 
 ## 📦 Deploy
 
-O projeto está configurado para ser facilmente hospedado na **Vercel**.
+Este projeto está configurado para ser facilmente implantado na **Vercel**.
+
+Para realizar um build de produção:
 
 ```bash
-# Build de produção
 npm run build
+# ou yarn build
 ```
 
----
+O diretório dist/ será gerado com os arquivos otimizados para produção.
 
-## 🧠 Funcionalidades
+🧠 Funcionalidades Principais
 
-- Cadastro e login de usuários
-- Upload e listagem de livros
-- Avaliação com resenhas
-- Painel administrativo
-- Página de contato
-- Tema moderno e responsivo
+MyReadify oferece as seguintes funcionalidades no frontend:
 
----
+Cadastro e Login de Usuários: Permite que novos usuários se registrem e usuários existentes façam login para acessar as funcionalidades da plataforma.
 
-🔗 **Backend**: [Repositório](https://github.com/nazare4lmeida/myreadify-backend)
+Envio de Resumos: Usuários logados podem enviar resumos de livros para avaliação.
 
+Meus Envios: Visualização do histórico de resumos enviados pelo usuário, com seus respectivos status (pendente, aprovado, rejeitado).
+
+Listagem e Detalhes de Livros: Exibição de livros com resumos aprovados.
+
+Painel Administrativo: (Acesso restrito) Interface para administradores gerenciarem os resumos pendentes e aprovados/rejeitá-los, além de outras ações de gerenciamento.
+
+Página de Contato: Formulário para os usuários entrarem em contato (a funcionalidade de envio de email é gerenciada pelo backend via Nodemailer).
+
+Design Moderno e Responsivo: Experiência de usuário otimizada em diferentes tamanhos de tela (desktop, tablet, mobile).
+
+🔗 Backend do Projeto: MyReadify Backend Repository
+
+👩‍💻 Autora
 
 Feito por Nazaré Almeida
