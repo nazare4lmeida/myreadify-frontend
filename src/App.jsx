@@ -17,7 +17,7 @@ import AdminApprovalPage from "./pages/AdminApprovalPage"; // Descomentado
 import SubmitPromptPage from "./pages/SubmitPromptPage";
 import ContactPage from "./pages/ContactPage";
 import AdminMessagesPage from "./pages/AdminMessagesPage"; // Descomentado
-import AdminRoute from "./components/AdminRoute"; // Descomentado
+import AdminRoute from "./components/adminRoute"; // Descomentado
 
 import { AuthProvider } from "./contexts/AuthContext";
 
